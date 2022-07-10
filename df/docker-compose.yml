@@ -1,0 +1,9 @@
+version: '1.1'
+services:
+  mis2022-db:
+    build: .
+    container_name: mis2022-db
+    environment:
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5455:5432"
