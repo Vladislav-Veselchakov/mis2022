@@ -1,7 +1,6 @@
 package ru.mis2022.service.abstr;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.mis2022.models.dto.user.CurrentUserDto;
 import ru.mis2022.models.entity.User;
 
 public interface UserService extends UserDetailsService {
@@ -12,6 +11,6 @@ public interface UserService extends UserDetailsService {
 
     User getUserByEmail(String email);
 
-    CurrentUserDto getCurrentUserDtoByEmail(String email);
+    User getCurrentUserByEmail(String email);
 
 }

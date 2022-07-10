@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,14 +19,17 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class Role implements GrantedAuthority {
+
+    public enum RolesEnum {USER, ADMIN, DOCTOR, PATIENT, REGISTRAR,
+        ECONOMIST, MAIN_DOCTOR, CHIEF_DOCTOR}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Role(String name) {

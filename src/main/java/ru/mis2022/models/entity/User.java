@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,6 +29,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,7 +43,7 @@ public class User implements UserDetails {
 
     private String lastName;
 
-    private String surname;
+    @Nullable private String surname;
 
     private LocalDate birthday;
 
@@ -51,9 +53,13 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    public User(String email, String password, String firstName, String lastName, Role role) {}
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(role);
     }
+
+
 
     public String getPassword() {
         return this.password;
