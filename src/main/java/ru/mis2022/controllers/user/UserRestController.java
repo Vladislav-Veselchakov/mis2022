@@ -21,4 +21,5 @@ public class UserRestController {
     public Response<User> getCurrentUser(Principal principal) {
         return Response.ok(userService.getCurrentUserByEmail(principal.getName()));
     }
+
 }
