@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
-import ru.mis2022.service.abstr.RoleService;
-import ru.mis2022.service.abstr.UserService;
+import ru.mis2022.service.RoleService;
+import ru.mis2022.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;

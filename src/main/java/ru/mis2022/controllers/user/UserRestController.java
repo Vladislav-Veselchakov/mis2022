@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.models.response.Response;
-import ru.mis2022.service.abstr.UserService;
+import ru.mis2022.service.UserService;
 
 import java.security.Principal;
 

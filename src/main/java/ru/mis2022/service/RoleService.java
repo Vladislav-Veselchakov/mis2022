@@ -1,4 +1,4 @@
-package ru.mis2022.service.abstr;
+package ru.mis2022.service;
 
 import ru.mis2022.models.entity.Role;
 

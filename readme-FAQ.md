@@ -23,7 +23,7 @@ MIS
 Весь функционал контроллеров должен быть покрыт интеграционными тестами.
 
 #Стек
-SpringBoot, Hibernate, Rest, JpaRepositories, HQL, PostgreSQL, FlyWay, Junit4, Swagger, Git, Docker
+SpringBoot, Hibernate, Rest, Spring Data JPA, HQL, SQL, PostgreSQL, FlyWay, JUnit, Swagger, Git
 
 #РАЗДЕЛ  -  Как запустить?
 Используйте версию Java - 17.

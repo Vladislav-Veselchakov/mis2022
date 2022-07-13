@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.repositories.UserRepository;
-import ru.mis2022.service.abstr.UserService;
+import ru.mis2022.service.UserService;
 
 
 @Service
