@@ -1,6 +1,8 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +28,9 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -94,5 +98,18 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "email = " + email + ", " +
+                "password = " + password + ", " +
+                "firstName = " + firstName + ", " +
+                "lastName = " + lastName + ", " +
+                "surname = " + surname + ", " +
+                "birthday = " + birthday + ", " +
+                "enabled = " + enabled + ")";
     }
 }

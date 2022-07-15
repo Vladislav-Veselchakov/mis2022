@@ -13,7 +13,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public void persist(Role role) {
-        roleRepository.save(role);
+    public Role persist(Role role) {
+        return roleRepository.save(role);
     }
 }
