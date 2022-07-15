@@ -1,7 +1,7 @@
 package ru.mis2022.models.entity;
 
 
-import java.util.List;
+import javax.persistence.ManyToOne;
 
 /**
  * Department - Отделение
@@ -16,10 +16,17 @@ import java.util.List;
  */
 
 public class Department {
+
     private Long id;
+
     private String name;
-    private List<Doctor> doctors;
-    private List<Disease> diseases;
-    private List<MedicalService> medicalServices;
+
+//    private List<Doctor> doctors;
+
+//    private List<Disease> diseases;
+
+//    private List<MedicalService> medicalServices;
+
+//    @ManyToOne
     private MedicalOrganization medicalOrganization;
 }
