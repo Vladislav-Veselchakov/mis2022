@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 
 @Component
-@ConditionalOnExpression("${app.runInitialize:true}")
+@ConditionalOnExpression("${mis.property.runInitialize:true}")
 public class DataInitializer {
     private final UserService userService;
     private final RoleService roleService;
