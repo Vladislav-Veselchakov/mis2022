@@ -9,6 +9,10 @@ import ru.mis2022.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static ru.mis2022.models.entity.Role.*;
 
 
 @Component
@@ -24,15 +28,28 @@ public class DataInitializer {
 
     @PostConstruct
     public void addTestData() {
-        Role roleAdmin = new Role(Role.RolesEnum.USER.name());
-        roleService.persist(roleAdmin);
-        User testUser = new User();
-        testUser.setEmail("email");
-        testUser.setPassword("password");
-        testUser.setBirthday(LocalDate.now());
-        testUser.setFirstName("first");
-        testUser.setLastName("last");
-        testUser.setRole(roleAdmin);
-        userService.persist(testUser);
+        Role roleDoctor = new Role(RolesEnum.DOCTOR.name());
+        Role roleRegistrar = new Role(RolesEnum.REGISTRAR.name());
+        roleService.persist(roleDoctor);
+        roleService.persist(roleRegistrar);
+
+
+        User testUser1 = new User();
+        testUser1.setEmail("email1");
+        testUser1.setPassword("1");
+        testUser1.setBirthday(LocalDate.now());
+        testUser1.setFirstName("first1");
+        testUser1.setLastName("last1");
+        testUser1.setRole(roleDoctor);
+        userService.persist(testUser1);
+
+        User testUser2 = new User();
+        testUser2.setEmail("email2");
+        testUser2.setPassword("2");
+        testUser2.setBirthday(LocalDate.now());
+        testUser2.setFirstName("first2");
+        testUser2.setLastName("last2");
+        testUser2.setRole(roleRegistrar);
+        userService.persist(testUser2);
     }
 }

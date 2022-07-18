@@ -1,4 +1,4 @@
-package ru.mis2022.controllers.user;
+package ru.mis2022.controllers.auth;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 
+//todo удалить
 @Validated
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

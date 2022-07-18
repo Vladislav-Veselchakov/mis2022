@@ -1,4 +1,4 @@
-package ru.mis2022.controllers.user;
+package ru.mis2022.controllers.doctor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class UserRestControllerIT {
+public class DoctorRestControllerIT {
 
     @Autowired UserService userService;
 
