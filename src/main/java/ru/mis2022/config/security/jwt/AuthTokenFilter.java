@@ -1,5 +1,7 @@
 package ru.mis2022.config.security.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.mis2022.service.impl.UserDetailsServiceImpl;
+//import ru.mis2022.service.impl.UserDetailsServiceImpl;
+import ru.mis2022.service.impl.UserServiceImpl;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   private JwtUtils jwtUtils;
 
   @Autowired
-  private UserDetailsServiceImpl userDetailsService;
+  private UserServiceImpl userServiceImpl;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -33,8 +37,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
       if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
         String email = jwtUtils.getEmailFromJwtToken(jwt);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        String auths = String.valueOf(userDetails.getAuthorities());
+        UserDetails userDetails = userServiceImpl.getCurrentUserByEmail(email);
+
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
                 userDetails,

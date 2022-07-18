@@ -19,7 +19,7 @@ import ru.mis2022.service.impl.UserDetailsServiceImpl;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
         //securedEnabled = true,
-        jsr250Enabled = true,
+        //jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -65,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
-
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
 
