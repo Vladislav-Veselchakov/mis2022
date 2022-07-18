@@ -39,26 +39,20 @@ public class AuthController {
 
     private final RoleService roleService;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private RoleRepository roleRepository;
-
-    private PasswordEncoder passwordEncoder;
-
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserService userService,
-                          RoleService roleService, UserRepository userRepository, RoleRepository roleRepository,
-                          JwtUtils jwtUtils, PasswordEncoder encoder) {
+                          RoleService roleService, UserRepository userRepository,
+                          JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.roleService = roleService;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
-        this.passwordEncoder = encoder;
-    }
+            }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -89,11 +83,7 @@ public class AuthController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        // Create new user's account
-
         String reqRole = signUpRequest.getRole();
-        Role newRole = new Role(Role.RolesEnum.valueOf(reqRole).name());
-        //roleService.persist(newRole);
         User newUser = new User();
         newUser.setEmail(signUpRequest.getEmail());
         newUser.setPassword(signUpRequest.getPassword());
@@ -102,7 +92,6 @@ public class AuthController {
         newUser.setLastName(signUpRequest.getLastName());
         newUser.setRole(roleService.findByName(reqRole));
         userService.persist(newUser);
-
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
