@@ -1,4 +1,4 @@
-package ru.mis2022.controllers.user;
+package ru.mis2022.controllers.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,24 +6,22 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.config.security.jwt.JwtUtils;
-import ru.mis2022.service.impl.UserDetailsImpl;
-import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.models.payload.request.LoginRequest;
 import ru.mis2022.models.payload.request.SignupRequest;
 import ru.mis2022.models.payload.response.JwtResponse;
 import ru.mis2022.models.payload.response.MessageResponse;
-import ru.mis2022.repositories.RoleRepository;
 import ru.mis2022.repositories.UserRepository;
 import ru.mis2022.service.RoleService;
 import ru.mis2022.service.UserService;
+import ru.mis2022.service.impl.UserDetailsImpl;
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
