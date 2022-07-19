@@ -2,15 +2,17 @@ package ru.mis2022.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
+import ru.mis2022.models.entity.Department;
+import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
+import ru.mis2022.service.DepartmentService;
+import ru.mis2022.service.MedicalOrganizationService;
 import ru.mis2022.service.RoleService;
 import ru.mis2022.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static ru.mis2022.models.entity.Role.*;
 
@@ -20,10 +22,14 @@ import static ru.mis2022.models.entity.Role.*;
 public class DataInitializer {
     private final UserService userService;
     private final RoleService roleService;
+    private final MedicalOrganizationService medicalOrganizationService;
+    private final DepartmentService departmentService;
 
-    public DataInitializer(UserService userService, RoleService roleService) {
+    public DataInitializer(UserService userService, RoleService roleService, MedicalOrganizationService medicalOrganizationService, DepartmentService departmentService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.medicalOrganizationService = medicalOrganizationService;
+        this.departmentService = departmentService;
     }
 
     @PostConstruct
@@ -51,5 +57,19 @@ public class DataInitializer {
         testUser2.setLastName("last2");
         testUser2.setRole(roleRegistrar);
         userService.persist(testUser2);
+
+        MedicalOrganization medicalOrganization = new MedicalOrganization();
+        medicalOrganization.setName("Hospital");
+        medicalOrganization.setAddress("Moscow, Pravda street, 20");
+        medicalOrganizationService.persist(medicalOrganization);
+
+        Department department = new Department();
+        department.setName("Therapy");
+        department.setMedicalOrganization(medicalOrganization);
+        Department department1 = new Department();
+        department1.setName("Surgery");
+        department1.setMedicalOrganization(medicalOrganization);
+        departmentService.persist(department);
+        departmentService.persist(department1);
     }
 }
