@@ -102,3 +102,7 @@ Mockito
 https://habr.com/ru/post/444982/
 https://www.youtube.com/watch?v=Wmrdfzzpr6A
 https://www.youtube.com/watch?v=lpPEAHLGoJg
+
+
+dto
+https://www.baeldung.com/jpa-queries-custom-result-with-aggregation-functions
