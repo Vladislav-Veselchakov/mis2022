@@ -1,11 +1,14 @@
 package ru.mis2022.models.entity;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 /**
  * Department - Отделение
@@ -19,9 +22,6 @@ import javax.persistence.*;
  * список услуг оказываеммых по ОМС (некоторые услуги могут оказываться в разных отделениях)
  */
 @Entity
-@Setter
-@Getter
-@NoArgsConstructor
 public class Department {
 
     @Id
@@ -30,15 +30,15 @@ public class Department {
 
     private String name;
 
-//    private List<Doctor> doctors;
+    @OneToMany
+    private Set<Doctor> doctors;
 
-//    private List<Disease> diseases;
+    @OneToMany
+    private Set<Disease> diseases;
 
-//    private List<MedicalService> medicalServices;
+    @ManyToMany
+    private Set<MedicalService> medicalServices;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "medical_organization_id")
+    @ManyToOne
     private MedicalOrganization medicalOrganization;
-
-
 }

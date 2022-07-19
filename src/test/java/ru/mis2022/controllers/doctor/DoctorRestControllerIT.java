@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import ru.mis2022.models.entity.Registrar;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.service.RoleService;
@@ -17,6 +18,8 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
+import static ru.mis2022.models.entity.Role.RolesEnum;
+import static ru.mis2022.models.entity.Role.builder;
 
 
 @SpringBootTest
@@ -28,54 +31,41 @@ public class DoctorRestControllerIT {
 
     @Autowired RoleService roleService;
 
-//    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-//    @Autowired MockMvc mockMvc;
-
     @PersistenceContext EntityManager entityManager;
 
-    User initNewUser(Role role) {
-        return User.builder()
-                .firstName(anyString())
-                .lastName(anyString())
-                .surname(anyString())
-                .email("test@email.com")
-                .password(anyString())
-                .enabled(true)
-                .birthday(LocalDate.now())
-                .role(role)
+    Role initNewRole(String name) {
+        return builder()
+                .name(name)
                 .build();
     }
 
-    Role initNewUserRole() {
-        return Role.builder()
-                .name(Role.RolesEnum.USER.name())
-                .build();
+    User initNewRegistrar(Role role) {
+        Registrar registrar = new Registrar();
+        registrar.setEmail("test@email.com");
+        registrar.setPassword("1");
+        registrar.setFirstName("f");
+        registrar.setLastName("l");
+        registrar.setBirthday(LocalDate.now());
+        registrar.setEnabled(true);
+        registrar.setRole(role);
+        return registrar;
     }
 
     @Test
-//    @WithMockUser(authorities = "ADMIN")
-    public void getCurrentUserTest() throws Exception {
+    public void getCurrentUserTest() {
 
-        var role = roleService.persist(initNewUserRole());
-        userService.persist(initNewUser(role));
+        Role role = roleService.persist(initNewRole(RolesEnum.REGISTRAR.name()));
+        userService.persist(initNewRegistrar(role));
 
         User user = entityManager.createQuery("""
-                        select u from User u
-                            join fetch u.role
-                        where u.email =: email
-                        """, User.class
+                        select r from Registrar r
+                            join fetch r.role
+                        where r.email =: email
+                        """, Registrar.class
                 )
                 .setParameter("email", "test@email.com").getSingleResult();
 
-//        System.out.println(user);
         assertNotNull(user.getId());
         assertEquals(user.getRole(), role);
-
-//        mockMvc.perform(
-//                        get("/user/current")
-//                )
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.success", Is.is(true)))
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 }
