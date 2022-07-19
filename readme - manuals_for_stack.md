@@ -19,9 +19,21 @@ Swagger
 
 Это фреймворк для спецификации RESTful API. С его помощью можно удобно отправлять запросы на сервер.
 Web интерфейс Swagger доступен после старта проекта и аутентификации под определенным юзером
-по адресу: http://localhost:8080/swagger-ui/index.html#/
+по адресу: http://localhost:8080/swagger-ui/index.html#/ (значение порта 8080 может быть настроено в
+application.properties: server.port=)
 Информация по SWAGGER - https://habr.com/ru/post/434798/
-
+Настройка в классе SwaggerConfig.
+Кратко по работе со Swagger:
+После запуска проекта перейдя по адресу: http://localhost:8080/swagger-ui/index.html загрузится
+веб интерфейс Swagger. Нам будет доступен контроллер для аутентификации auth-controller
+с помощью которого мы можем отправить запрос типа LoginRequest, содержащий два строковых поля:
+email и password на сервер (нажать try it out -> вместо string подставить значения -> execute).
+При успешной аутентификации получаем ответ типа JwtResponse содержащий сгенерированный токен
+(начинается на Bearer), id, email, roles. Для его добавления в header при каждом последующем
+запросе нужно скопировать его значение без кавычек, нажать Authorize (кнопка с замочком) ->
+вставить значение в поле value -> Authorize (замочек поменяет значение на закрытый).
+Для тестирования работы методов контроллера выбираем нужный -> try it out -> вводим необходимые
+данные -> execute.
 
 Unit testing
 
@@ -106,3 +118,14 @@ https://www.youtube.com/watch?v=lpPEAHLGoJg
 
 dto
 https://www.baeldung.com/jpa-queries-custom-result-with-aggregation-functions
+
+
+Spring security с авторизацией токеном jsonwebtoken
+https://www.bezkoder.com/spring-boot-jwt-authentication/
+
+Используемые классы:
+WebSecurityConfigurerAdapter - основной класс конфгурации. В массиве AUTH_WHITELIST можно добавить открытые
+ресурсы. В методе configure(HttpSecurity http) настраивается
+UserDetailsServiceImpl - содержит метод поиска и загрузки пользователя по email и создание на его основе
+объекта UserDetails который будет использоваться для аутентификации и проверки
+UsernamePasswordAuthenticationToken получает
