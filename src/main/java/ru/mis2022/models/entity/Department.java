@@ -34,10 +34,10 @@ public class Department {
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Doctor> doctors;
 
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "department")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Disease> diseases;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<MedicalService> medicalServices;
 
     @ManyToOne(fetch = FetchType.LAZY)

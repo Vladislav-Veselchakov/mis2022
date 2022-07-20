@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -34,12 +36,19 @@ import java.util.Set;
 public class Doctor extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private PersonalHistory personalHistory;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Talon> talons;
 
+    public Doctor(String email, String password, String firstName, String lastName, @Nullable String surname,
+                  LocalDate birthday, Role role, Department department, PersonalHistory personalHistory) {
+        super(email, password, firstName, lastName, surname, birthday, role);
+        this.department = department;
+        this.personalHistory = personalHistory;
+    }
 }

@@ -35,13 +35,13 @@ public class Appeal {
     @ManyToOne(fetch = FetchType.LAZY)
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Disease disease;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Visit> visits;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
 
     private boolean isClosed = false;

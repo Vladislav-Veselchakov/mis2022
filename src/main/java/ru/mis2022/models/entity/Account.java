@@ -1,11 +1,7 @@
 package ru.mis2022.models.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -32,7 +28,7 @@ public class Account {
 
     private LocalDate date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Appeal> appeals;
 
     private Long money;

@@ -16,13 +16,13 @@ public class PersonalHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Attestation> attestations;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Diploma> diplomas;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Vacation> vacations;
 
     private LocalDate dateOfEmployment;

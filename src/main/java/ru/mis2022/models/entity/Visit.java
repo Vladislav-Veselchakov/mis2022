@@ -1,12 +1,7 @@
 package ru.mis2022.models.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -25,13 +20,13 @@ public class Visit {
 
     private LocalDate dayOfVisit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Doctor doctor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Appeal appeal;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<MedicalService> medicalServices;
 
 
