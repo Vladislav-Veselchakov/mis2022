@@ -34,7 +34,7 @@ public class Department {
     @OneToMany
     private Set<Doctor> doctors;
 
-    @OneToMany
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "department")
     private Set<Disease> diseases;
 
     @ManyToMany

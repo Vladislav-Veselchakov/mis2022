@@ -1,11 +1,7 @@
 package ru.mis2022.models.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Disease Заболевание
@@ -17,6 +13,7 @@ import javax.persistence.ManyToOne;
  */
 
 @Entity
+@Table(name = "disease")
 public class Disease {
 
     @Id
@@ -27,7 +24,8 @@ public class Disease {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
     private Department department;
 
 }
