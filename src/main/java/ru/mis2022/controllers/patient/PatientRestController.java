@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.patient.CurrentPatientDto;
 import ru.mis2022.models.entity.User;
+import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.PatientDtoService;
-
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +20,8 @@ public class PatientRestController {
     private final PatientDtoService patientDtoService;
 
     @GetMapping("/mainPage/current")
-    public CurrentPatientDto getCurrentPatientDto() {
+    public Response<CurrentPatientDto> getCurrentPatientDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return patientDtoService.getCurrentPatientDtoByEmail(currentUser.getEmail());
+        return Response.ok(patientDtoService.getCurrentPatientDtoByEmail(currentUser.getEmail()));
     }
 }
