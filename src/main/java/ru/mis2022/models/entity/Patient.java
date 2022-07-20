@@ -1,8 +1,14 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.Set;
 /**
     Patient - Пациент.
@@ -13,6 +19,7 @@ import java.util.Set;
  */
 
 @Entity
+@NoArgsConstructor
 public class Patient extends User {
 
     private String passport;
@@ -29,4 +36,12 @@ public class Patient extends User {
     @OneToMany
     private Set<Appeal> appeals;
 
+    public Patient(String email, String password, String firstName, String lastName, @Nullable String surname,
+                   LocalDate birthday, Role role, String passport, String polis, String snils, String address) {
+        super(email, password, firstName, lastName, surname, birthday, role);
+        this.passport = passport;
+        this.polis = polis;
+        this.snils = snils;
+        this.address = address;
+    }
 }
