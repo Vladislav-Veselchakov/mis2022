@@ -78,6 +78,17 @@ public class User implements UserDetails {
         return this.enabled;
     }
 
+    public User(String email, String password, String firstName, String lastName, @Nullable String surname,
+                LocalDate birthday, Role role) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
