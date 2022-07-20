@@ -11,11 +11,9 @@ import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.UserService;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.mis2022.models.entity.Role.RolesEnum;

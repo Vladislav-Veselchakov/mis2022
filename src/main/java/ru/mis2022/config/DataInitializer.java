@@ -10,7 +10,6 @@ import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
-
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
