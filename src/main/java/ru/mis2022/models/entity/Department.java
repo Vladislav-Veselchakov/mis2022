@@ -31,7 +31,7 @@ public class Department {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Doctor> doctors;
 
     @OneToMany (fetch = FetchType.LAZY, mappedBy = "department")
