@@ -1,10 +1,10 @@
-package ru.mis2022.service.impl;
+package ru.mis2022.service.entity.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.repositories.DepartmentRepository;
-import ru.mis2022.service.DepartmentService;
+import ru.mis2022.service.entity.DepartmentService;
 
 @Service
 @RequiredArgsConstructor

@@ -1,10 +1,10 @@
-package ru.mis2022.service.impl;
+package ru.mis2022.service.entity.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.repositories.MedicalOrganizationRepository;
-import ru.mis2022.service.MedicalOrganizationService;
+import ru.mis2022.service.entity.MedicalOrganizationService;
 
 
 @Service
