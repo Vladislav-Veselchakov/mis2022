@@ -57,5 +57,19 @@ public class DataInitializer {
         testUser2.setLastName("last2");
         testUser2.setRole(roleRegistrar);
         userService.persist(testUser2);
+
+        MedicalOrganization medicalOrganization = new MedicalOrganization();
+        medicalOrganization.setName("City Hospital");
+        medicalOrganization.setAddress("Moscow, Pravda street, 30");
+        medicalOrganizationService.persist(medicalOrganization);
+
+        Department department = new Department();
+        department.setName("Therapy");
+        department.setMedicalOrganization(medicalOrganization);
+        Department department2 = new Department();
+        department2.setName("Surgery");
+        department2.setMedicalOrganization(medicalOrganization);
+        departmentService.persist(department);
+        departmentService.persist(department2);
     }
 }

@@ -1,13 +1,11 @@
 package ru.mis2022.models.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -22,6 +20,9 @@ import java.util.Set;
  * список услуг оказываеммых по ОМС (некоторые услуги могут оказываться в разных отделениях)
  */
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 public class Department {
 
     @Id
@@ -39,6 +40,7 @@ public class Department {
     @ManyToMany
     private Set<MedicalService> medicalServices;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_organization_id")
     private MedicalOrganization medicalOrganization;
 }
