@@ -9,9 +9,7 @@ import ru.mis2022.models.entity.Role;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.util.ContextIT;
-
 import java.time.LocalDate;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

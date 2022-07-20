@@ -2,6 +2,7 @@ package ru.mis2022.models.entity;
 
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +34,6 @@ public class MedicalService {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<PriceOfMedicalService> prices;
 }

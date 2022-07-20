@@ -2,6 +2,7 @@ package ru.mis2022.models.entity;
 
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +22,6 @@ public class PriceOfMedicalService {
 
     private LocalDate dayTo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private MedicalService medicalService;
 }

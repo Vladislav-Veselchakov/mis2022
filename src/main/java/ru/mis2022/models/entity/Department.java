@@ -4,8 +4,15 @@ package ru.mis2022.models.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 /**
@@ -31,13 +38,13 @@ public class Department {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Doctor> doctors;
 
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "department")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Disease> diseases;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<MedicalService> medicalServices;
 
     @ManyToOne(fetch = FetchType.LAZY)

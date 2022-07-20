@@ -1,12 +1,10 @@
 package ru.mis2022.models.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
-
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.Set;
@@ -30,10 +28,10 @@ public class Patient extends User {
 
     private String address;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Talon> talons;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Appeal> appeals;
 
     public Patient(String email, String password, String firstName, String lastName, @Nullable String surname,
