@@ -1,5 +1,6 @@
 package ru.mis2022.controllers.patient;
 
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.util.ContextIT;
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,9 +59,7 @@ public class PatientRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data.roleName", Is.is("PATIENT")))
                 .andExpect(jsonPath("$.data.lastName", Is.is("l_name")))
                 .andExpect(jsonPath("$.data.firstName", Is.is("f_name")))
-                .andExpect(jsonPath("$.data.birthday[0]", Is.is(2002)))
-                .andExpect(jsonPath("$.data.birthday[1]", Is.is(7)))
-                .andExpect(jsonPath("$.data.birthday[2]", Is.is(20)));
+                .andExpect(jsonPath("$.data.birthday", Matchers.notNullValue()));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 
