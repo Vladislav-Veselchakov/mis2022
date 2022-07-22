@@ -13,7 +13,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             p.lastName AS lastName,
             p.birthday AS birthday,
             r.name AS roleName,
-            d.name AS departmentName            
+            d.name AS departmentName      
         FROM Doctor p
             JOIN Role r ON p.role.id = r.id
             JOIN Department d ON p.department.id = d.id
