@@ -22,7 +22,6 @@ import java.time.LocalDate;
 
 import static ru.mis2022.models.entity.Role.RolesEnum;
 
-
 @Component
 @ConditionalOnExpression("${mis.property.runInitialize:true}")
 public class DataInitializer {
@@ -34,6 +33,7 @@ public class DataInitializer {
     private final MedicalOrganizationService medicalOrganizationService;
     private final DepartmentService departmentService;
     private final RegistrarService registrarService;
+
 
     public DataInitializer(PatientService patientService,
                            DoctorService doctorService,
