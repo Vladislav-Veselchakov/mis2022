@@ -1,7 +1,11 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.Entity;
+import java.time.LocalDate;
 
 /**
  * Registrar - Медрегистратор
@@ -15,5 +19,10 @@ import javax.persistence.Entity;
 
 
 @Entity
+@NoArgsConstructor
 public class Registrar extends User {
+    public Registrar(String email, String password, String firstName, String lastName, @Nullable String surname,
+                   LocalDate birthday, Role role) {
+        super(email, password, firstName, lastName, surname, birthday, role);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -43,16 +44,15 @@ public class Doctor extends User {
     private Department department;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "personal_history_id")
+    @JoinColumn(name = "personal_history_id", referencedColumnName = "id")
     private PersonalHistory personalHistory;
 
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Talon> talons;
 
     public Doctor(String email, String password, String firstName, String lastName, @Nullable String surname,
-                  LocalDate birthday, Role role, Department department, PersonalHistory personalHistory) {
+                  LocalDate birthday, Role role, Department department) {
         super(email, password, firstName, lastName, surname, birthday, role);
         this.department = department;
-        this.personalHistory = personalHistory;
     }
 }

@@ -9,7 +9,7 @@ import ru.mis2022.service.entity.DoctorService;
 
 @Service
 @RequiredArgsConstructor
-public class DoctortServiceImpl implements DoctorService {
+public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
 
