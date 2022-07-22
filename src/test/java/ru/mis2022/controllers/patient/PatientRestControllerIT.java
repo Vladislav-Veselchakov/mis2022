@@ -11,14 +11,12 @@ import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.util.ContextIT;
 import java.time.LocalDate;
-import java.util.regex.Matcher;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 public class PatientRestControllerIT extends ContextIT {
+
     @Autowired RoleService roleService;
     @Autowired PatientService patientService;
 

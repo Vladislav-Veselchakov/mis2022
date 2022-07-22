@@ -1,6 +1,5 @@
 package ru.mis2022.models.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,6 +43,7 @@ public class Doctor extends User {
     private Department department;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "personal_history_id")
     private PersonalHistory personalHistory;
 
     @OneToMany(fetch = FetchType.LAZY)

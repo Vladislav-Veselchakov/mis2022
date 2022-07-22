@@ -1,7 +1,14 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.Entity;
+import java.time.LocalDate;
 
 /**
  * Economist - Экономист
@@ -12,6 +19,13 @@ import javax.persistence.Entity;
  */
 
 @Entity
-public class Economist extends User{
+@Getter
+@Setter
+@AllArgsConstructor
+public class Economist extends User {
 
+    public Economist(String email, String password, String firstName, String lastName, @Nullable String surname,
+                     LocalDate birthday, Role role) {
+        super(email, password, firstName, lastName, surname, birthday, role);
+    }
 }

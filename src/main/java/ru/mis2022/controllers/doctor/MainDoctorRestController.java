@@ -11,11 +11,12 @@ import ru.mis2022.models.entity.User;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.DoctorDtoService;
 
+
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('DOCTOR')")
-@RequestMapping("/api/doctor")
-public class DoctorRestController {
+@PreAuthorize("hasRole('MAIN_DOCTOR')")
+@RequestMapping("/api/main-doctor")
+public class MainDoctorRestController {
 
     private final DoctorDtoService doctorDtoService;
 
@@ -24,5 +25,4 @@ public class DoctorRestController {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Response.ok(doctorDtoService.getCurrentDoctorDtoByEmail(currentUser.getEmail()));
     }
-
 }
