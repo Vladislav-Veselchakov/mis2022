@@ -1,4 +1,4 @@
-package ru.mis2022.controllers.auth;
+package ru.mis2022.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

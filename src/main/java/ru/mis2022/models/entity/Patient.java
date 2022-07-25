@@ -1,7 +1,9 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +19,8 @@ import java.util.Set;
  */
 
 @Entity
+@Setter
+@Getter
 @NoArgsConstructor
 public class Patient extends User {
 
