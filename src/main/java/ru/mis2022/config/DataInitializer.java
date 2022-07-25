@@ -18,11 +18,14 @@ import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RegistrarService;
 import ru.mis2022.service.entity.RoleService;
+import ru.mis2022.models.entity.Administrator;
+import ru.mis2022.service.entity.AdministratorService;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 import static ru.mis2022.models.entity.Role.RolesEnum;
+
 
 @Component
 @ConditionalOnExpression("${mis.property.runInitialize:true}")
@@ -35,6 +38,7 @@ public class DataInitializer {
     private final MedicalOrganizationService medicalOrganizationService;
     private final DepartmentService departmentService;
     private final RegistrarService registrarService;
+    private final AdministratorService administratorService;
     private final HrManagerService hrManagerService;
 
 
@@ -45,6 +49,7 @@ public class DataInitializer {
                            MedicalOrganizationService medicalOrganizationService,
                            DepartmentService departmentService,
                            RegistrarService registrarService,
+                           AdministratorService administratorService,
                            HrManagerService hrManagerService) {
         this.patientService = patientService;
         this.doctorService = doctorService;
@@ -53,6 +58,7 @@ public class DataInitializer {
         this.medicalOrganizationService = medicalOrganizationService;
         this.departmentService = departmentService;
         this.registrarService = registrarService;
+        this.administratorService = administratorService;
         this.hrManagerService = hrManagerService;
     }
 
@@ -63,6 +69,7 @@ public class DataInitializer {
         Role rolePatient = roleService.persist(new Role(RolesEnum.PATIENT.name()));
         Role roleMainDoctor = roleService.persist(new Role(RolesEnum.MAIN_DOCTOR.name()));
         Role roleEconomist = roleService.persist(new Role(RolesEnum.ECONOMIST.name()));
+        Role roleAdmin = roleService.persist((new Role(RolesEnum.ADMIN.name())));
         Role roleHrManager = roleService.persist(new Role(RolesEnum.HR_MANAGER.name()));
 
         for (int num = 1; num < 10; num++) {
@@ -128,6 +135,17 @@ public class DataInitializer {
                     "surname_" + num,
                     LocalDate.now().minusYears(20),
                     roleRegistrar
+            ));
+        }
+        for (int num = 1; num < 2; num++) {
+            administratorService.persist(new Administrator(
+                    "administrator" + num + "@email.com",
+                    String.valueOf(num),
+                    "f_name_" + num,
+                    "l_name_" + num,
+                    "surname_" + num,
+                    LocalDate.now().minusYears(20),
+                    roleAdmin
             ));
         }
 
