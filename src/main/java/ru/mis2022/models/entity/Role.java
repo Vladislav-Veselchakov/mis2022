@@ -25,7 +25,7 @@ import java.util.Objects;
 public class Role implements GrantedAuthority {
 
     public enum RolesEnum {ADMIN, ECONOMIST, PATIENT, REGISTRAR,
-        DOCTOR, MAIN_DOCTOR, CHIEF_DOCTOR}
+        DOCTOR, MAIN_DOCTOR, CHIEF_DOCTOR, HR_MANAGER}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
