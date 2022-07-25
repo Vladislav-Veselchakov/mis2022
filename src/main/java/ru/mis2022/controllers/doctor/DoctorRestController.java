@@ -24,5 +24,4 @@ public class DoctorRestController {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Response.ok(doctorDtoService.getCurrentDoctorDtoByEmail(currentUser.getEmail()));
     }
-
 }
