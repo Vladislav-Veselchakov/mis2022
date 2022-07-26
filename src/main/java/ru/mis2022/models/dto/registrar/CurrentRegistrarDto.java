@@ -3,9 +3,7 @@ package ru.mis2022.models.dto.registrar;
 
 import java.time.LocalDate;
 
-public interface CurrentRegistrarDto {
-    String getFirstName();
-    String getLastName();
-    LocalDate getBirthday();
-    String getRoleName();
-}
+public record CurrentRegistrarDto(String firstName,
+                                  String lastName,
+                                  LocalDate birthday,
+                                  String roleName) {}

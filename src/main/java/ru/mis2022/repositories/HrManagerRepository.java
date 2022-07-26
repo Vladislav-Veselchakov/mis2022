@@ -8,11 +8,11 @@ import ru.mis2022.models.entity.HrManager;
 public interface HrManagerRepository extends JpaRepository<HrManager, Long> {
 
     @Query("""
-        SELECT
-            hr.firstName AS firstName,
-            hr.lastName AS lastName,
-            hr.birthday AS birthday,
-            r.name AS roleName
+        SELECT new ru.mis2022.models.dto.hr.CurrentHrManagerDto(
+            hr.firstName,
+            hr.lastName,
+            hr.birthday,
+            r.name)
         FROM HrManager hr
             JOIN Role r ON hr.role.id = r.id
         WHERE hr.email = :email

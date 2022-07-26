@@ -8,11 +8,11 @@ import ru.mis2022.models.entity.Economist;
 public interface EconomistRepository extends JpaRepository<Economist, Long> {
 
     @Query("""
-        SELECT
-            p.firstName AS firstName,
-            p.lastName AS lastName,
-            p.birthday AS birthday,
-            r.name AS roleName
+        SELECT new ru.mis2022.models.dto.economist.CurrentEconomistDto(
+            p.firstName,
+            p.lastName,
+            p.birthday,
+            r.name)
         FROM Economist p
             JOIN Role r ON p.role.id = r.id
         WHERE p.email = :email

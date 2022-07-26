@@ -10,11 +10,11 @@ import ru.mis2022.models.entity.Administrator;
 public interface AdministratorRepository extends JpaRepository<Administrator, Long> {
 
     @Query("""
-        SELECT
-            p.firstName AS firstName,
-            p.lastName AS lastName,
-            p.birthday AS birthday,
-            r.name AS roleName
+        SELECT new ru.mis2022.models.dto.administrator.CurrentAdministratorDto(
+            p.firstName,
+            p.lastName,
+            p.birthday,
+            r.name)
         FROM Administrator p
             JOIN Role r ON p.role.id = r.id
         WHERE p.email = :email

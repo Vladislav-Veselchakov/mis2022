@@ -8,12 +8,12 @@ import ru.mis2022.models.entity.Doctor;
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     @Query("""
-        SELECT
-            p.firstName AS firstName,
-            p.lastName AS lastName,
-            p.birthday AS birthday,
-            r.name AS roleName,
-            d.name AS departmentName      
+        SELECT new ru.mis2022.models.dto.doctor.CurrentDoctorDto(
+            p.firstName,
+            p.lastName,
+            p.birthday,
+            r.name,
+            d.name)
         FROM Doctor p
             JOIN Role r ON p.role.id = r.id
             JOIN Department d ON p.department.id = d.id

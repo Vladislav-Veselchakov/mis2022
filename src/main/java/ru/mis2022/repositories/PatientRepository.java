@@ -10,11 +10,11 @@ import ru.mis2022.models.entity.Patient;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     @Query("""
-        SELECT
-            p.firstName AS firstName,
-            p.lastName AS lastName,
-            p.birthday AS birthday,
-            r.name AS roleName
+        SELECT new ru.mis2022.models.dto.patient.CurrentPatientDto(
+            p.firstName,
+            p.lastName,
+            p.birthday,
+            r.name)
         FROM Patient p
             JOIN Role r ON p.role.id = r.id
         WHERE p.email = :email

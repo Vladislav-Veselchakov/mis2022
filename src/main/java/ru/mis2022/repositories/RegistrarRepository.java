@@ -8,11 +8,11 @@ import ru.mis2022.models.entity.Registrar;
 public interface RegistrarRepository extends JpaRepository<Registrar, Long> {
 
     @Query("""
-        SELECT
-            reg.firstName AS firstName,
-            reg.lastName AS lastName,
-            reg.birthday AS birthday,
-            r.name AS roleName
+        SELECT new ru.mis2022.models.dto.registrar.CurrentRegistrarDto(
+            reg.firstName,
+            reg.lastName,
+            reg.birthday,
+            r.name)
         FROM Registrar reg
             JOIN Role r ON reg.role.id = r.id
         WHERE reg.email = :email
