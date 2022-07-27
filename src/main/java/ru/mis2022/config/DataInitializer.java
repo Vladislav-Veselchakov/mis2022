@@ -10,20 +10,21 @@ import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Registrar;
 import ru.mis2022.models.entity.Role;
-import ru.mis2022.service.entity.DepartmentService;
+import ru.mis2022.models.entity.Administrator;
+import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.EconomistService;
-import ru.mis2022.service.entity.HrManagerService;
-import ru.mis2022.service.entity.MedicalOrganizationService;
-import ru.mis2022.service.entity.PatientService;
-import ru.mis2022.service.entity.RegistrarService;
 import ru.mis2022.service.entity.RoleService;
-import ru.mis2022.models.entity.Administrator;
+import ru.mis2022.service.entity.MedicalOrganizationService;
+import ru.mis2022.service.entity.DepartmentService;
+import ru.mis2022.service.entity.RegistrarService;
 import ru.mis2022.service.entity.AdministratorService;
+import ru.mis2022.service.entity.HrManagerService;
+import ru.mis2022.service.entity.AttestationService;
+import ru.mis2022.service.entity.PersonalHistoryService;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-
 import static ru.mis2022.models.entity.Role.RolesEnum;
 
 
@@ -40,6 +41,8 @@ public class DataInitializer {
     private final RegistrarService registrarService;
     private final AdministratorService administratorService;
     private final HrManagerService hrManagerService;
+    private final AttestationService attestationService;
+    private final PersonalHistoryService personalHistoryService;
 
 
     public DataInitializer(PatientService patientService,
@@ -50,7 +53,9 @@ public class DataInitializer {
                            DepartmentService departmentService,
                            RegistrarService registrarService,
                            AdministratorService administratorService,
-                           HrManagerService hrManagerService) {
+                           HrManagerService hrManagerService,
+                           AttestationService attestationService,
+                           PersonalHistoryService personalHistoryService) {
         this.patientService = patientService;
         this.doctorService = doctorService;
         this.economistService = economistService;
@@ -60,6 +65,8 @@ public class DataInitializer {
         this.registrarService = registrarService;
         this.administratorService = administratorService;
         this.hrManagerService = hrManagerService;
+        this.attestationService = attestationService;
+        this.personalHistoryService = personalHistoryService;
     }
 
     @PostConstruct
@@ -160,5 +167,6 @@ public class DataInitializer {
                     roleHrManager
             ));
         }
+
     }
 }
