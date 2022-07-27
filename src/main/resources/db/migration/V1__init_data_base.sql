@@ -384,3 +384,4 @@ ALTER TABLE visit_medical_services
 
 ALTER TABLE visit_medical_services
     ADD CONSTRAINT fk_vismedser_on_visit FOREIGN KEY (visit_id) REFERENCES visit (id);
+
