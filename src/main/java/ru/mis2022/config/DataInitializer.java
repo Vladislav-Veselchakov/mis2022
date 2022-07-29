@@ -78,6 +78,7 @@ public class DataInitializer {
         Role roleEconomist = roleService.persist(new Role(RolesEnum.ECONOMIST.name()));
         Role roleAdmin = roleService.persist((new Role(RolesEnum.ADMIN.name())));
         Role roleHrManager = roleService.persist(new Role(RolesEnum.HR_MANAGER.name()));
+        Role roleChiefDoctor=roleService.persist(new Role(RolesEnum.CHIEF_DOCTOR.name()));
 
         for (int num = 1; num < 10; num++) {
             patientService.persist(new Patient(
