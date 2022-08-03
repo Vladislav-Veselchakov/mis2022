@@ -6,5 +6,9 @@ public interface AdministratorService {
 
     Administrator findByEmail (String email);
 
+    Administrator existById(Long id);
+
     Administrator persist (Administrator administrator);
+
+    Administrator merge (Administrator administrator);
 }

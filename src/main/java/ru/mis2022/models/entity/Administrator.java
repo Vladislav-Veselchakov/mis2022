@@ -1,5 +1,6 @@
 package ru.mis2022.models.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,5 +17,6 @@ public class Administrator extends User{
   public Administrator(String email, String password, String firstName, String lastName,@Nullable String surname, LocalDate birthday, Role role) {
         super(email, password, firstName, lastName, surname, birthday,role);
     }
+
 
 }

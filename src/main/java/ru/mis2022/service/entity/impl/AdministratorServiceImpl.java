@@ -21,7 +21,18 @@ public class AdministratorServiceImpl implements AdministratorService {
     }
 
     @Override
+    public Administrator existById(Long id) {
+        return administratorRepository.existById(id);
+    }
+
+    @Override
     public Administrator persist(Administrator administrator) {
+        administrator.setPassword(encoder.encode(administrator.getPassword()));
+        return administratorRepository.save(administrator);
+    }
+
+    @Override
+    public Administrator merge(Administrator administrator) {
         administrator.setPassword(encoder.encode(administrator.getPassword()));
         return administratorRepository.save(administrator);
     }

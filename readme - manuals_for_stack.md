@@ -48,6 +48,7 @@ https://www.youtube.com/watch?v=Lnc3o8cCwZY
 MapStruct
 
 https://mapstruct.org/documentation/dev/reference/html/
+https://rukovodstvo.net/posts/id_799/?ysclid=l65537vpfb153611880
 Mapstruct — это библиотека, которая помогает сопоставлять (маппить) объекты одних сущностей
 в объекты других сущностей при помощи сгенерированного кода на основе конфигураций,
 которые описываются через интерфейсы.
@@ -79,7 +80,7 @@ Properties
 ApiValidationUtils
 
 Используйте данный класс для валидации данных в контроллере.
-
+https://struchkov.dev/blog/spring-boot-validation/
 
 FlyWay
 Flyway - это инструмент миграции (переноса) базы данных. Проще говоря, это инструмент,
