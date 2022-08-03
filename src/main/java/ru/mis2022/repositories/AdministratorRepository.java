@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.mis2022.models.dto.administrator.CurrentAdministratorDto;
 import ru.mis2022.models.entity.Administrator;
 
+
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Long> {
 
@@ -22,4 +23,9 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Lo
     CurrentAdministratorDto getCurrentAdministratorDtoByEmail(String email);
 
     Administrator findByEmail(String email);
+
+    @Query("""
+            SELECT a FROM Administrator a JOIN FETCH a.role WHERE a.id = :id
+            """)
+    Administrator existById(Long id);
 }

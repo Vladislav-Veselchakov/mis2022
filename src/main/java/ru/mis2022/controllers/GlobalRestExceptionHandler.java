@@ -1,16 +1,30 @@
 package ru.mis2022.controllers;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.mis2022.models.exception.ApiValidationException;
 import ru.mis2022.models.response.Response;
 
-@ControllerAdvice
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
+@RestControllerAdvice
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
+
     @ExceptionHandler(ApiValidationException.class)
-    public <T>Response<T> handleConflict(ApiValidationException ex) {
+    public <T> Response<T> handleConflict(ApiValidationException ex) {
         return Response.error(ex.getCode(), ex.getMessage());
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public <T> Response<T> onConstraintValidationException(ConstraintViolationException e) {
+        final ConstraintViolation<?> violation = e.getConstraintViolations().iterator().next();
+        return Response.error(400, violation.getMessage());
+    }
+
 }
