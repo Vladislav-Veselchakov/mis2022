@@ -1,5 +1,6 @@
 package ru.mis2022.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import ru.mis2022.models.entity.Department;
@@ -10,27 +11,35 @@ import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Registrar;
 import ru.mis2022.models.entity.Role;
+import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.models.entity.Administrator;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.EconomistService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
-import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.RegistrarService;
 import ru.mis2022.service.entity.AdministratorService;
+import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.service.entity.HrManagerService;
 import ru.mis2022.service.entity.AttestationService;
 import ru.mis2022.service.entity.PersonalHistoryService;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+
 import static ru.mis2022.models.entity.Role.RolesEnum;
 
 
 @Component
 @ConditionalOnExpression("${mis.property.runInitialize:true}")
 public class DataInitializer {
+
+    @Value("${mis.property.doctorSchedule}")
+    private Integer numberOfDays;
+
+    @Value("${mis.property.talon}")
+    private Integer numbersOfTalons;
 
     private final PatientService patientService;
     private final DoctorService doctorService;
@@ -43,6 +52,7 @@ public class DataInitializer {
     private final HrManagerService hrManagerService;
     private final AttestationService attestationService;
     private final PersonalHistoryService personalHistoryService;
+    private final TalonService talonService;
 
 
     public DataInitializer(PatientService patientService,
@@ -53,6 +63,7 @@ public class DataInitializer {
                            DepartmentService departmentService,
                            RegistrarService registrarService,
                            AdministratorService administratorService,
+                           TalonService talonService,
                            HrManagerService hrManagerService,
                            AttestationService attestationService,
                            PersonalHistoryService personalHistoryService) {
@@ -65,6 +76,7 @@ public class DataInitializer {
         this.registrarService = registrarService;
         this.administratorService = administratorService;
         this.hrManagerService = hrManagerService;
+        this.talonService = talonService;
         this.attestationService = attestationService;
         this.personalHistoryService = personalHistoryService;
     }
@@ -79,6 +91,7 @@ public class DataInitializer {
         Role roleAdmin = roleService.persist((new Role(RolesEnum.ADMIN.name())));
         Role roleHrManager = roleService.persist(new Role(RolesEnum.HR_MANAGER.name()));
         Role roleChiefDoctor=roleService.persist(new Role(RolesEnum.CHIEF_DOCTOR.name()));
+
 
         for (int num = 1; num < 10; num++) {
             patientService.persist(new Patient(
@@ -109,6 +122,7 @@ public class DataInitializer {
         departmentService.persist(department);
         departmentService.persist(department2);
 
+
         for (int num = 1; num < 10; num++) {
             economistService.persist(new Economist(
                     "economist" + num + "@email.com",
@@ -133,6 +147,22 @@ public class DataInitializer {
                     department
             ));
         }
+
+        for (int num = 1; num < 3; num++) {
+            doctorService.persist(new Doctor(
+                    "doctor" + num + "@email.com",
+                    String.valueOf(num),
+                    "f_name_" + num,
+                    "l_name_" + num,
+                    "surname_" + num,
+                    LocalDate.now().minusYears(20),
+                    roleDoctor,
+                    department
+            ));
+        }
+
+        Doctor doctor = doctorService.findByEmail("doctor1@email.com");
+        talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
 
         for (int num = 1; num < 2; num++) {
             registrarService.persist(new Registrar(
@@ -168,6 +198,5 @@ public class DataInitializer {
                     roleHrManager
             ));
         }
-
     }
-}
+ }

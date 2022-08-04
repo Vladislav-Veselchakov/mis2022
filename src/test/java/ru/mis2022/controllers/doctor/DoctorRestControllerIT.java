@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class DoctorRestControllerIT extends ContextIT {
-
     @Autowired RoleService roleService;
     @Autowired DoctorService doctorService;
     @Autowired DepartmentService departmentService;
@@ -38,7 +37,7 @@ public class DoctorRestControllerIT extends ContextIT {
 
     Doctor initDoctor(Role role, Department department, PersonalHistory personalHistory) {
         return doctorService.persist(new Doctor(
-                "patient1@email.com",
+                "doctor1@email.com",
                 String.valueOf("1"),
                 "f_name",
                 "l_name",
@@ -53,9 +52,10 @@ public class DoctorRestControllerIT extends ContextIT {
     public void getCurrentUserTest() throws Exception {
         Role role = initRole("DOCTOR");
         Department department = initDepartment("Therapy");
-        Doctor doctor = initDoctor(role, department, null);
+        Doctor doctor1 = initDoctor(role, department, null);
 
-        accessToken = tokenUtil.obtainNewAccessToken(doctor.getEmail(), "1", mockMvc);
+
+        accessToken = tokenUtil.obtainNewAccessToken(doctor1.getEmail(), "1", mockMvc);
 
         mockMvc.perform(get("/api/doctor/mainPage/current")
                         .header("Authorization", accessToken)
