@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Talon;
+
+import java.util.Set;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 

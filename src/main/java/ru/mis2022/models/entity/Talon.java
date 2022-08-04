@@ -1,6 +1,7 @@
 package ru.mis2022.models.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import java.time.LocalDateTime;
 /**
  * Talon - Талон на прием к врачу
  * на каждый день их создается 8
@@ -31,14 +31,17 @@ public class Talon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
-
-    private LocalTime time;
+    private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
+    public Talon(LocalDateTime time, Doctor doctor) {
+        this.time = time;
+        this.doctor = doctor;
+    }
 }
