@@ -1,8 +1,8 @@
-package ru.mis2022.models.dto.talon.convector;
+package ru.mis2022.models.mapper;
 
 
 import org.springframework.stereotype.Component;
-import ru.mis2022.models.dto.talon.TalonDto;
+import ru.mis2022.models.dto.Talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
 
 import java.util.ArrayList;

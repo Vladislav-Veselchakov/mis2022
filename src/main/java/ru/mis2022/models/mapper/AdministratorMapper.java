@@ -12,11 +12,11 @@ public interface AdministratorMapper {
     @Mapping(target = "birthday", dateFormat = "dd.MM.yyyy")
     @Mapping(target = "password", expression = "java(null)")
     @Mapping(source = "role.name", target = "role")
-    AdministratorDto toDto (Administrator administrator);
+    AdministratorDto toDto(Administrator administrator);
 
     @Mapping(source = "role", target = "role")
     @Mapping(source = "administratorDto.id", target = "id")
     @Mapping(target = "birthday", dateFormat = "dd.MM.yyyy")
-    Administrator toEntity (AdministratorDto administratorDto, Role role);
+    Administrator toEntity(AdministratorDto administratorDto, Role role);
 
 }

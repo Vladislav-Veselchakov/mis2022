@@ -3,10 +3,13 @@ package ru.mis2022.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
+import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 
 import java.util.Set;
+
+import java.util.List;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
@@ -25,4 +28,11 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     CurrentDoctorDto getCurrentDoctorDtoByEmail(String email);
 
     Doctor findByEmail(String email);
+
+    List<Doctor> findAllByDepartment_Id(Long id);
+
+    @Query("""
+            SELECT d FROM Doctor d WHERE d.id = :id
+            """)
+    Doctor existById(Long id);
 }
