@@ -10,6 +10,10 @@ public class Response<T> {
     protected T data;
     protected int code;
 
+    public static <T> Response<T> ok() {
+        return new SuccessResponse<>();
+    }
+
     public static <T> Response<T> ok(T data) {
         return new SuccessResponse<>(data);
     }

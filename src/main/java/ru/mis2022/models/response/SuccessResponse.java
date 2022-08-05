@@ -12,4 +12,9 @@ public class SuccessResponse<T> extends Response<T> {
         this.success = true;
         this.data = data;
     }
+
+    public SuccessResponse() {
+        this.code = 200;
+        this.success = true;
+    }
 }

@@ -55,6 +55,6 @@ public class EconomistRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data.lastName", Is.is("l_name")))
                 .andExpect(jsonPath("$.data.firstName", Is.is("f_name")))
                 .andExpect(jsonPath("$.data.birthday", Matchers.notNullValue()));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+   //             .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 }
