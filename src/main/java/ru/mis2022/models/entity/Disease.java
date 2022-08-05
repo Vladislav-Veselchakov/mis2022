@@ -1,10 +1,12 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +28,8 @@ import javax.persistence.Table;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @Table(name = "disease")
 public class Disease {
@@ -33,7 +37,7 @@ public class Disease {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "identifier", unique = true)
     private String identifier;
 
     private String name;
@@ -42,4 +46,15 @@ public class Disease {
     @JoinColumn(name = "department_id")
     private Department department;
 
+    public Disease(String identifier, String name) {
+
+        this.identifier = identifier;
+        this.name = name;
+    }
+
+    public Disease(String identifier, String name, Department department) {
+        this.identifier = identifier;
+        this.name = name;
+        this.department = department;
+    }
 }

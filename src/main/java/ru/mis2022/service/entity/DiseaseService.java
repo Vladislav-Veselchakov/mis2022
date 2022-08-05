@@ -1,9 +1,14 @@
 package ru.mis2022.service.entity;
 
+import ru.mis2022.models.dto.disease.DiseaseDto;
 import ru.mis2022.models.entity.Disease;
 
-public interface DiseaseService {
+import java.util.List;
 
-    Disease persist(Disease disease);
-    Disease merge(Disease disease);
+public interface DiseaseService {
+    List<DiseaseDto> findAllDiseaseDto();
+    boolean isExistByIdentifier(String identifier);
+    boolean isExistById(Long id);
+    void deleteById (Long id);
+    Disease save(Disease disease);
 }
