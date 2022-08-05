@@ -8,6 +8,8 @@ import ru.mis2022.models.entity.Talon;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.entity.DoctorService;
 
+import java.util.List;
+
 import java.util.Set;
 
 @Service
@@ -28,9 +30,19 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setPassword(encoder.encode(doctor.getPassword()));
         return doctorRepository.save(doctor);
     }
+
+    @Override
+    public List<Doctor> findAllByDepartment_Id(Long id) {
+        return doctorRepository.findAllByDepartment_Id(id);
+    }
+
+    @Override
+    public Doctor existById(Long id) {
+        return doctorRepository.existById(id);
+    }
+
     @Override
     public Doctor merge(Set<Talon> talons, Long doctorId) {
         return null;
     }
-
 }

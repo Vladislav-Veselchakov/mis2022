@@ -5,11 +5,17 @@ import ru.mis2022.models.entity.Talon;
 
 import java.util.Set;
 
+import java.util.List;
+
 public interface DoctorService {
 
     Doctor findByEmail(String email);
 
     Doctor persist(Doctor doctor);
+
+    List<Doctor> findAllByDepartment_Id(Long id);
+
+    Doctor existById(Long id);
 
     Doctor merge(Set<Talon> talons, Long doctorId);
 

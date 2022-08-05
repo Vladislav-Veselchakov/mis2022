@@ -19,6 +19,8 @@ import java.time.format.FormatStyle;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +59,10 @@ public class TalonServiceImpl implements TalonService {
         LocalDateTime endTime = LocalDateTime.now().plusDays(numberOfDays);
 
         return talonRepository.findCountTalonsByParameters(doctor.getId(), startTime, endTime);
+    }
+
+    @Override
+    public List<Talon> findAllByDoctor_Id(Long id) {
+        return talonRepository.findAllByDoctor_Id(id);
     }
 }
