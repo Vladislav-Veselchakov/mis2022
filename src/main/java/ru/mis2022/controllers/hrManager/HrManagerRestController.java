@@ -29,5 +29,4 @@ public class HrManagerRestController {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Response.ok(hrManagerDtoService.getCurrentHrDtoByEmail(currentUser.getEmail()));
     }
-
 }
