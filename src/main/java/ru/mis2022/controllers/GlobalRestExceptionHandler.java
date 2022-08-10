@@ -16,7 +16,6 @@ import javax.validation.ConstraintViolationException;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
-
     @ResponseBody
     @ExceptionHandler(ApiValidationException.class)
     public <T> Response<T> handleConflict(ApiValidationException ex) {
@@ -28,5 +27,5 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ConstraintViolation<?> violation = e.getConstraintViolations().iterator().next();
         return Response.error(400, violation.getMessage());
     }
-
 }
+

@@ -6,4 +6,6 @@ public record CurrentDoctorDto(String firstName,
                                String lastName,
                                LocalDate birthday,
                                String roleName,
-                               String departmentName) {}
+                               String departmentName
+                               ) {}
+

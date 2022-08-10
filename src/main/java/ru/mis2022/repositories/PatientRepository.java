@@ -14,6 +14,10 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             p.firstName,
             p.lastName,
             p.birthday,
+            p.passport,
+            p.polis,
+            p.snils,
+            p.address,
             r.name)
         FROM Patient p
             JOIN Role r ON p.role.id = r.id

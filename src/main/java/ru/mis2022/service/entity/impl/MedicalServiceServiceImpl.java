@@ -1,6 +1,9 @@
 package ru.mis2022.service.entity.impl;
 
+import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import ru.mis2022.models.entity.MedicalService;
 import ru.mis2022.repositories.MedicalServiceRepository;
@@ -9,6 +12,9 @@ import ru.mis2022.service.entity.MedicalServiceService;
 
 @Service
 @RequiredArgsConstructor
+@Builder
+@Getter
+@Setter
 public class MedicalServiceServiceImpl implements MedicalServiceService {
 
     private final MedicalServiceRepository medicalServiceRepository;

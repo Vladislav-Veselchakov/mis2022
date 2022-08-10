@@ -38,7 +38,8 @@ public class PatientRestControllerIT extends ContextIT {
                 "passport",
                 "polis",
                 "snils",
-                "address"));
+                "address"
+        ));
     }
 
     @Test
@@ -57,7 +58,11 @@ public class PatientRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data.roleName", Is.is("PATIENT")))
                 .andExpect(jsonPath("$.data.lastName", Is.is("l_name")))
                 .andExpect(jsonPath("$.data.firstName", Is.is("f_name")))
-                .andExpect(jsonPath("$.data.birthday", Matchers.notNullValue()));
+                .andExpect(jsonPath("$.data.birthday", Matchers.notNullValue()))
+                .andExpect(jsonPath("$.data.passport", Is.is("passport")))
+                .andExpect(jsonPath("$.data.polis", Is.is("polis")))
+                .andExpect(jsonPath("$.data.snils", Is.is("snils")))
+                .andExpect(jsonPath("$.data.address", Is.is("address")));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 

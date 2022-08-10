@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -55,4 +54,12 @@ public class Department {
     @JoinColumn(name = "medical_organization_id")
     private MedicalOrganization medicalOrganization;
 
+    public Department(String name) {
+        this.name = name;
+    }
+
+    public Department(String name, MedicalOrganization medicalOrganization) {
+        this.name = name;
+        this.medicalOrganization = medicalOrganization;
+    }
 }

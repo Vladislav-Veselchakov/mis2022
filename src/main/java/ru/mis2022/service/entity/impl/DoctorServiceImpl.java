@@ -3,10 +3,14 @@ package ru.mis2022.service.entity.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.entity.DoctorService;
+
+import java.util.List;
+import java.util.Set;
 
 import java.util.List;
 
@@ -30,6 +34,12 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setPassword(encoder.encode(doctor.getPassword()));
         return doctorRepository.save(doctor);
     }
+
+    @Override
+    public List<Doctor> findByDepartment(Department department) {
+        return doctorRepository.findByDepartment(department);
+    }
+
 
     @Override
     public List<Doctor> findAllByDepartment_Id(Long id) {
