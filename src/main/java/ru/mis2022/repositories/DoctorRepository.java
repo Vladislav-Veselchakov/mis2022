@@ -7,6 +7,11 @@ import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import ru.mis2022.models.entity.Talon;
+
 import java.util.Set;
 
 import java.util.List;
@@ -28,6 +33,23 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     CurrentDoctorDto getCurrentDoctorDtoByEmail(String email);
 
     Doctor findByEmail(String email);
+
+    @Query("""
+        SELECT new ru.mis2022.models.dto.doctor.CurrentDoctorDto(
+            doc.firstName,
+            doc.lastName,
+            doc.birthday,
+            role.name,
+            dep.name)
+        FROM Doctor doc
+            JOIN Role role ON doc.role.id = role.id
+            JOIN Department dep ON doc.department.id = dep.id
+        WHERE doc.email = :email
+        AND doc.department = :department
+        """)
+    List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department);
+
+    List<Doctor> findByDepartment (Department department);
 
     List<Doctor> findAllByDepartment_Id(Long id);
 

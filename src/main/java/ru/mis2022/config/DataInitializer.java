@@ -113,14 +113,44 @@ public class DataInitializer {
         medicalOrganization.setAddress("Moscow, Pravda street, 30");
         medicalOrganizationService.persist(medicalOrganization);
 
-        Department department = new Department();
-        department.setName("Therapy");
-        department.setMedicalOrganization(medicalOrganization);
-        Department department2 = new Department();
-        department2.setName("Surgery");
-        department2.setMedicalOrganization(medicalOrganization);
-        departmentService.persist(department);
-        departmentService.persist(department2);
+        MedicalOrganization medicalOrganization1 = new MedicalOrganization();
+        medicalOrganization1.setName("Hospital №1");
+        medicalOrganization1.setAddress("St. Peterburg, Lenina avenue, 3");
+        medicalOrganizationService.persist(medicalOrganization1);
+
+        MedicalOrganization medicalOrganization2 = new MedicalOrganization();
+        medicalOrganization2.setName("City Clinic Hospital");
+        medicalOrganization2.setAddress("Saratov, Grin street, 25");
+        medicalOrganizationService.persist(medicalOrganization2);
+
+        departmentService.persist(new Department("Therapy", medicalOrganization));
+        departmentService.persist(new Department("Surgery", medicalOrganization));
+        departmentService.persist(new Department("Cardiology", medicalOrganization));
+        departmentService.persist(new Department("Dentistry", medicalOrganization));
+        departmentService.persist(new Department("Dermatology", medicalOrganization));
+        departmentService.persist(new Department("Pediatrics", medicalOrganization));
+        departmentService.persist(new Department("Psychiatry", medicalOrganization));
+
+        departmentService.persist(new Department("Therapy", medicalOrganization1));
+        departmentService.persist(new Department("Surgery", medicalOrganization1));
+        departmentService.persist(new Department("Dentistry", medicalOrganization1));
+        departmentService.persist(new Department("Pediatrics", medicalOrganization1));
+
+
+        Department dep31 = new Department();
+        dep31.setName("Therapy");
+        dep31.setMedicalOrganization(medicalOrganization2);
+        departmentService.persist(dep31);
+
+        Department dep32 = new Department();
+        dep32.setName("Dermatology");
+        dep32.setMedicalOrganization(medicalOrganization2);
+        departmentService.persist(dep32);
+
+        Department dep33 = new Department();
+        dep33.setName("Pediatrics");
+        dep33.setMedicalOrganization(medicalOrganization2);
+        departmentService.persist(dep33);
 
 
         for (int num = 1; num < 10; num++) {
@@ -144,7 +174,7 @@ public class DataInitializer {
                     "surname_" + num,
                     LocalDate.now().minusYears(20),
                     roleMainDoctor,
-                    department
+                    departmentService.persist(new Department("Therapy", medicalOrganization))
             ));
         }
 
@@ -157,7 +187,7 @@ public class DataInitializer {
                     "surname_" + num,
                     LocalDate.now().minusYears(20),
                     roleDoctor,
-                    department
+                    departmentService.persist(new Department("Therapy", medicalOrganization))
             ));
         }
 

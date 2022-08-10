@@ -14,4 +14,5 @@ public interface MedicalOrganizationMapper {
     MedicalOrganizationDto toDto(MedicalOrganization medicalOrganization);
 
     MedicalOrganization toEntity(MedicalOrganizationDto medicalOrganizationDto);
+
 }
