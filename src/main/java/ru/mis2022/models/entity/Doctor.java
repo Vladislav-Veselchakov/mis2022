@@ -48,7 +48,7 @@ public class Doctor extends User {
     @JoinColumn(name = "personal_history_id", referencedColumnName = "id")
     private PersonalHistory personalHistory;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Talon> talons;
 
     public Doctor(String email, String password, String firstName, String lastName, @Nullable String surname,

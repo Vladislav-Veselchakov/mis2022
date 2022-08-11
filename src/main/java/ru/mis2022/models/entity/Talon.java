@@ -34,6 +34,7 @@ public class Talon {
     private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
