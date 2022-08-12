@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
+
 
 @Component
 public class TalonConverter {
 
-    public List<TalonDto> toTalonDto(Set<Talon> talons, Long doctorId) {
+    public List<TalonDto> toTalonDtoByDoctorId(List<Talon> talons, Long doctorId) {
         List<TalonDto> setDto = new ArrayList<>();
         for (Talon talon : talons) {
             setDto.add(TalonDto.builder()
@@ -24,6 +24,8 @@ public class TalonConverter {
                     .build());
         }
         Collections.sort(setDto, (Comparator.comparingLong(TalonDto::getId)));
+
         return setDto;
     }
+
 }

@@ -5,16 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
-import ru.mis2022.models.entity.Talon;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.entity.DoctorService;
 
 import java.util.List;
-import java.util.Set;
 
-import java.util.List;
-
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +46,4 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.existById(id);
     }
 
-    @Override
-    public Doctor merge(Set<Talon> talons, Long doctorId) {
-        return null;
-    }
 }

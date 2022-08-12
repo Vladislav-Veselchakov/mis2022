@@ -5,16 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
-import ru.mis2022.models.entity.Talon;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import ru.mis2022.models.entity.Talon;
-
-import java.util.Set;
 
 import java.util.List;
+
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
@@ -57,4 +50,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             SELECT d FROM Doctor d WHERE d.id = :id
             """)
     Doctor existById(Long id);
+
 }

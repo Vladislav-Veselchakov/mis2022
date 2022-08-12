@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,7 +50,7 @@ public class Doctor extends User {
     private PersonalHistory personalHistory;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private Set<Talon> talons;
+    private List<Talon> talons;
 
     public Doctor(String email, String password, String firstName, String lastName, @Nullable String surname,
                   LocalDate birthday, Role role, Department department) {

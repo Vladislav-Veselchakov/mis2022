@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
+import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.util.ContextIT;
@@ -32,6 +34,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     @Autowired DoctorService doctorService;
     @Autowired RoleService roleService;
     @Autowired DepartmentService departmentService;
+    @Autowired PatientService patientService;
 
     Role initRole(String name) {
         return roleService.persist(Role.builder()
@@ -57,6 +60,20 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 department
         ));
     }
+    Patient initPatient(Role role) {
+        return patientService.persist(new Patient(
+                "patient1@email.com",
+                String.valueOf("1"),
+                "f_name",
+                "l_name",
+                "surname",
+                LocalDate.now().minusYears(20),
+                role,
+                "passport",
+                "polis",
+                "snils",
+                "address"));
+    }
 
     private String formatDate(LocalDate date, int hour) {
         LocalDateTime time = LocalDateTime.of(date, LocalTime.of(8, 0).plusHours(hour));
@@ -67,8 +84,10 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     public void addTalonTest() throws Exception {
 
         Role role = initRole("DOCTOR");
+        Role role1 = initRole("PATIENT");
         Department department = initDepartment("Therapy");
         Doctor doctor1 = initDoctor(role, department, null, "doctor@email.com");
+        Patient patient = initPatient(role1);
 
         LocalDate date = LocalDate.now();
 
@@ -101,8 +120,8 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
 
                 .andExpect(jsonPath("$.data[55].id", Matchers.notNullValue()))
                 .andExpect(jsonPath("$.data[55].time", Is.is(foramttedString2)))
-                .andExpect(jsonPath("$.data[55].doctorId", Is.is(doctor1.getId().intValue())))
-                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+                .andExpect(jsonPath("$.data[55].doctorId", Is.is(doctor1.getId().intValue())));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
 
         mockMvc.perform(post("/api/doctor/talon/add")
