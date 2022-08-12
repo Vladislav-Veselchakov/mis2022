@@ -14,11 +14,13 @@ public class DiplomaServiceImpl implements DiplomaService {
     private final DiplomaRepository diplomaRepository;
 
     @Override
+    //todo заменить на save()
     public Diploma persist(Diploma diploma) {
         return diplomaRepository.save(diploma);
     }
 
     @Override
+    //todo удалить
     public Diploma merge(Diploma diploma) {
         return diplomaRepository.save(diploma);
     }

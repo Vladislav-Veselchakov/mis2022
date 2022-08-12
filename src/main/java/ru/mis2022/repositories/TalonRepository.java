@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 public interface TalonRepository extends JpaRepository<Talon, Long> {
 
+    //todo неправильное имя метода - убрать _
     List<Talon> findAllByDoctor_Id(Long id);
 
     List<Talon> findAllByPatientId(Long id);
@@ -22,6 +23,7 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
     long findCountTalonsByParameters(long doctorId, LocalDateTime startTime, LocalDateTime endTime);
 
     @Query("SELECT t FROM Talon t WHERE t.id = :id")
+        //todo неправильное имя метода
     Talon isExistById(Long id);
 
 }

@@ -26,12 +26,14 @@ public class AdministratorServiceImpl implements AdministratorService {
     }
 
     @Override
+    //todo метод закрыть транзакцией
     public Administrator persist(Administrator administrator) {
         administrator.setPassword(encoder.encode(administrator.getPassword()));
         return administratorRepository.save(administrator);
     }
 
     @Override
+    //todo метод закрыть транзакцией
     public Administrator merge(Administrator administrator) {
         administrator.setPassword(encoder.encode(administrator.getPassword()));
         return administratorRepository.save(administrator);

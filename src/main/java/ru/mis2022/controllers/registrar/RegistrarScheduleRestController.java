@@ -35,6 +35,7 @@ import java.util.List;
 
 @Validated
 @RestController
+//todo добавить в url '/schedule'
 @RequestMapping("/api/registrar")
 @PreAuthorize("hasRole('REGISTRAR')")
 @RequiredArgsConstructor
@@ -57,6 +58,7 @@ public class RegistrarScheduleRestController {
     @GetMapping("/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganizations() {
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
+        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(medicalOrganizations.size()==0,
                         414, "Список медицинских организаций пуст!");
@@ -70,12 +72,12 @@ public class RegistrarScheduleRestController {
             @ApiResponse(code = 415, message = "У медицинской организации нет департаментов!")
     })
     @PostMapping("/departments/{id}")
-    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(
-            @Valid @PathVariable Long id) {
+    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@Valid @PathVariable Long id) {
         ApiValidationUtils
                 .expectedNotNull(medicalOrganizationService.existById(id),
                         414, "Медицинской организации с таким id нет!");
         List<Department> departments = departmentService.findAllByMedicalOrganization_Id(id);
+        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(departments.size()==0,
                         415, "У медицинской организации нет департаментов!");
@@ -94,6 +96,7 @@ public class RegistrarScheduleRestController {
                 .expectedNotNull(departmentService.existById(id),
                         414, "Департамента с таким id нет!");
         List<Doctor> doctors = doctorService.findAllByDepartment_Id(id);
+        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(doctors.size()==0,
                         415, "В департаменте нет докторов!");
@@ -112,6 +115,7 @@ public class RegistrarScheduleRestController {
                 .expectedNotNull(doctorService.existById(id),
                         414, "Доктора с таким id нет!");
         List<Talon> talons = talonService.findAllByDoctor_Id(id);
+        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(talons.size()==0,
                         415, "У доктора нет талонов!");

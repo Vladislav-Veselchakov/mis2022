@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+//todo вырезать
 public class SignupRequest {
 
     private String email;

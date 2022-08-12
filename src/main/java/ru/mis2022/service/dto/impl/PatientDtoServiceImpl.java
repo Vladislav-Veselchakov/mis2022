@@ -12,7 +12,8 @@ public class PatientDtoServiceImpl implements PatientDtoService {
 
     private final PatientRepository patientRepository;
 
-    @Override public CurrentPatientDto getCurrentPatientDtoByEmail(String email) {
+    @Override
+    public CurrentPatientDto getCurrentPatientDtoByEmail(String email) {
         return patientRepository.getCurrentPatientDtoByEmail(email);
     }
 }

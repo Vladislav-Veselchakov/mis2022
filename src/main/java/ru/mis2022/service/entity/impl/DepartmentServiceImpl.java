@@ -15,11 +15,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
 
     @Override
+    //todo заменить на save()
     public Department persist(Department department) {
         return departmentRepository.save(department);
     }
 
     @Override
+    //todo из имен методов вырезать _
     public List<Department> findAllByMedicalOrganization_Id(Long id) {
         return departmentRepository.findAllByMedicalOrganization_Id(id);
     }

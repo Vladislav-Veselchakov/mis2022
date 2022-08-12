@@ -44,12 +44,13 @@ public class DoctorTalonsRestController {
     public Response<List<TalonDto>> addTalons() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Doctor doctor = doctorService.findByEmail(currentUser.getEmail());
+        //todo здесь всегда будет null т.к. по \тому мейлу будет только доктор. это лишнее
         Patient patient = patientService.findByEmail(currentUser.getEmail());
 
         ApiValidationUtils
                 .expectedFalse(talonService.findTalonsCountByIdAndDoctor(numberOfDays, doctor) >= 1, 401,
                         "У доктора есть талоны на данные дни");
-
+        //todo метод persistTalonsForDoctorAndPatient неверный - не надо передавать пациента. по логике метода он всегда должен быть null
         List<Talon> talons = talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
 
         return Response.ok(talonConverter.toTalonDtoByDoctorId(talons, doctor.getId()));

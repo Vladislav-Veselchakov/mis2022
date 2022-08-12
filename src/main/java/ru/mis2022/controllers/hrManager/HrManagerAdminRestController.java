@@ -35,11 +35,8 @@ import static ru.mis2022.models.entity.Role.RolesEnum.ADMIN;
 public class HrManagerAdminRestController {
 
     private final AdministratorService administratorService;
-
     private final RoleService roleService;
-
     private final AdministratorMapper administratorMapper;
-
     private final UserService userService;
 
     @ApiOperation("create admin by HrManager")

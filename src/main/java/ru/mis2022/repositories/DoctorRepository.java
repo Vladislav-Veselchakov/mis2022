@@ -40,15 +40,19 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
         WHERE doc.email = :email
         AND doc.department = :department
         """)
+        //todo имя метода неправильное - отобразить получение коллекции
     List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department);
 
+    //todo надо искать по ид департамента и необходимо писать запрос с джойнами
     List<Doctor> findByDepartment (Department department);
 
+    //todo дубль удалить
     List<Doctor> findAllByDepartment_Id(Long id);
 
     @Query("""
             SELECT d FROM Doctor d WHERE d.id = :id
             """)
+    //todo неправильное имя метода
     Doctor existById(Long id);
 
 }

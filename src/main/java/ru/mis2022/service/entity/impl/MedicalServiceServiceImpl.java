@@ -20,11 +20,13 @@ public class MedicalServiceServiceImpl implements MedicalServiceService {
     private final MedicalServiceRepository medicalServiceRepository;
 
     @Override
+    //todo заменить на save()
     public MedicalService persist(MedicalService medicalService) {
         return medicalServiceRepository.save(medicalService);
     }
 
     @Override
+    //todo удалить
     public MedicalService merge(MedicalService medicalService) {
         return medicalServiceRepository.save(medicalService);
     }

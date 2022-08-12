@@ -14,11 +14,13 @@ public class VacationServiceImpl implements VacationService {
     private final VacationRepository vacationRepository;
 
     @Override
+    //todo заменить на save()
     public Vacation persist(Vacation vacation) {
         return vacationRepository.save(vacation);
     }
 
     @Override
+    //todo удалить
     public Vacation merge(Vacation vacation) {
         return vacationRepository.save(vacation);
     }

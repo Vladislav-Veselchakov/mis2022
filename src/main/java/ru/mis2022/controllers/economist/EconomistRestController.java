@@ -20,6 +20,7 @@ public class EconomistRestController {
 
     private final EconomistDtoService economistDtoService;
 
+    //todo добавить описание сваггера
     @GetMapping("/mainPage/current")
     public Response<CurrentEconomistDto> getCurrentEconomistDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

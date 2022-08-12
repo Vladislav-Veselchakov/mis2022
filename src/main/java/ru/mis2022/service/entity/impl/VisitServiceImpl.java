@@ -14,11 +14,13 @@ public class VisitServiceImpl implements VisitService {
     private final VisitRepository visitRepository;
 
     @Override
+    //todo заменить на save()
     public Visit persist(Visit visit) {
         return visitRepository.save(visit);
     }
 
     @Override
+    //todo удалить
     public Visit merge(Visit visit) {
         return visitRepository.save(visit);
     }

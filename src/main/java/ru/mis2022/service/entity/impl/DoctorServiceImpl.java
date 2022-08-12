@@ -16,7 +16,6 @@ import java.util.List;
 public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
-
     private final PasswordEncoder encoder;
 
     @Override
@@ -25,6 +24,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    //todo метод закрыть транзакцией
     public Doctor persist(Doctor doctor) {
         doctor.setPassword(encoder.encode(doctor.getPassword()));
         return doctorRepository.save(doctor);
@@ -37,6 +37,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     @Override
+    //todo вырезать _ из имен
     public List<Doctor> findAllByDepartment_Id(Long id) {
         return doctorRepository.findAllByDepartment_Id(id);
     }

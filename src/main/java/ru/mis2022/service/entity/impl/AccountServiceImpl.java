@@ -11,6 +11,7 @@ import ru.mis2022.service.entity.AccountService;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+
     @Override
     public Account persist(Account account) {
         return accountRepository.save(account);

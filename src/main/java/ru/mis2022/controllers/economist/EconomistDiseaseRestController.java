@@ -28,12 +28,14 @@ public class EconomistDiseaseRestController {
     private final DiseaseService diseaseService;
     private final DiseaseConverter converter;
 
-
+    //todo добавить описание сваггера
     @GetMapping("/getAll")
     public Response<List<DiseaseDto>> getAllDisease() {
         return Response.ok(diseaseService.findAllDiseaseDto());
     }
 
+    //todo добавить описание сваггера
+    //todo добавить валидацию на уровне дто onCreate
     @PostMapping("/create")
     public Response<DiseaseDto> persistDisease(@RequestBody DiseaseDto diseaseDto) {
         ApiValidationUtils
@@ -46,6 +48,7 @@ public class EconomistDiseaseRestController {
                         .build())));
     }
 
+    //todo добавить описание сваггера
     @DeleteMapping("/delete/{diseaseId}")
     public Response<Void> deleteDiseaseById(@PathVariable Long diseaseId) {
         ApiValidationUtils

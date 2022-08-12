@@ -16,6 +16,7 @@ public class MedicalOrganizationServiceImpl implements MedicalOrganizationServic
     private final MedicalOrganizationRepository medicalOrganizationRepository;
 
     @Override
+    //todo заменить на save()
     public MedicalOrganization persist(MedicalOrganization medicalOrganization) {
         return medicalOrganizationRepository.save(medicalOrganization);
     }

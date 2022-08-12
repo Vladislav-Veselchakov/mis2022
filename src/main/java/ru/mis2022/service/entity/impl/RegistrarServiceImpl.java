@@ -20,6 +20,7 @@ public class RegistrarServiceImpl implements RegistrarService {
     }
 
     @Override
+    //todo закрыть транзакцией
     public Registrar persist(Registrar registrar) {
         registrar.setPassword(encoder.encode(registrar.getPassword()));
         return registrarRepository.save(registrar);

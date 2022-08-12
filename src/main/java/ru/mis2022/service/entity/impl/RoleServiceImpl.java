@@ -13,6 +13,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
+    //todo заменить на save()
     public Role persist(Role role) {
         return roleRepository.save(role);
     }

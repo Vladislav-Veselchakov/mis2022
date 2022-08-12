@@ -19,6 +19,7 @@ public class RegistrarRestController {
 
     private final RegistrarDtoService registrarDtoService;
 
+    //todo добавить описание сваггера
     @GetMapping("/mainPage/current")
     public Response<CurrentRegistrarDto> getCurrentRegistrarDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -35,6 +35,7 @@ public class PatientTalonsRestController {
                .expectedNotNull(patientService.isExistById(patientId),
                        402, "Пациента с таким id нет!");
        List<Talon> talons = talonService.findAllByPatientId(patientId);
+       //todo не надо возвращать null. верни пустую коллекцию
        if (talons.size() == 0) {
            return null;
        }
@@ -51,7 +52,9 @@ public class PatientTalonsRestController {
         ApiValidationUtils
                 .expectedNotNull(patientService.isExistById(patientId),
                         403, "Пациента с таким id нет!");
-
+        //todo имя метода isExistById выбрано не правитльно. оно должно возвращать булеан. тут можно воспользоватьсе
+        //  штатным методом репозитория getById() или написать метод с именем getTalonById()
+        //  и переменная t мне не нравится
         Talon t = talonService.isExistById(talonId);
         t.setPatient(null);
         talonService.merge(t);

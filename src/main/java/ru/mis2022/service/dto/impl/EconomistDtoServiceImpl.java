@@ -13,7 +13,8 @@ public class EconomistDtoServiceImpl implements EconomistDtoService {
 
     private final EconomistRepository economistRepository;
 
-    @Override public CurrentEconomistDto getCurrentEconomistDtoByEmail(String email) {
+    @Override
+    public CurrentEconomistDto getCurrentEconomistDtoByEmail(String email) {
         return economistRepository.getCurrentEconomistDtoByEmail(email);
     }
 }

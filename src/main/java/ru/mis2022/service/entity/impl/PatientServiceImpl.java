@@ -16,13 +16,16 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final PasswordEncoder encoder;
+    //todo удалить
     private final TalonService talonService;
 
-    @Override public Patient findByEmail(String email) {
+    @Override
+    public Patient findByEmail(String email) {
         return patientRepository.findByEmail(email);
     }
 
     @Override
+    //todo закрыть транзакцией
     public Patient persist(Patient patient) {
         patient.setPassword(encoder.encode(patient.getPassword()));
         return patientRepository.save(patient);

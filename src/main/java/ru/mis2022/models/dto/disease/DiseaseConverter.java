@@ -3,6 +3,7 @@ package ru.mis2022.models.dto.disease;
 import org.springframework.stereotype.Component;
 import ru.mis2022.models.entity.Disease;
 
+//todo положить в директорию converter
 @Component
 public class DiseaseConverter {
 

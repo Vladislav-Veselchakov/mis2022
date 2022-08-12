@@ -23,6 +23,7 @@ public class HrManagerRestController {
 
     @Autowired
     private final HrManagerDtoService hrManagerDtoService;
+
     @ApiOperation("get a current HrManager")
     @GetMapping("/mainPage/current")
     public Response<CurrentHrManagerDto> getCurrentHrManagerDto() {

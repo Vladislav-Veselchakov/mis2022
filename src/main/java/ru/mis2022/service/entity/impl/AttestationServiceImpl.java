@@ -13,11 +13,13 @@ public class AttestationServiceImpl implements AttestationService {
 
     private final AttestationRepository attestationRepository;
 
+    //todo заменить на save()
     @Override
     public Attestation persist(Attestation attestation) {
         return attestationRepository.save(attestation);
     }
 
+    //todo удалить
     @Override
     public Attestation merge(Attestation attestation) {
         return attestationRepository.save(attestation);

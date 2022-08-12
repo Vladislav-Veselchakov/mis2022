@@ -44,6 +44,7 @@ public class PatientSheduleRestController {
     @GetMapping(value = "/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganization() {
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
+        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(medicalOrganizations.size() == 0,
                         414,
@@ -64,6 +65,7 @@ public class PatientSheduleRestController {
                 .expectedNotNull(medicalOrganizationService.existById(medOrgId),
                         414, "Медицинской организации с таким id нет");
         List<Department> departments = departmentService.findAllByMedicalOrganization_Id(medOrgId);
+        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(departments.size()==0,
                         415, "У медицинской организации нет департаментов!");

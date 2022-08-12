@@ -10,11 +10,13 @@ import ru.mis2022.service.entity.EconomistService;
 @Service
 @RequiredArgsConstructor
 public class EconomistServiceImpl implements EconomistService {
+    //todo что тут за шляпа??!! что с отступами?
     private final EconomistRepository economistRepository;private final PasswordEncoder encoder;
     @Override
     public Economist findByEmail(String email) {return economistRepository.findByEmail(email);
     }
     @Override
+    //todo закрыть транзакцией
     public Economist persist(Economist economist) {
         economist.setPassword(encoder.encode(economist.getPassword()));
         return economistRepository.save(economist);

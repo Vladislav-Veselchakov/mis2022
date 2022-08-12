@@ -20,6 +20,7 @@ public class HrManagerServiceImpl implements HrManagerService {
     }
 
     @Override
+    //todo метод зпкрыть в транзакцию
     public HrManager persist(HrManager hrManager) {
         hrManager.setPassword(passwordEncoder.encode(hrManager.getPassword()));
         return hrManagerRepository.save(hrManager);

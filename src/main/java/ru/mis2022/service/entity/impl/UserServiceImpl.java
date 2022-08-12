@@ -25,9 +25,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    //todo не должно быть написано в строку
     public boolean existsByEmail(String email) { return userRepository.existsByEmail(email); }
 
     @Override
+    //todo не должно быть написано в строку
     public boolean existsById(Long id) { return userRepository.existsById(id); }
 
     @Override

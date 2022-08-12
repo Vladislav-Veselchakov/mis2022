@@ -24,11 +24,13 @@ public class TalonServiceImpl implements TalonService {
     private final TalonRepository talonRepository;
 
     @Override
+    //todo заменить на save()
     public Talon persist(Talon talon) {
         return talonRepository.save(talon);
     }
 
     @Override
+    //todo удалить
     public Talon merge(Talon talon) {
         return talonRepository.save(talon);
     }
@@ -57,6 +59,7 @@ public class TalonServiceImpl implements TalonService {
     }
 
     @Override
+    //todo вырезать из имен _
     public List<Talon> findAllByDoctor_Id(Long id) {
         return talonRepository.findAllByDoctor_Id(id);
     }
