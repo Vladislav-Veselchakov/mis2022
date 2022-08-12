@@ -8,12 +8,14 @@ import org.springframework.http.MediaType;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.MedicalOrganization;
+import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.Registrar;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
+import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RegistrarService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.TalonService;
@@ -45,6 +47,8 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
 
     @Autowired
     TalonService talonService;
+    @Autowired
+    PatientService patientService;
 
     Role initRole(String name) {
         return roleService.persist(Role.builder()
@@ -89,6 +93,21 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
                 .name(name)
                 .address(address)
                 .build());
+    }
+
+    Patient initPatient(Role role) {
+        return patientService.persist(new Patient(
+                "patient1@email.com",
+                String.valueOf("1"),
+                "f_name",
+                "l_name",
+                "surname",
+                LocalDate.now().minusYears(20),
+                role,
+                "passport",
+                "polis",
+                "snils",
+                "address"));
     }
 
     @Test
@@ -226,7 +245,9 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
                         "У доктора нет талонов!")));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-        talonService.persistTalonsForDoctor(doctor, 14, 4);
+        Role rolePatient = initRole("PATIENT");
+        Patient patient = initPatient(rolePatient);
+        talonService.persistTalonsForDoctorAndPatient(doctor, patient,14, 4);
 
         //Вывод талонов доктора
         mockMvc.perform(post("/api/registrar/talons/{id}", doctor.getId())

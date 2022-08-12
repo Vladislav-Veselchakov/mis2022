@@ -26,4 +26,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     CurrentPatientDto getCurrentPatientDtoByEmail(String email);
 
     Patient findByEmail(String email);
+
+    @Query("SELECT p FROM Patient p WHERE p.id = :id")
+    Patient isExistById(Long id);
+
 }

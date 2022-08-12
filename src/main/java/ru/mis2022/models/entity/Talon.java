@@ -1,7 +1,5 @@
 package ru.mis2022.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,15 +32,16 @@ public class Talon {
     private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    public Talon(LocalDateTime time, Doctor doctor) {
+    public Talon(LocalDateTime time, Doctor doctor, Patient patient) {
         this.time = time;
         this.doctor = doctor;
+        this.patient = patient;
     }
 }

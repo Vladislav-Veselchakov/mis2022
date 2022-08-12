@@ -1,23 +1,18 @@
 package ru.mis2022.service.entity.impl;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
-import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.repositories.TalonRepository;
-import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.TalonService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -40,14 +35,14 @@ public class TalonServiceImpl implements TalonService {
 
     @Override
     @Transactional
-    public Set<Talon> persistTalonsForDoctor(Doctor doctor, int numberOfDays, int numbersOfTalons) {
+    public List<Talon> persistTalonsForDoctorAndPatient(Doctor doctor, Patient patient, int numberOfDays, int numbersOfTalons) {
 
-        Set<Talon> talons = new HashSet<>();
+        List<Talon> talons = new ArrayList<>();
         LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));
 
-        for (int day = 0; day < numberOfDays; day++){
+        for (int day = 0; day < numberOfDays; day++) {
             for (int hour = 0; hour < numbersOfTalons; hour++) {
-                talons.add(talonRepository.save(new Talon(time.plusDays(day).plusHours(hour), doctor)));
+                talons.add(talonRepository.save(new Talon(time.plusDays(day).plusHours(hour), doctor, patient)));
             }
         }
         return talons;
@@ -64,5 +59,15 @@ public class TalonServiceImpl implements TalonService {
     @Override
     public List<Talon> findAllByDoctor_Id(Long id) {
         return talonRepository.findAllByDoctor_Id(id);
+    }
+
+    @Override
+    public List<Talon> findAllByPatientId(Long id) {
+        return talonRepository.findAllByPatientId(id);
+    }
+
+    @Override
+    public Talon isExistById(Long id) {
+        return talonRepository.isExistById(id);
     }
 }

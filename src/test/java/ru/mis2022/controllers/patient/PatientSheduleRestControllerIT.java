@@ -101,8 +101,10 @@ public class PatientSheduleRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.success", Is.is(true)))
                 .andExpect(jsonPath("$.data[0].name", Is.is("City Hospital")))
                 .andExpect(jsonPath("$.data[0].address", Is.is("Moscow, Pravda street, 30")))
+
                 .andExpect(jsonPath("$.data.[1].name", Is.is("Hospital №1")))
                 .andExpect(jsonPath("$.data.[1].address", Is.is("St. Peterburg, Lenina avenue, 3")))
+
                 .andExpect(jsonPath("$.data[2].name", Is.is("City Clinic Hospital")))
                 .andExpect(jsonPath("$.data[2].address", Is.is("Saratov, Grin street, 25")));
     }

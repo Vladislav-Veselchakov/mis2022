@@ -25,4 +25,6 @@ public class TalonDto {
 
     private Long doctorId;
 
+    private Long patientId;
+
 }

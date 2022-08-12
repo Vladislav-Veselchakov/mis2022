@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.Talon.TalonDto;
+import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.mapper.TalonConverter;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.entity.User;
+import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.entity.DoctorService;
+import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
@@ -33,22 +36,22 @@ public class DoctorTalonsRestController {
     private Integer numbersOfTalons;
 
     private final DoctorService doctorService;
+    private final PatientService patientService;
     private final TalonService talonService;
     private final TalonConverter talonConverter;
-
-
 
     @PostMapping("/add")
     public Response<List<TalonDto>> addTalons() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Doctor doctor = doctorService.findByEmail(currentUser.getEmail());
+        Patient patient = patientService.findByEmail(currentUser.getEmail());
 
         ApiValidationUtils
                 .expectedFalse(talonService.findTalonsCountByIdAndDoctor(numberOfDays, doctor) >= 1, 401,
                         "У доктора есть талоны на данные дни");
 
-        Set<Talon> talons = talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
+        List<Talon> talons = talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
 
-        return Response.ok(talonConverter.toTalonDto(talons, doctor.getId()));
+        return Response.ok(talonConverter.toTalonDtoByDoctorId(talons, doctor.getId()));
     }
 }

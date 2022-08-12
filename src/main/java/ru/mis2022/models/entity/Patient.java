@@ -4,11 +4,18 @@ package ru.mis2022.models.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.lang.Nullable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 /**
     Patient - Пациент.
@@ -32,10 +39,10 @@ public class Patient extends User {
 
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<Talon> talons;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    private List<Talon> talons;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     private Set<Appeal> appeals;
 
     public Patient(String email, String password, String firstName, String lastName, @Nullable String surname,
@@ -46,4 +53,5 @@ public class Patient extends User {
         this.snils = snils;
         this.address = address;
     }
+
 }

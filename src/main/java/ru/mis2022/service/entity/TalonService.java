@@ -1,11 +1,11 @@
 package ru.mis2022.service.entity;
 
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
 
 import java.util.List;
 
-import java.util.Set;
 
 public interface TalonService {
 
@@ -16,6 +16,9 @@ public interface TalonService {
 
     long findTalonsCountByIdAndDoctor(int countDays, Doctor doctor);
 
-    Set<Talon> persistTalonsForDoctor(Doctor doctor, int numberOfDays, int numbersOfTalons);
+    List<Talon> persistTalonsForDoctorAndPatient(Doctor doctor, Patient patient, int numberOfDays, int numbersOfTalons);
 
+    List<Talon> findAllByPatientId(Long id);
+
+    Talon isExistById(Long id);
 }

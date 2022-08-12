@@ -192,7 +192,9 @@ public class DataInitializer {
         }
 
         Doctor doctor = doctorService.findByEmail("doctor1@email.com");
-        talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
+        Patient patient = patientService.findByEmail("patient1@email.com");
+        talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
+
 
         for (int num = 1; num < 2; num++) {
             registrarService.persist(new Registrar(

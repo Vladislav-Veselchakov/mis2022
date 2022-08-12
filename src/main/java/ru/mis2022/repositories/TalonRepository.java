@@ -12,11 +12,16 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
 
     List<Talon> findAllByDoctor_Id(Long id);
 
+    List<Talon> findAllByPatientId(Long id);
+
     @Query("""
                 select count(t) from Talon t
                 where t.doctor.id = :doctorId
                     and t.time between :startTime and :endTime
             """)
     long findCountTalonsByParameters(long doctorId, LocalDateTime startTime, LocalDateTime endTime);
+
+    @Query("SELECT t FROM Talon t WHERE t.id = :id")
+    Talon isExistById(Long id);
 
 }
