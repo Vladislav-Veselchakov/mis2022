@@ -44,6 +44,10 @@ Integration testing
 
 https://www.youtube.com/watch?v=Lnc3o8cCwZY
 
+Code Coverage (CC) - https://www.youtube.com/watch?v=QDFI19lj4OM
+Это инструмент, позволяющий выяснить, какой процент кода покрыт тестами.
+Чтобы запустить программу в этом режиме нужно нажать на значок щита рядом с кнопкой Run.
+Coverage высчитывается для текущей выбранной конфигурации запуска.
 
 MapStruct
 
@@ -117,7 +121,7 @@ https://www.youtube.com/watch?v=Wmrdfzzpr6A
 https://www.youtube.com/watch?v=lpPEAHLGoJg
 
 
-dto
+dto 
 https://www.baeldung.com/jpa-queries-custom-result-with-aggregation-functions
 
 
