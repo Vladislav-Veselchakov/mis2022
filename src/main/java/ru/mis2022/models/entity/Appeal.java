@@ -48,6 +48,7 @@ public class Appeal {
     private Disease disease;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
     private Set<Visit> visits;
 
     @ManyToOne(fetch = FetchType.LAZY)
