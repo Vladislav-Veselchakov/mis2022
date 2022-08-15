@@ -6,14 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 import java.util.Set;
 
@@ -45,7 +38,7 @@ public class MedicalService {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "medicalService", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PriceOfMedicalService> prices;
 
     @ManyToOne(fetch = FetchType.LAZY)
