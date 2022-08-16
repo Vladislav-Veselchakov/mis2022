@@ -121,8 +121,19 @@ https://www.youtube.com/watch?v=Wmrdfzzpr6A
 https://www.youtube.com/watch?v=lpPEAHLGoJg
 
 
-dto 
-https://www.baeldung.com/jpa-queries-custom-result-with-aggregation-functions
+
+**DTO** (_Data Transfer Object_) https://habr.com/ru/post/513072/ 
+шаблон проектирования, используемый для передачи данных между подсистемами приложения. 
+DTO объект является упрощенным представлением Entity. DTO - это не сущность! При запросе сущности из бд вместо Entity отправляем на фронт её DTO. 
+На каждую сущность создается свой бин-конвертер в DTO, чтобы его можно было вызывать из любой точки программы. Конвертацию можно делать через mapstract.
+
+DTO имеет ряд преимуществ перед Entity:
+1) Инкапсулирует поля Entity, которые мы бы не хотели показывать при передаче DTO куда-либо.
+2) Entity внутри себя может хранить ссылки на объекты. Если будем передавать ее на фронт, то эти объекты будут подтягиваться из бд. 
+   Если такие объекты еще и ссылаются друг на друга, мы можем получить StackOverFlow.
+3) DTO не должен содержать какую-либо бизнес-логику
+4) Можно сгруппировать несколько сущностей в одну DTO, если фронт это устраивает.
+
 
 
 Spring security с авторизацией токеном jsonwebtoken
@@ -183,6 +194,23 @@ LocalDateTime
 
 https://java-online.ru/hibernate-entities.xhtml
 https://coderlessons.com/tutorials/java-tekhnologii/vyuchit-jpa/jpa-otnosheniia-sushchnostei
+
+
+Lombok - https://projectlombok.org/features/
+Существенно сокращает код благодаря собственным аннотациям. 
+Позволяет не писать геттеры, сеттеры, конструкторы, Equals, toString и т.д. 
+В аннотированном классе все необходимые методы будут сгенерированы во время компиляции.
+
+@Getter/@Setter сгенерирует геттеры и сеттеры для всех полей класса.
+@NoArgsConstructor - создаст конструктор без параметров.
+@RequiredArgsConstructor – создаст конструктор только для final полей.
+@AllArgsConstructor – создаст конструктор для всех полей.
+@builder создаст билдер вместо конструктора (согласно шаблону builder)
+
+MockMvc - позволяет проводить интеграционное тестирование API имитируя запросы к приложению. 
+Избавляет от написания отдельного RestTemplate-приложения
+https://www.baeldung.com/integration-testing-in-spring
+
 
 
 
