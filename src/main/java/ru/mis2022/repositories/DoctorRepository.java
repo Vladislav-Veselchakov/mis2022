@@ -47,12 +47,11 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     List<Doctor> findByDepartment (Department department);
 
     //todo дубль удалить
-    List<Doctor> findAllByDepartment_Id(Long id);
+    List<Doctor> findAllByDepartmentId(Long id);
 
     @Query("""
             SELECT d FROM Doctor d WHERE d.id = :id
             """)
     //todo неправильное имя метода
     Doctor existById(Long id);
-
 }

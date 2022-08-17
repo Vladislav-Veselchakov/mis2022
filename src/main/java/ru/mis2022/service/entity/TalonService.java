@@ -12,7 +12,7 @@ public interface TalonService {
     Talon persist(Talon talon);
     Talon merge(Talon talon);
 
-    List<Talon> findAllByDoctor_Id(Long id);
+    List<Talon> findAllByDoctorId(Long id);
 
     long findTalonsCountByIdAndDoctor(int countDays, Doctor doctor);
 
@@ -21,4 +21,7 @@ public interface TalonService {
     List<Talon> findAllByPatientId(Long id);
 
     Talon isExistById(Long id);
+
+    List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId);
+
 }

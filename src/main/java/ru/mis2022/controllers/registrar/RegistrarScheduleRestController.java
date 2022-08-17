@@ -93,9 +93,9 @@ public class RegistrarScheduleRestController {
     @PostMapping("/doctors/{id}")
     public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                .expectedNotNull(departmentService.existById(id),
+                .expectedNotNull(departmentService.findDepartmentById(id),
                         414, "Департамента с таким id нет!");
-        List<Doctor> doctors = doctorService.findAllByDepartment_Id(id);
+        List<Doctor> doctors = doctorService.findAllByDepartmentId(id);
         //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(doctors.size()==0,
@@ -114,7 +114,7 @@ public class RegistrarScheduleRestController {
         ApiValidationUtils
                 .expectedNotNull(doctorService.existById(id),
                         414, "Доктора с таким id нет!");
-        List<Talon> talons = talonService.findAllByDoctor_Id(id);
+        List<Talon> talons = talonService.findAllByDoctorId(id);
         //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
                 .expectedFalse(talons.size()==0,

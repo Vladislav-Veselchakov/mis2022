@@ -132,12 +132,6 @@ public class DataInitializer {
         departmentService.persist(new Department("Pediatrics", medicalOrganization));
         departmentService.persist(new Department("Psychiatry", medicalOrganization));
 
-        departmentService.persist(new Department("Therapy", medicalOrganization1));
-        departmentService.persist(new Department("Surgery", medicalOrganization1));
-        departmentService.persist(new Department("Dentistry", medicalOrganization1));
-        departmentService.persist(new Department("Pediatrics", medicalOrganization1));
-
-
         Department dep31 = new Department();
         dep31.setName("Therapy");
         dep31.setMedicalOrganization(medicalOrganization2);
@@ -179,7 +173,7 @@ public class DataInitializer {
             ));
         }
 
-        for (int num = 1; num < 3; num++) {
+        for (int num = 1; num < 8; num++) {
             doctorService.persist(new Doctor(
                     "doctor" + num + "@email.com",
                     String.valueOf(num),
@@ -188,13 +182,19 @@ public class DataInitializer {
                     "surname_" + num,
                     LocalDate.now().minusYears(20),
                     roleDoctor,
-                    departmentService.persist(new Department("Therapy", medicalOrganization))
+                    dep33
             ));
         }
 
         Doctor doctor = doctorService.findByEmail("doctor1@email.com");
+        Doctor doctor2 = doctorService.findByEmail("doctor2@email.com");
+        Doctor doctor3 = doctorService.findByEmail("doctor3@email.com");
+        Doctor doctor4 = doctorService.findByEmail("doctor4@email.com");
         Patient patient = patientService.findByEmail("patient1@email.com");
         talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctorAndPatient(doctor2, null, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctorAndPatient(doctor3, null, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctorAndPatient(doctor4, null, numberOfDays, numbersOfTalons);
 
 
         for (int num = 1; num < 2; num++) {
