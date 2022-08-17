@@ -230,3 +230,9 @@ FEATURE - новый функционал
 Можно передать персональные данные пациента и получить в ответ правильные данные из БД сервиса.
 
 В перспективе рядом с RestTemplate написать реализацию на gRPC
+
+Чтобы импорты не сворачивались в звездочку.
+Заходим в IDEA в File -> Setting -> Editor -> Code Style -> Java -> Import
+В строке Class count to user import with '*' в квадрате пишим 500
+В строке Names count to user static import with '*' в квадрате пишим 500
+Нажимаем Apply и ОК.

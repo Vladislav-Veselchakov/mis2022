@@ -60,8 +60,8 @@ public class TalonServiceImpl implements TalonService {
 
     @Override
     //todo вырезать из имен _
-    public List<Talon> findAllByDoctor_Id(Long id) {
-        return talonRepository.findAllByDoctor_Id(id);
+    public List<Talon> findAllByDoctorId(Long id) {
+        return talonRepository.findAllByDoctorId(id);
     }
 
     @Override
@@ -72,5 +72,12 @@ public class TalonServiceImpl implements TalonService {
     @Override
     public Talon isExistById(Long id) {
         return talonRepository.isExistById(id);
+    }
+
+    @Override
+    public List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId) {
+        LocalDateTime startTime = LocalDateTime.now();
+        LocalDateTime endTime = LocalDateTime.now().plusDays(countDays);
+        return talonRepository.findDoctorsWithTalonsSpecificTimeRange(startTime,endTime, departmentId);
     }
 }

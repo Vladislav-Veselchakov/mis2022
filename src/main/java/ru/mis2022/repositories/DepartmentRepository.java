@@ -14,5 +14,5 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             SELECT d FROM Department d WHERE d.id = :id
             """)
         //todo имя метода неправильное
-    Department existById(Long id);
+    Department findDepartmentById(Long id);
 }

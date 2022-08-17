@@ -14,7 +14,7 @@ public interface DoctorService {
 
     List<Doctor> findByDepartment(Department department);
 
-    List<Doctor> findAllByDepartment_Id(Long id);
+    List<Doctor> findAllByDepartmentId(Long id);
 
     Doctor existById(Long id);
 

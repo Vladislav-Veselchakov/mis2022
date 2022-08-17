@@ -14,7 +14,6 @@ import ru.mis2022.models.mapper.TalonConverter;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.entity.User;
-import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.PatientService;
@@ -22,7 +21,6 @@ import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
 import java.util.List;
-import java.util.Set;
 
 
 @RestController

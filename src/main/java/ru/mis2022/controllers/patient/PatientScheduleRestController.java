@@ -4,19 +4,25 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.DepartmentDto.DepartmentDto;
+import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.dto.medicalOrganization.MedicalOrganizationDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.mapper.DepartmentMapper;
+import ru.mis2022.models.mapper.DoctorMapper;
 import ru.mis2022.models.mapper.MedicalOrganizationMapper;
 import ru.mis2022.models.response.Response;
-import ru.mis2022.service.dto.PatientDtoService;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
+import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
 import javax.validation.Valid;
@@ -27,14 +33,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('PATIENT')")
-@RequestMapping(value ="/api/patient")
-public class PatientSheduleRestController {
+@RequestMapping(value = "/api/patient")
+public class PatientScheduleRestController {
 
-    private final PatientDtoService patientDtoService;
+    @Value("${mis.property.patientSchedule}")
+    private Integer numberOfDays;
+
     private final DepartmentService departmentService;
     private final MedicalOrganizationService medicalOrganizationService;
     private final MedicalOrganizationMapper medicalOrganizationMapper;
     private final DepartmentMapper departmentMapper;
+    private final DoctorMapper doctorMapper;
+    private final TalonService talonService;
+
 
     @ApiOperation("get all medical organizations")
     @ApiResponses(value = {
@@ -67,8 +78,17 @@ public class PatientSheduleRestController {
         List<Department> departments = departmentService.findAllByMedicalOrganization_Id(medOrgId);
         //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
         ApiValidationUtils
-                .expectedFalse(departments.size()==0,
+                .expectedFalse(departments.size() == 0,
                         415, "У медицинской организации нет департаментов!");
         return Response.ok(departmentMapper.toListDto(departments));
+    }
+
+    @GetMapping("/departments/{departmentId}/getAllDoctors")
+    public Response<List<DoctorDto>> getAllDoctorsByDepartmentsId(@PathVariable Long departmentId) {
+        ApiValidationUtils
+                .expectedTrue(departmentService.isExistById(departmentId),
+                        414, "Департамента с таким id нет!");
+        return Response.ok(doctorMapper.toListDto(
+                talonService.findDoctorsWithTalonsSpecificTimeRange(numberOfDays, departmentId)));
     }
 }

@@ -35,11 +35,10 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.findByDepartment(department);
     }
 
-
     @Override
     //todo вырезать _ из имен
-    public List<Doctor> findAllByDepartment_Id(Long id) {
-        return doctorRepository.findAllByDepartment_Id(id);
+    public List<Doctor> findAllByDepartmentId(Long id) {
+        return doctorRepository.findAllByDepartmentId(id);
     }
 
     @Override

@@ -27,8 +27,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department existById(Long id) {
-        return departmentRepository.existById(id);
+    public Department findDepartmentById(Long id) {
+        return departmentRepository.findDepartmentById(id);
+    }
+
+    @Override
+    public boolean isExistById(Long departmentId) {
+        return departmentRepository.existsById(departmentId);
     }
 
 }
