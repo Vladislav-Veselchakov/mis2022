@@ -1,9 +1,9 @@
 package ru.mis2022.service.entity;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.mis2022.models.entity.Administrator;
-import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
+
+import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
@@ -15,4 +15,7 @@ public interface UserService extends UserDetailsService {
 
     User findByEmailAndExceptCurrentId(String email, Long id);
 
+    List<User> findPersonalByFullName(String fullName, String roleName);
+
+    User persist(User user);
 }
