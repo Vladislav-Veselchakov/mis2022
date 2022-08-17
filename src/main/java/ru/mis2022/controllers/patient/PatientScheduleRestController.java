@@ -83,6 +83,11 @@ public class PatientScheduleRestController {
         return Response.ok(departmentMapper.toListDto(departments));
     }
 
+    @ApiOperation("get all doctors by department id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Список всех докторов с пустыми талонами"),
+            @ApiResponse(code = 414, message = "Департамента с таким id нет")
+    })
     @GetMapping("/departments/{departmentId}/getAllDoctors")
     public Response<List<DoctorDto>> getAllDoctorsByDepartmentsId(@PathVariable Long departmentId) {
         ApiValidationUtils
