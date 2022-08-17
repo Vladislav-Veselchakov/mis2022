@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.repositories.UserRepository;
 import ru.mis2022.service.entity.UserService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmailAndExceptCurrentId(String email, Long id) {
         return userRepository.findByEmailAndExceptCurrentId(email, id);
+    }
+
+    @Override
+    public List<User> findPersonalByFullName(String fullName, String roleName) {
+        return userRepository.findPersonalByFullName(fullName, roleName);
+    }
+
+    @Override
+    public User persist(User user) {
+        return userRepository.save(user);
     }
 
 }
