@@ -1,0 +1,1 @@
+DROP TABLE null_appeals
