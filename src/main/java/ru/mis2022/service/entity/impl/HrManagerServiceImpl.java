@@ -3,6 +3,7 @@ package ru.mis2022.service.entity.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mis2022.models.entity.HrManager;
 import ru.mis2022.repositories.HrManagerRepository;
 import ru.mis2022.service.entity.HrManagerService;
@@ -20,7 +21,7 @@ public class HrManagerServiceImpl implements HrManagerService {
     }
 
     @Override
-    //todo метод зпкрыть в транзакцию
+    @Transactional
     public HrManager persist(HrManager hrManager) {
         hrManager.setPassword(passwordEncoder.encode(hrManager.getPassword()));
         return hrManagerRepository.save(hrManager);

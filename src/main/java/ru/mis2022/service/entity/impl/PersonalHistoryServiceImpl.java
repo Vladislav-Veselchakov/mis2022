@@ -14,14 +14,7 @@ public class PersonalHistoryServiceImpl implements PersonalHistoryService {
     private final PersonalHistoryRepository personalHistoryRepository;
 
     @Override
-    //todo заменить на save()
-    public PersonalHistory persist(PersonalHistory personalHistory) {
-        return personalHistoryRepository.save(personalHistory);
-    }
-
-    @Override
-    //todo удалить
-    public PersonalHistory merge(PersonalHistory personalHistory) {
+    public PersonalHistory save(PersonalHistory personalHistory) {
         return personalHistoryRepository.save(personalHistory);
     }
 }

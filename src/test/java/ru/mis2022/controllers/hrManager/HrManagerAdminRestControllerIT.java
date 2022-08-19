@@ -37,7 +37,7 @@ public class HrManagerAdminRestControllerIT extends ContextIT {
     RoleService roleService;
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }

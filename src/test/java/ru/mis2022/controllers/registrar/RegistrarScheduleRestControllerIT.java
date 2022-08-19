@@ -51,7 +51,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
     PatientService patientService;
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }
@@ -69,7 +69,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
     }
 
     Department initDepartment(String name, MedicalOrganization medicalOrganization) {
-        return departmentService.persist(Department.builder()
+        return departmentService.save(Department.builder()
                 .name(name)
                 .medicalOrganization(medicalOrganization)
                 .build());
@@ -89,7 +89,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
     }
 
     MedicalOrganization initMedicalOrganizations(String name, String address) {
-        return medicalOrganizationService.persist(MedicalOrganization.builder()
+        return medicalOrganizationService.save(MedicalOrganization.builder()
                 .name(name)
                 .address(address)
                 .build());
@@ -118,23 +118,12 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
 
         accessToken = tokenUtil.obtainNewAccessToken(registrar.getEmail(), "1", mockMvc);
 
-        //Медицинские организации в базе отсутствуют
-        mockMvc.perform(get("/api/registrar/medicalOrganizations")
-                        .header("Authorization", accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(414)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "Список медицинских организаций пуст!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         MedicalOrganization medicalOrganization = initMedicalOrganizations(
                 "City Hospital", "Moscow, Pravda street, 30");
 
         //Вывод списка медицинских организаций
-        mockMvc.perform(get("/api/registrar/medicalOrganizations")
+        mockMvc.perform(get("/api/registrar/schedule/medicalOrganizations")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -145,7 +134,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         //Список департаментов медицинской организации с несуществующим id
-        mockMvc.perform(post("/api/registrar/departments/{id}", 100)
+        mockMvc.perform(post("/api/registrar/schedule/departments/{id}", 100)
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -156,22 +145,11 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
                         "Медицинской организации с таким id нет!")));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-        //Департаменты в медицинской организации отсутствуют
-        mockMvc.perform(post("/api/registrar/departments/{id}",medicalOrganization.getId())
-                        .header("Authorization", accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(415)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "У медицинской организации нет департаментов!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         Department department = initDepartment("Therapy", medicalOrganization);
 
         //Вывод списка департаментов
-        mockMvc.perform(post("/api/registrar/departments/{id}", medicalOrganization.getId())
+        mockMvc.perform(post("/api/registrar/schedule/departments/{id}", medicalOrganization.getId())
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -181,7 +159,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         //Департамента с таким id нет
-        mockMvc.perform(post("/api/registrar/doctors/{id}", 100)
+        mockMvc.perform(post("/api/registrar/schedule/doctors/{id}", 100)
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -192,23 +170,12 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
                         "Департамента с таким id нет!")));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-        //В департаменте нет докторов
-        mockMvc.perform(post("/api/registrar/doctors/{id}", department.getId())
-                        .header("Authorization", accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(415)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "В департаменте нет докторов!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         Role roleDoctor = initRole("DOCTOR");
         Doctor doctor = initDoctor(roleDoctor, department, null);
 
         //Вывод списка докторов
-        mockMvc.perform(post("/api/registrar/doctors/{id}", department.getId())
+        mockMvc.perform(post("/api/registrar/schedule/doctors/{id}", department.getId())
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -222,7 +189,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         //Доктора с таким id нет
-        mockMvc.perform(post("/api/registrar/talons/{id}", 1000)
+        mockMvc.perform(post("/api/registrar/schedule/talons/{id}", 1000)
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -233,24 +200,13 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
                         "Доктора с таким id нет!")));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-        //У доктора с этим id нет талонов
-        mockMvc.perform(post("/api/registrar/talons/{id}", doctor.getId())
-                        .header("Authorization", accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(415)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "У доктора нет талонов!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         Role rolePatient = initRole("PATIENT");
         Patient patient = initPatient(rolePatient);
         talonService.persistTalonsForDoctorAndPatient(doctor, patient,14, 4);
 
         //Вывод талонов доктора
-        mockMvc.perform(post("/api/registrar/talons/{id}", doctor.getId())
+        mockMvc.perform(post("/api/registrar/schedule/talons/{id}", doctor.getId())
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )

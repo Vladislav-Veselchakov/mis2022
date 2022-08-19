@@ -4,6 +4,5 @@ import ru.mis2022.models.entity.PriceOfMedicalService;
 
 public interface PriceOfMedicalServiceService {
 
-    PriceOfMedicalService persist(PriceOfMedicalService priceOfMedicalService);
-    PriceOfMedicalService merge(PriceOfMedicalService priceOfMedicalService);
+    PriceOfMedicalService save(PriceOfMedicalService priceOfMedicalService);
 }

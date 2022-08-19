@@ -84,14 +84,14 @@ public class DataInitializer {
 
     @PostConstruct
     public void addTestData() {
-        Role roleRegistrar = roleService.persist(new Role(RolesEnum.REGISTRAR.name()));
-        Role roleDoctor = roleService.persist(new Role(RolesEnum.DOCTOR.name()));
-        Role rolePatient = roleService.persist(new Role(RolesEnum.PATIENT.name()));
-        Role roleMainDoctor = roleService.persist(new Role(RolesEnum.MAIN_DOCTOR.name()));
-        Role roleEconomist = roleService.persist(new Role(RolesEnum.ECONOMIST.name()));
-        Role roleAdmin = roleService.persist((new Role(RolesEnum.ADMIN.name())));
-        Role roleHrManager = roleService.persist(new Role(RolesEnum.HR_MANAGER.name()));
-        Role roleChiefDoctor=roleService.persist(new Role(RolesEnum.CHIEF_DOCTOR.name()));
+        Role roleRegistrar = roleService.save(new Role(RolesEnum.REGISTRAR.name()));
+        Role roleDoctor = roleService.save(new Role(RolesEnum.DOCTOR.name()));
+        Role rolePatient = roleService.save(new Role(RolesEnum.PATIENT.name()));
+        Role roleMainDoctor = roleService.save(new Role(RolesEnum.MAIN_DOCTOR.name()));
+        Role roleEconomist = roleService.save(new Role(RolesEnum.ECONOMIST.name()));
+        Role roleAdmin = roleService.save((new Role(RolesEnum.ADMIN.name())));
+        Role roleHrManager = roleService.save(new Role(RolesEnum.HR_MANAGER.name()));
+        Role roleChiefDoctor=roleService.save(new Role(RolesEnum.CHIEF_DOCTOR.name()));
 
 
         for (int num = 1; num < 10; num++) {
@@ -112,40 +112,40 @@ public class DataInitializer {
         MedicalOrganization medicalOrganization = new MedicalOrganization();
         medicalOrganization.setName("City Hospital");
         medicalOrganization.setAddress("Moscow, Pravda street, 30");
-        medicalOrganizationService.persist(medicalOrganization);
+        medicalOrganizationService.save(medicalOrganization);
 
         MedicalOrganization medicalOrganization1 = new MedicalOrganization();
         medicalOrganization1.setName("Hospital №1");
         medicalOrganization1.setAddress("St. Peterburg, Lenina avenue, 3");
-        medicalOrganizationService.persist(medicalOrganization1);
+        medicalOrganizationService.save(medicalOrganization1);
 
         MedicalOrganization medicalOrganization2 = new MedicalOrganization();
         medicalOrganization2.setName("City Clinic Hospital");
         medicalOrganization2.setAddress("Saratov, Grin street, 25");
-        medicalOrganizationService.persist(medicalOrganization2);
+        medicalOrganizationService.save(medicalOrganization2);
 
-        departmentService.persist(new Department("Therapy", medicalOrganization));
-        departmentService.persist(new Department("Surgery", medicalOrganization));
-        departmentService.persist(new Department("Cardiology", medicalOrganization));
-        departmentService.persist(new Department("Dentistry", medicalOrganization));
-        departmentService.persist(new Department("Dermatology", medicalOrganization));
-        departmentService.persist(new Department("Pediatrics", medicalOrganization));
-        departmentService.persist(new Department("Psychiatry", medicalOrganization));
+        departmentService.save(new Department("Therapy", medicalOrganization));
+        departmentService.save(new Department("Surgery", medicalOrganization));
+        departmentService.save(new Department("Cardiology", medicalOrganization));
+        departmentService.save(new Department("Dentistry", medicalOrganization));
+        departmentService.save(new Department("Dermatology", medicalOrganization));
+        departmentService.save(new Department("Pediatrics", medicalOrganization));
+        departmentService.save(new Department("Psychiatry", medicalOrganization));
 
         Department dep31 = new Department();
         dep31.setName("Therapy");
         dep31.setMedicalOrganization(medicalOrganization2);
-        departmentService.persist(dep31);
+        departmentService.save(dep31);
 
         Department dep32 = new Department();
         dep32.setName("Dermatology");
         dep32.setMedicalOrganization(medicalOrganization2);
-        departmentService.persist(dep32);
+        departmentService.save(dep32);
 
         Department dep33 = new Department();
         dep33.setName("Pediatrics");
         dep33.setMedicalOrganization(medicalOrganization2);
-        departmentService.persist(dep33);
+        departmentService.save(dep33);
 
 
         for (int num = 1; num < 10; num++) {
@@ -169,7 +169,7 @@ public class DataInitializer {
                     "surname_" + num,
                     LocalDate.now().minusYears(20),
                     roleMainDoctor,
-                    departmentService.persist(new Department("Therapy", medicalOrganization))
+                    departmentService.save(new Department("Therapy", medicalOrganization))
             ));
         }
 

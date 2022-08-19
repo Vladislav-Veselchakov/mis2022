@@ -4,6 +4,5 @@ import ru.mis2022.models.entity.PersonalHistory;
 
 public interface PersonalHistoryService {
 
-    PersonalHistory persist(PersonalHistory personalHistory);
-    PersonalHistory merge(PersonalHistory personalHistory);
+    PersonalHistory save(PersonalHistory personalHistory);
 }

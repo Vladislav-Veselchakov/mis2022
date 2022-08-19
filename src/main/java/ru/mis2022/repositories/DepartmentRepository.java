@@ -7,12 +7,11 @@ import ru.mis2022.models.entity.Department;
 import java.util.List;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    //todo имя метода неправильное - убрать '_'
-    List<Department> findAllByMedicalOrganization_Id(Long id);
+
+    List<Department> findAllByMedicalOrganizationId(Long id);
 
     @Query("""
             SELECT d FROM Department d WHERE d.id = :id
             """)
-        //todo имя метода неправильное
     Department findDepartmentById(Long id);
 }

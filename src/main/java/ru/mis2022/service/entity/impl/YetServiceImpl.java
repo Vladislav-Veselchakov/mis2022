@@ -16,16 +16,10 @@ public class YetServiceImpl implements YetService {
     private final YetRepository yetRepository;
 
     @Override
-    //todo заменить на save()
-    public Yet persist(Yet yet) {
+    public Yet save(Yet yet) {
         return yetRepository.save(yet);
     }
 
-    @Override
-    //todo удалить
-    public Yet merge(Yet yet) {
-        return yetRepository.save(yet);
-    }
 
     @Override
     public Yet existById(Long id) {

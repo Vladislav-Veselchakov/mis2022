@@ -68,7 +68,7 @@ public class HrManagerAdminRestController {
     @Validated(OnUpdate.class)
     public Response<AdministratorDto> updateAdmin(@Valid @RequestBody AdministratorDto administratorDto) {
         ApiValidationUtils
-                .expectedNotNull(administratorService.existById(administratorDto.getId()),
+                .expectedNotNull(administratorService.findAdministratorById(administratorDto.getId()),
                         410, "По переданному id администратор не найден.");
         ApiValidationUtils.expectedNull(
                         userService.findByEmailAndExceptCurrentId(administratorDto.getEmail(),

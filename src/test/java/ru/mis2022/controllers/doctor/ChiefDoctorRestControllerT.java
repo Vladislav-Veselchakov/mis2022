@@ -36,7 +36,7 @@ public class ChiefDoctorRestControllerT extends ContextIT {
     }
 
     Role initRole(String roleName) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(roleName)
                 .build());
     }
@@ -55,7 +55,7 @@ public class ChiefDoctorRestControllerT extends ContextIT {
     }
 
     Department initDepartement(String name) {
-        return departmentService.persist(Department.builder()
+        return departmentService.save(Department.builder()
                 .name(name)
                 .build());
     }

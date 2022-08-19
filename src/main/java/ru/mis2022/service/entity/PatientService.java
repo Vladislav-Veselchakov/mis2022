@@ -7,5 +7,5 @@ public interface PatientService {
 
     Patient findByEmail(String email);
     Patient persist(Patient patient);
-    Patient isExistById(Long id);
+    Patient findPatientById(Long id);
 }

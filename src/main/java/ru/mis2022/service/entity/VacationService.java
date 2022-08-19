@@ -4,6 +4,5 @@ import ru.mis2022.models.entity.Vacation;
 
 public interface VacationService {
 
-    Vacation persist(Vacation vacation);
-    Vacation merge(Vacation vacation);
+    Vacation save(Vacation vacation);
 }
