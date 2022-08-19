@@ -20,7 +20,6 @@ import ru.mis2022.util.ContextIT;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,13 +36,13 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     @Autowired PatientService patientService;
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }
 
     Department initDepartment(String name) {
-        return departmentService.persist(Department.builder()
+        return departmentService.save(Department.builder()
                 .name(name)
                 .build());
     }

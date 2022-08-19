@@ -21,17 +21,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    @Override public User getCurrentUserByEmail(String email) {
+    @Override
+    public User getCurrentUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    //todo не должно быть написано в строку
-    public boolean existsByEmail(String email) { return userRepository.existsByEmail(email); }
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
     @Override
-    //todo не должно быть написано в строку
-    public boolean existsById(Long id) { return userRepository.existsById(id); }
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
 
     @Override
     public User findByEmailAndExceptCurrentId(String email, Long id) {

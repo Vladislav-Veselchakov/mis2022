@@ -9,9 +9,7 @@ import java.util.List;
 
 public interface TalonService {
 
-    Talon persist(Talon talon);
-    Talon merge(Talon talon);
-
+    Talon save(Talon talon);
     List<Talon> findAllByDoctorId(Long id);
 
     long findTalonsCountByIdAndDoctor(int countDays, Doctor doctor);
@@ -20,7 +18,7 @@ public interface TalonService {
 
     List<Talon> findAllByPatientId(Long id);
 
-    Talon isExistById(Long id);
+    Talon findTalonById(Long id);
 
     List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId);
 

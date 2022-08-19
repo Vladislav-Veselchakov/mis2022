@@ -21,7 +21,7 @@ public class PatientRestControllerIT extends ContextIT {
     @Autowired PatientService patientService;
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }

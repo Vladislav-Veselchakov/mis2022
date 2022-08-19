@@ -14,14 +14,7 @@ public class PriceOfMedicalServiceServiceImpl implements PriceOfMedicalServiceSe
     private final PriceOfMedicalServiceRepository priceOfMedicalServiceRepository;
 
     @Override
-    //todo заменить на save()
-    public PriceOfMedicalService persist(PriceOfMedicalService priceOfMedicalService) {
-        return priceOfMedicalServiceRepository.save(priceOfMedicalService);
-    }
-
-    @Override
-    //todo удалить
-    public PriceOfMedicalService merge(PriceOfMedicalService priceOfMedicalService) {
+    public PriceOfMedicalService save(PriceOfMedicalService priceOfMedicalService) {
         return priceOfMedicalServiceRepository.save(priceOfMedicalService);
     }
 }

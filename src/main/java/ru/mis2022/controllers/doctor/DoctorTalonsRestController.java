@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.Talon.TalonDto;
 import ru.mis2022.models.entity.Patient;
-import ru.mis2022.models.mapper.TalonConverter;
+import ru.mis2022.models.dto.talon.converter.TalonConverter;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.entity.User;

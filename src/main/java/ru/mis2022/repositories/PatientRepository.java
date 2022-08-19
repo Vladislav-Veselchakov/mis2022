@@ -28,7 +28,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Patient findByEmail(String email);
 
     @Query("SELECT p FROM Patient p WHERE p.id = :id")
-        //todo неправильное имя метода
-    Patient isExistById(Long id);
+    Patient findPatientById(Long id);
 
 }

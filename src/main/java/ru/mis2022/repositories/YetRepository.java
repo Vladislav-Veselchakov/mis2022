@@ -22,11 +22,4 @@ public interface YetRepository extends JpaRepository<Yet, Long> {
                 select y from Yet y where y.id = :id 
             """)
     Yet existById(Long id);
-
-    //todo метод есть в репозитории. удалить
-    List<Yet> findAll();
-
-    //todo метод есть в репозитории. удалить
-    void deleteById(Long id);
-
 }

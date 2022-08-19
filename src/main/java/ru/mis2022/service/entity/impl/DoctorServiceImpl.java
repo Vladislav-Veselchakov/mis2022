@@ -3,7 +3,7 @@ package ru.mis2022.service.entity.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.mis2022.models.entity.Department;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.entity.DoctorService;
@@ -24,26 +24,20 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    //todo метод закрыть транзакцией
+    @Transactional
     public Doctor persist(Doctor doctor) {
         doctor.setPassword(encoder.encode(doctor.getPassword()));
         return doctorRepository.save(doctor);
     }
 
     @Override
-    public List<Doctor> findByDepartment(Department department) {
-        return doctorRepository.findByDepartment(department);
-    }
-
-    @Override
-    //todo вырезать _ из имен
     public List<Doctor> findAllByDepartmentId(Long id) {
         return doctorRepository.findAllByDepartmentId(id);
     }
 
     @Override
-    public Doctor existById(Long id) {
-        return doctorRepository.existById(id);
+    public Doctor findByDoctorId(Long id) {
+        return doctorRepository.findDoctorById(id);
     }
 
 }

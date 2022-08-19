@@ -24,13 +24,13 @@ public class DoctorRestControllerIT extends ContextIT {
     @Autowired DepartmentService departmentService;
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }
 
     Department initDepartment(String name) {
-        return departmentService.persist(Department.builder()
+        return departmentService.save(Department.builder()
                 .name(name)
                 .build());
     }

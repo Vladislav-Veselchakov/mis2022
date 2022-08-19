@@ -53,7 +53,7 @@ public class EconomistYetRestController {
         ApiValidationUtils.expectedFalse(
                 yetService.existYetDayFromDayTo(yet.getDayFrom(), yet.getDayTo()).size()!=0,
                 415, "Данные yet на этот период времени уже установлены!");
-        yetService.persist(yet);
+        yetService.save(yet);
         return Response.ok(yetMapper.toDto(yet));
     }
 
@@ -79,7 +79,7 @@ public class EconomistYetRestController {
                 yetService.existYetDayFromDayToExceptCurrentId(
                         yet.getId(), yet.getDayFrom(), yet.getDayTo()).size()!=0,
                 415, "Данные yet на этот период времени уже установлены!");
-        yetService.merge(yet);
+        yetService.save(yet);
         return Response.ok(yetDto);
     }
 

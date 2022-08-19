@@ -24,14 +24,7 @@ public class TalonServiceImpl implements TalonService {
     private final TalonRepository talonRepository;
 
     @Override
-    //todo заменить на save()
-    public Talon persist(Talon talon) {
-        return talonRepository.save(talon);
-    }
-
-    @Override
-    //todo удалить
-    public Talon merge(Talon talon) {
+    public Talon save(Talon talon) {
         return talonRepository.save(talon);
     }
 
@@ -59,7 +52,6 @@ public class TalonServiceImpl implements TalonService {
     }
 
     @Override
-    //todo вырезать из имен _
     public List<Talon> findAllByDoctorId(Long id) {
         return talonRepository.findAllByDoctorId(id);
     }
@@ -70,8 +62,8 @@ public class TalonServiceImpl implements TalonService {
     }
 
     @Override
-    public Talon isExistById(Long id) {
-        return talonRepository.isExistById(id);
+    public Talon findTalonById(Long id) {
+        return talonRepository.findTalonById(id);
     }
 
     @Override

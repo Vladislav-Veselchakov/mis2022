@@ -35,8 +35,7 @@ import java.util.List;
 
 @Validated
 @RestController
-//todo добавить в url '/schedule'
-@RequestMapping("/api/registrar")
+@RequestMapping("/api/registrar/schedule")
 @PreAuthorize("hasRole('REGISTRAR')")
 @RequiredArgsConstructor
 public class RegistrarScheduleRestController {
@@ -58,10 +57,6 @@ public class RegistrarScheduleRestController {
     @GetMapping("/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganizations() {
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
-        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
-        ApiValidationUtils
-                .expectedFalse(medicalOrganizations.size()==0,
-                        414, "Список медицинских организаций пуст!");
         return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
     }
 
@@ -74,13 +69,9 @@ public class RegistrarScheduleRestController {
     @PostMapping("/departments/{id}")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                .expectedNotNull(medicalOrganizationService.existById(id),
+                .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(id),
                         414, "Медицинской организации с таким id нет!");
-        List<Department> departments = departmentService.findAllByMedicalOrganization_Id(id);
-        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
-        ApiValidationUtils
-                .expectedFalse(departments.size()==0,
-                        415, "У медицинской организации нет департаментов!");
+        List<Department> departments = departmentService.findAllByMedicalOrganizationId(id);
         return Response.ok(departmentMapper.toListDto(departments));
     }
 
@@ -96,10 +87,6 @@ public class RegistrarScheduleRestController {
                 .expectedNotNull(departmentService.findDepartmentById(id),
                         414, "Департамента с таким id нет!");
         List<Doctor> doctors = doctorService.findAllByDepartmentId(id);
-        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
-        ApiValidationUtils
-                .expectedFalse(doctors.size()==0,
-                        415, "В департаменте нет докторов!");
         return Response.ok(doctorMapper.toListDto(doctors));
     }
 
@@ -112,13 +99,9 @@ public class RegistrarScheduleRestController {
     @PostMapping("/talons/{id}")
     public Response<List<TalonDto>> getAllTalonsByDoctorId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                .expectedNotNull(doctorService.existById(id),
+                .expectedNotNull(doctorService.findByDoctorId(id),
                         414, "Доктора с таким id нет!");
         List<Talon> talons = talonService.findAllByDoctorId(id);
-        //todo не надо кидать эксепшн. надо возвращать пустую коллекцию
-        ApiValidationUtils
-                .expectedFalse(talons.size()==0,
-                        415, "У доктора нет талонов!");
         return Response.ok(talonMapper.toListDto(talons));
     }
 }

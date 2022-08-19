@@ -32,13 +32,9 @@ public class PatientTalonsRestController {
    @GetMapping("/{patientId}")
     public Response<List<TalonDto>> getAllTalonsByPatientId(@PathVariable Long patientId) {
        ApiValidationUtils
-               .expectedNotNull(patientService.isExistById(patientId),
+               .expectedNotNull(patientService.findPatientById(patientId),
                        402, "Пациента с таким id нет!");
        List<Talon> talons = talonService.findAllByPatientId(patientId);
-       //todo не надо возвращать null. верни пустую коллекцию
-       if (talons.size() == 0) {
-           return null;
-       }
        return Response.ok(talonMapper.toListDto(talons));
     }
 
@@ -46,18 +42,16 @@ public class PatientTalonsRestController {
     public Response<Void> cancelRecordTalons(@PathVariable Long talonId, @PathVariable Long patientId) {
 
         ApiValidationUtils
-                .expectedNotNull(talonService.isExistById(talonId),
+                .expectedNotNull(talonService.findTalonById(talonId),
                         402, "Талона с таким id нет!");
 
         ApiValidationUtils
-                .expectedNotNull(patientService.isExistById(patientId),
+                .expectedNotNull(patientService.findPatientById(patientId),
                         403, "Пациента с таким id нет!");
-        //todo имя метода isExistById выбрано не правитльно. оно должно возвращать булеан. тут можно воспользоватьсе
-        //  штатным методом репозитория getById() или написать метод с именем getTalonById()
-        //  и переменная t мне не нравится
-        Talon t = talonService.isExistById(talonId);
-        t.setPatient(null);
-        talonService.merge(t);
+
+        Talon talon = talonService.findTalonById(talonId);
+        talon.setPatient(null);
+        talonService.save(talon);
         return Response.ok();
     }
 }

@@ -52,6 +52,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("""
             SELECT d FROM Doctor d WHERE d.id = :id
             """)
-    //todo неправильное имя метода
-    Doctor existById(Long id);
+    Doctor findDoctorById(Long id);
 }

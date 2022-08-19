@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface YetService {
 
-    Yet persist(Yet yet);
-    Yet merge(Yet yet);
+    Yet save(Yet yet);
 
     Yet existById(Long id);
 

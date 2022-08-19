@@ -24,9 +24,8 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Lo
 
     Administrator findByEmail(String email);
 
-    //todo имя метода неправильное
     @Query("""
             SELECT a FROM Administrator a JOIN FETCH a.role WHERE a.id = :id
             """)
-    Administrator existById(Long id);
+    Administrator findAdministratorById(Long id);
 }

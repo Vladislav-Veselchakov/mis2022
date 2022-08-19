@@ -16,8 +16,7 @@ public class MedicalOrganizationServiceImpl implements MedicalOrganizationServic
     private final MedicalOrganizationRepository medicalOrganizationRepository;
 
     @Override
-    //todo заменить на save()
-    public MedicalOrganization persist(MedicalOrganization medicalOrganization) {
+    public MedicalOrganization save(MedicalOrganization medicalOrganization) {
         return medicalOrganizationRepository.save(medicalOrganization);
     }
 
@@ -27,7 +26,7 @@ public class MedicalOrganizationServiceImpl implements MedicalOrganizationServic
     }
 
     @Override
-    public MedicalOrganization existById(Long id) {
-        return medicalOrganizationRepository.existById(id);
+    public MedicalOrganization findMedicalOrganizationById(Long id) {
+        return medicalOrganizationRepository.findMedicalOrganizationById(id);
     }
 }

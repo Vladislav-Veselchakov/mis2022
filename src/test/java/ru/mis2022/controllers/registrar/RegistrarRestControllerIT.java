@@ -25,7 +25,7 @@ public class RegistrarRestControllerIT extends ContextIT {
     @Autowired RegistrarService registrarService;
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }

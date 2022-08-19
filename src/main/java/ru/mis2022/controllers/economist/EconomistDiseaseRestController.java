@@ -1,5 +1,8 @@
 package ru.mis2022.controllers.economist;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,15 +31,22 @@ public class EconomistDiseaseRestController {
     private final DiseaseService diseaseService;
     private final DiseaseConverter converter;
 
-    //todo добавить описание сваггера
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Все заболевания были получены из базы данных.")
+    })
     @GetMapping("/getAll")
+    @ApiOperation(value = "This method is used to get all diseases.")
     public Response<List<DiseaseDto>> getAllDisease() {
         return Response.ok(diseaseService.findAllDiseaseDto());
     }
 
-    //todo добавить описание сваггера
-    //todo добавить валидацию на уровне дто onCreate
+    //todo  добавить валидацию на уровне дто onCreate
     @PostMapping("/create")
+    @ApiOperation(value = "This method is used to save new disease.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Заболевание было сохранено."),
+            @ApiResponse(code = 410, message = "Заболевание с данным идентификатором уже существует."),
+    })
     public Response<DiseaseDto> persistDisease(@RequestBody DiseaseDto diseaseDto) {
         ApiValidationUtils
                 .expectedFalse(diseaseService.isExistByIdentifier(diseaseDto.identifier()), 410,
@@ -48,8 +58,12 @@ public class EconomistDiseaseRestController {
                         .build())));
     }
 
-    //todo добавить описание сваггера
     @DeleteMapping("/delete/{diseaseId}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Заболевание было удалено."),
+            @ApiResponse(code = 411, message = "Заболевание с переданным id не существует."),
+    })
+    @ApiOperation(value = "This method is used to delete disease by Id.")
     public Response<Void> deleteDiseaseById(@PathVariable Long diseaseId) {
         ApiValidationUtils
                 .expectedTrue(diseaseService.isExistById(diseaseId), 411,

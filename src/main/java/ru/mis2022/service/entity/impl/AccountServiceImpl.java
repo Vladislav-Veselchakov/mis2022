@@ -13,12 +13,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
-    public Account persist(Account account) {
-        return accountRepository.save(account);
-    }
-
-    @Override
-    public Account merge(Account account) {
+    public Account save(Account account) {
         return accountRepository.save(account);
     }
 }

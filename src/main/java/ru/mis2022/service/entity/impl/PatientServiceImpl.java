@@ -3,10 +3,10 @@ package ru.mis2022.service.entity.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.repositories.PatientRepository;
 import ru.mis2022.service.entity.PatientService;
-import ru.mis2022.service.entity.TalonService;
 
 
 
@@ -16,8 +16,6 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final PasswordEncoder encoder;
-    //todo удалить
-    private final TalonService talonService;
 
     @Override
     public Patient findByEmail(String email) {
@@ -25,15 +23,15 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    //todo закрыть транзакцией
+    @Transactional
     public Patient persist(Patient patient) {
         patient.setPassword(encoder.encode(patient.getPassword()));
         return patientRepository.save(patient);
     }
 
     @Override
-    public Patient isExistById(Long id) {
-        return patientRepository.isExistById(id);
+    public Patient findPatientById(Long id) {
+        return patientRepository.findPatientById(id);
     }
 
 }

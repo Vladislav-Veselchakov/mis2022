@@ -6,9 +6,9 @@ import java.util.List;
 
 
 public interface MedicalOrganizationService {
-    MedicalOrganization persist(MedicalOrganization medicalOrganization);
+    MedicalOrganization save(MedicalOrganization medicalOrganization);
 
     List<MedicalOrganization> findAll();
 
-    MedicalOrganization existById(Long id);
+    MedicalOrganization findMedicalOrganizationById(Long id);
 }

@@ -47,20 +47,20 @@ public class PatientScheduleRestControllerIT extends ContextIT {
     TalonService talonService;
 
     MedicalOrganization initMedicalOrganization(String name, String address) {
-        return medicalOrganizationService.persist(MedicalOrganization.builder()
+        return medicalOrganizationService.save(MedicalOrganization.builder()
                 .name(name)
                 .address(address)
                 .build());
     }
 
     Role initRole(String name) {
-        return roleService.persist(Role.builder()
+        return roleService.save(Role.builder()
                 .name(name)
                 .build());
     }
 
     Department initDepartment(String name, MedicalOrganization medicalOrganization) {
-        return departmentService.persist(Department.builder()
+        return departmentService.save(Department.builder()
                 .name(name)
                 .medicalOrganization(medicalOrganization)
                 .build());
@@ -69,7 +69,7 @@ public class PatientScheduleRestControllerIT extends ContextIT {
     Patient initPatient(Role role) {
         return patientService.persist(new Patient(
                 "patient1@email.com",
-                String.valueOf("1"),
+                "1",
                 "f_name",
                 "l_name",
                 "surname",
@@ -85,7 +85,7 @@ public class PatientScheduleRestControllerIT extends ContextIT {
     Doctor initDoctor(Role role, Department department, PersonalHistory personalHistory, String email) {
         return doctorService.persist(new Doctor(
                 email,
-                String.valueOf("1"),
+                "1",
                 "f_name",
                 "l_name",
                 "surname",
@@ -102,16 +102,16 @@ public class PatientScheduleRestControllerIT extends ContextIT {
 
         accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
 
-        //Пустой список медицинских организаций
+        //Вывод пустого списка мед организаций
         mockMvc.perform(get("/api/patient/medicalOrganizations")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(414)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "Список медицинских организаций пуст")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.data.length()", Is.is(0)))
+                .andExpect(jsonPath("$.code", Is.is(200)));
+
 
        initMedicalOrganization("City Hospital", "Moscow, Pravda street, 30");
 
@@ -134,6 +134,7 @@ public class PatientScheduleRestControllerIT extends ContextIT {
 
                 .andExpect(jsonPath("$.data[2].name", Is.is("City Clinic Hospital")))
                 .andExpect(jsonPath("$.data[2].address", Is.is("Saratov, Grin street, 25")));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 
     @Test
@@ -149,20 +150,10 @@ public class PatientScheduleRestControllerIT extends ContextIT {
                 .andExpect(status().is(400))
                 .andExpect(jsonPath("$.success", Is.is(false)))
                 .andExpect(jsonPath("$.code", Is.is(414)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "Медицинской организации с таким id нет")));
+                .andExpect(jsonPath("$.text", Is.is("Медицинской организации с таким id нет")));
 
 
         MedicalOrganization medicalOrganization = initMedicalOrganization("City Hospital", "Moscow, Pravda street, 30");
-
-        mockMvc.perform(get("/api/patient/medicalOrganization/{medOrgId}/getAllDepartments", medicalOrganization.getId())
-                .header("Authorization", accessToken)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(415)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "У медицинской организации нет департаментов!")));
 
 
         initDepartment("Therapy", medicalOrganization);
