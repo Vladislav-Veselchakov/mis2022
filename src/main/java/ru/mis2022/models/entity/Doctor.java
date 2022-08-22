@@ -49,7 +49,7 @@ public class Doctor extends User {
     @JoinColumn(name = "personal_history_id", referencedColumnName = "id")
     private PersonalHistory personalHistory;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private List<Talon> talons;
 
     public Doctor(String email, String password, String firstName, String lastName, @Nullable String surname,

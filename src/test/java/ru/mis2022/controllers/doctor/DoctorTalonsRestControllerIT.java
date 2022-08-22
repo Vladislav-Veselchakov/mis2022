@@ -4,6 +4,7 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
@@ -20,8 +21,10 @@ import ru.mis2022.util.ContextIT;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +37,12 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     @Autowired RoleService roleService;
     @Autowired DepartmentService departmentService;
     @Autowired PatientService patientService;
+
+    @Value("${mis.property.doctorSchedule}")
+    private Integer numberOfDays;
+
+    @Value("${mis.property.talon}")
+    private Integer numbersOfTalons;
 
     Role initRole(String name) {
         return roleService.save(Role.builder()
@@ -77,6 +86,11 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     private String formatDate(LocalDate date, int hour) {
         LocalDateTime time = LocalDateTime.of(date, LocalTime.of(8, 0).plusHours(hour));
         return time.format(DATE_TIME_FORMATTER);
+    }
+
+    String todayTimeTalon(int hour) {
+        return LocalDateTime.now().with(LocalTime.of(hour,0))
+                .format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
     @Test
@@ -131,6 +145,42 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.success", Is.is(false)))
                 .andExpect(jsonPath("$.code", Is.is(401)))
                 .andExpect(jsonPath("$.text", Is.is("У доктора есть талоны на данные дни")));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+    }
+
+    @Test
+    public void onTodayTalonsTest() throws Exception {
+
+        Role role = initRole("DOCTOR");
+        Role role1 = initRole("PATIENT");
+        Department department = initDepartment("Therapy");
+        Doctor doctor = initDoctor(role, department, null, "doctor@email.com");
+        Patient patient = initPatient(role1);
+        talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
+
+        accessToken = tokenUtil.obtainNewAccessToken(doctor.getEmail(), "1", mockMvc);
+
+        mockMvc.perform(get("/api/doctor/talon/onToday")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.data[0].id", Matchers.notNullValue()))
+                .andExpect(jsonPath("$.data[0].time", Is.is(todayTimeTalon(8))))
+                .andExpect(jsonPath("$.data[0].patientId", Is.is(patient.getId().intValue())))
+
+                .andExpect(jsonPath("$.data[1].id", Matchers.notNullValue()))
+                .andExpect(jsonPath("$.data[1].time", Is.is(todayTimeTalon(9))))
+                .andExpect(jsonPath("$.data[1].patientId", Is.is(patient.getId().intValue())))
+
+                .andExpect(jsonPath("$.data[2].id", Matchers.notNullValue()))
+                .andExpect(jsonPath("$.data[2].time", Is.is(todayTimeTalon(10))))
+                .andExpect(jsonPath("$.data[2].patientId", Is.is(patient.getId().intValue())))
+
+                .andExpect(jsonPath("$.data[3].id", Matchers.notNullValue()))
+                .andExpect(jsonPath("$.data[3].time", Is.is(todayTimeTalon(11))))
+                .andExpect(jsonPath("$.data[3].patientId", Is.is(patient.getId().intValue())));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 }
