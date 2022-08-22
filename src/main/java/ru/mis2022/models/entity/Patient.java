@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.lang.Nullable;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -53,5 +52,4 @@ public class Patient extends User {
         this.snils = snils;
         this.address = address;
     }
-
 }

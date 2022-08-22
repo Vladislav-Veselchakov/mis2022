@@ -91,8 +91,8 @@ public class PatientTalonsRestControllerIT extends ContextIT {
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", Is.is(true)))
-                .andExpect(jsonPath("$.data[0].patientId", Is.is(patient.getId().intValue())))
-                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+                .andExpect(jsonPath("$.data[0].patientId", Is.is(patient.getId().intValue())));
+        //      .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
 
 

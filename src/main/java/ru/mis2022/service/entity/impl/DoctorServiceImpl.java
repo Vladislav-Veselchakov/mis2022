@@ -40,4 +40,9 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.findDoctorById(id);
     }
 
+    @Override
+    public boolean existsById(long doctorId) {
+        return doctorRepository.existsById(doctorId);
+    }
+
 }

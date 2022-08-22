@@ -28,6 +28,4 @@ public class ContextIT {
     @PersistenceContext protected EntityManager entityManager;
 
     protected String accessToken;
-
-    public final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 }
