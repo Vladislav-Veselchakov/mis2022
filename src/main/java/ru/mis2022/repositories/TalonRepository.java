@@ -2,12 +2,11 @@ package ru.mis2022.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ru.mis2022.models.dto.Talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
-
-import java.util.List;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface TalonRepository extends JpaRepository<Talon, Long> {
 
@@ -36,4 +35,19 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
             """)
     List<Doctor> findDoctorsWithTalonsSpecificTimeRange(LocalDateTime startTime, LocalDateTime endTime, Long departmentId);
 
+    @Query("""
+            SELECT new ru.mis2022.models.dto.Talon.DoctorTalonsDto(
+            t.id,
+            t.time,
+            t.patient.id,
+            t.patient.firstName,
+            t.patient.lastName,
+            t.patient.surname
+            )
+            FROM Talon t 
+            JOIN Doctor d ON t.doctor.id = d.id
+            WHERE t.time BETWEEN :startDayTime AND :endDayTime 
+            AND d.id = :doctorId ORDER BY t.time
+            """)
+    List<DoctorTalonsDto> talonsByDoctorByDay(long doctorId, LocalDateTime startDayTime, LocalDateTime endDayTime);
 }
