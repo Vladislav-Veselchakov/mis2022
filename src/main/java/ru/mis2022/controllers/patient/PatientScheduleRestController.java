@@ -84,6 +84,7 @@ public class PatientScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(departmentService.isExistById(departmentId),
                         414, "Департамента с таким id нет!");
+        //todo сразу получать из запроса дто а не конвертировать сущности
         return Response.ok(doctorMapper.toListDto(
                 talonService.findDoctorsWithTalonsSpecificTimeRange(numberOfDays, departmentId)));
     }
