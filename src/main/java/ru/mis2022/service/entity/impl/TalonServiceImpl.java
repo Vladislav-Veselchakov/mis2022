@@ -22,6 +22,7 @@ public class TalonServiceImpl implements TalonService {
 
     private final TalonRepository talonRepository;
 
+
     @Override
     public Talon save(Talon talon) {
         return talonRepository.save(talon);

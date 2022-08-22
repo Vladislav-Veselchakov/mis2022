@@ -101,6 +101,7 @@ public class RegistrarScheduleRestController {
         ApiValidationUtils
                 .expectedNotNull(doctorService.findByDoctorId(id),
                         414, "Доктора с таким id нет!");
+        //todo почему получаешь сущности? сразу получай дто
         List<Talon> talons = talonService.findAllByDoctorId(id);
         return Response.ok(talonMapper.toListDto(talons));
     }

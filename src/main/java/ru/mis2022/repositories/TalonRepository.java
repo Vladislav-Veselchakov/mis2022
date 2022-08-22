@@ -2,13 +2,26 @@ package ru.mis2022.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ru.mis2022.models.dto.Talon.TalonDto;
 import ru.mis2022.models.dto.Talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.List;
 
 public interface TalonRepository extends JpaRepository<Talon, Long> {
+
+    @Query("""
+        SELECT new ru.mis2022.models.dto.Talon.TalonDto(
+        t.id,
+        t.time,
+        t.doctor.id,
+        t.patient.id)
+        FROM Talon t
+        WHERE t.doctor.id = :doctorId
+        """)
+    Optional<List<TalonDto>> findAllDtosByDoctorId(long doctorId);
 
     List<Talon> findAllByDoctorId(Long id);
 
