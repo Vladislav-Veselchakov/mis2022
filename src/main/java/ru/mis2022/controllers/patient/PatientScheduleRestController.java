@@ -54,7 +54,7 @@ public class PatientScheduleRestController {
     })
     @GetMapping(value = "/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganization() {
-        //todo MedicalOrganizationDtoService сразу получить дто
+        //todo list2 MedicalOrganizationDtoService сразу получить дто
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
         return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
     }
@@ -68,10 +68,10 @@ public class PatientScheduleRestController {
     @GetMapping(value = "/medicalOrganization/{medOrgId}/getAllDepartments")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@PathVariable Long medOrgId) {
         ApiValidationUtils
-                //todo использовать метод isExist
+                //todo list1 использовать метод isExist
                 .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(medOrgId),
                         414, "Медицинской организации с таким id нет");
-        //todo DepartmentDtoService сразу получить дто
+        //todo list2 DepartmentDtoService сразу получить дто
         List<Department> departments = departmentService.findAllByMedicalOrganizationId(medOrgId);
         return Response.ok(departmentMapper.toListDto(departments));
     }

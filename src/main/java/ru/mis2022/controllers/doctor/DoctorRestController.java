@@ -17,9 +17,10 @@ import ru.mis2022.service.dto.DoctorDtoService;
 @PreAuthorize("hasRole('DOCTOR')")
 @RequestMapping("/api/doctor")
 public class DoctorRestController {
-
     private final DoctorDtoService doctorDtoService;
+
     @ApiOperation("get a current doctor")
+    //todo list1 swagger
     @GetMapping("/mainPage/current")
     public Response<CurrentDoctorDto> getCurrentDoctorDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

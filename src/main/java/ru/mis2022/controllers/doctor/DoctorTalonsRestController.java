@@ -92,7 +92,7 @@ public class DoctorTalonsRestController {
         Doctor doctor = doctorService.findByEmail(currentUser.getEmail());
         LocalDateTime startDayTime = LocalDateTime.now().with(LocalTime.MIN);
         LocalDateTime endDayTime = LocalDateTime.now().with(LocalTime.MAX);
-        //todo TalonDtoService
+        //todo list2 для создания дто использовать TalonDtoService
         List<DoctorTalonsDto> talonsByCurrentDoctorOnToday = talonService.getTalonsByDoctorIdAndDay(
                 doctor.getId(), startDayTime, endDayTime);
         return Response.ok(talonsByCurrentDoctorOnToday);

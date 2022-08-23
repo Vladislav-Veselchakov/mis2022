@@ -18,11 +18,10 @@ import ru.mis2022.service.dto.EconomistDtoService;
 @PreAuthorize("hasRole('ECONOMIST')")
 @RequestMapping("/api/economist")
 public class EconomistRestController {
-
     private final EconomistDtoService economistDtoService;
 
     @GetMapping("/mainPage/current")
-    //todo добавить описание сваггера
+    //todo list1 добавить описание сваггера
     @ApiOperation(value = "This method is used to get current economist.")
     public Response<CurrentEconomistDto> getCurrentEconomistDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

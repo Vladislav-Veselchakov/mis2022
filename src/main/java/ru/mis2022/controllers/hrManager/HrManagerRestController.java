@@ -20,11 +20,10 @@ import ru.mis2022.service.dto.HrManagerDtoService;
 @PreAuthorize("hasRole('HR_MANAGER')")
 @RequestMapping("/api/hr_manager")
 public class HrManagerRestController {
-
-    @Autowired
     private final HrManagerDtoService hrManagerDtoService;
 
     @ApiOperation("get a current HrManager")
+    //todo list1 swagger
     @GetMapping("/mainPage/current")
     public Response<CurrentHrManagerDto> getCurrentHrManagerDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

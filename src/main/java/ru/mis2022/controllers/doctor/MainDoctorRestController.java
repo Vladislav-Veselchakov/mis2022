@@ -18,8 +18,8 @@ import ru.mis2022.service.dto.DoctorDtoService;
 @PreAuthorize("hasRole('MAIN_DOCTOR')")
 @RequestMapping("/api/main-doctor")
 public class MainDoctorRestController {
-
     private final DoctorDtoService doctorDtoService;
+
     @ApiOperation("get a current main doctor")
     @GetMapping("/mainPage/current")
     public Response<CurrentDoctorDto> getCurrentDoctorDto() {

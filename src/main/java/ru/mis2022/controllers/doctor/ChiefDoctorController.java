@@ -19,10 +19,10 @@ import ru.mis2022.service.dto.DoctorDtoService;
 @RequestMapping("/api/chief-doctor")
 @Api(tags = "Controller chief doctor")
 public class ChiefDoctorController {
-
     private final DoctorDtoService doctorDtoService;
 
     @ApiOperation("get a current chief doctor")
+    //todo list1 swagger
     @GetMapping("/mainPage/current")
     public Response<CurrentDoctorDto> getCurrentDoctorDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

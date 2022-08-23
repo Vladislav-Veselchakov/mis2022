@@ -39,7 +39,6 @@ import java.util.List;
 @PreAuthorize("hasRole('REGISTRAR')")
 @RequiredArgsConstructor
 public class RegistrarScheduleRestController {
-
     private final MedicalOrganizationService medicalOrganizationService;
     private final DepartmentService departmentService;
     private final DoctorService doctorService;
@@ -56,7 +55,7 @@ public class RegistrarScheduleRestController {
     })
     @GetMapping("/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganizations() {
-        //todo MedicalOrganizationDtoService сразу получать дто
+        //todo list2 MedicalOrganizationDtoService сразу получать дто
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
         return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
     }
@@ -70,10 +69,10 @@ public class RegistrarScheduleRestController {
     @PostMapping("/departments/{id}")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                //todo использовать isExist
+                //todo list1 использовать isExist
                 .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(id),
                         414, "Медицинской организации с таким id нет!");
-        //todo DepartmentDtoService сразу получать дто
+        //todo list2 DepartmentDtoService сразу получать дто
         List<Department> departments = departmentService.findAllByMedicalOrganizationId(id);
         return Response.ok(departmentMapper.toListDto(departments));
     }
@@ -87,10 +86,10 @@ public class RegistrarScheduleRestController {
     @PostMapping("/doctors/{id}")
     public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                //todo использовать isExist
+                //todo list1 использовать isExist
                 .expectedNotNull(departmentService.findDepartmentById(id),
                         414, "Департамента с таким id нет!");
-        //todo DoctorDtoService сразу получать дто
+        //todo list2 DoctorDtoService сразу получать дто
         List<Doctor> doctors = doctorService.findAllByDepartmentId(id);
         return Response.ok(doctorMapper.toListDto(doctors));
     }
@@ -104,10 +103,10 @@ public class RegistrarScheduleRestController {
     @PostMapping("/talons/{id}")
     public Response<List<TalonDto>> getAllTalonsByDoctorId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                //todo использовать isExist
+                //todo list1 использовать isExist
                 .expectedNotNull(doctorService.findByDoctorId(id),
                         414, "Доктора с таким id нет!");
-        //todo TalonDtoService сразу получать дто
+        //todo list2 TalonDtoService сразу получать дто
         List<Talon> talons = talonService.findAllByDoctorId(id);
         return Response.ok(talonMapper.toListDto(talons));
     }

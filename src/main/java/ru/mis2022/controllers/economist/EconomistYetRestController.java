@@ -32,7 +32,6 @@ import java.util.List;
 @PreAuthorize("hasRole('ECONOMIST')")
 @RequestMapping("/api/economist/yet")
 public class EconomistYetRestController {
-
     private final YetService yetService;
     private final YetMapper yetMapper;
 
@@ -103,7 +102,7 @@ public class EconomistYetRestController {
     })
     @GetMapping("/getAllYet")
         public Response<List<YetDto>> getAllYet() {
-        //todo YetDtoService сразу получать дто
+        //todo list2 создать YetDtoService сразу получать дто
         List<Yet> allYet = yetService.findAll();
         return Response.ok(yetMapper.toListDto(allYet));
         }

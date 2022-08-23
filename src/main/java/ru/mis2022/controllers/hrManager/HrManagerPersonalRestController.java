@@ -24,7 +24,6 @@ import java.util.List;
 @PreAuthorize("hasRole('HR_MANAGER')")
 @RequestMapping("/api/hr_manager")
 public class HrManagerPersonalRestController {
-
     private final UserService userService;
     private final UserMapper userMapper;
 

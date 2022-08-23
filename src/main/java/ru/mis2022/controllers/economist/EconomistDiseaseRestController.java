@@ -27,7 +27,6 @@ import java.util.List;
 @PreAuthorize("hasRole('ECONOMIST')")
 @RequestMapping("/api/economist/disease")
 public class EconomistDiseaseRestController {
-
     private final DiseaseService diseaseService;
     private final DiseaseConverter converter;
 
@@ -40,7 +39,7 @@ public class EconomistDiseaseRestController {
         return Response.ok(diseaseService.findAllDiseaseDto());
     }
 
-    //todo  добавить валидацию на уровне дто onCreate
+    //todo list1  добавить валидацию на уровне дто onCreate
     @PostMapping("/create")
     @ApiOperation(value = "This method is used to save new disease.")
     @ApiResponses(value = {

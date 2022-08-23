@@ -17,11 +17,10 @@ import ru.mis2022.service.dto.RegistrarDtoService;
 @PreAuthorize("hasRole('REGISTRAR')")
 @RequiredArgsConstructor
 public class RegistrarRestController {
-
     private final RegistrarDtoService registrarDtoService;
 
     @GetMapping("/mainPage/current")
-    //todo добавить описание сваггера
+    //todo list1 добавить описание сваггера
     @ApiOperation(value = "This method is used to get current registrar.")
     public Response<CurrentRegistrarDto> getCurrentRegistrarDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
