@@ -54,6 +54,7 @@ public class PatientScheduleRestController {
     })
     @GetMapping(value = "/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganization() {
+        //todo MedicalOrganizationDtoService сразу получить дто
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
         return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
     }
@@ -65,11 +66,12 @@ public class PatientScheduleRestController {
             @ApiResponse(code = 415, message = "У медицинской организации нет департаментов")
     })
     @GetMapping(value = "/medicalOrganization/{medOrgId}/getAllDepartments")
-    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(
-            @Valid @PathVariable Long medOrgId) {
+    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@PathVariable Long medOrgId) {
         ApiValidationUtils
+                //todo использовать метод isExist
                 .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(medOrgId),
                         414, "Медицинской организации с таким id нет");
+        //todo DepartmentDtoService сразу получить дто
         List<Department> departments = departmentService.findAllByMedicalOrganizationId(medOrgId);
         return Response.ok(departmentMapper.toListDto(departments));
     }
@@ -84,7 +86,6 @@ public class PatientScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(departmentService.isExistById(departmentId),
                         414, "Департамента с таким id нет!");
-        //todo сразу получать из запроса дто а не конвертировать сущности
         return Response.ok(doctorMapper.toListDto(
                 talonService.findDoctorsWithTalonsSpecificTimeRange(numberOfDays, departmentId)));
     }

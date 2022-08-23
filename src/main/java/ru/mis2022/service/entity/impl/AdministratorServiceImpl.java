@@ -35,6 +35,7 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Override
     @Transactional
     public Administrator merge(Administrator administrator) {
+        //todo не модифицировать пароль
         administrator.setPassword(encoder.encode(administrator.getPassword()));
         return administratorRepository.save(administrator);
     }

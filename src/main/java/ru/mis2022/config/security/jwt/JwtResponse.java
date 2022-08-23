@@ -1,4 +1,4 @@
-package ru.mis2022.models.payload.response;
+package ru.mis2022.config.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

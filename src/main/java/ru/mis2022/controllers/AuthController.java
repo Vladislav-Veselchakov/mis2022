@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.config.security.jwt.JwtUtils;
 import ru.mis2022.models.entity.User;
-import ru.mis2022.models.payload.request.LoginRequest;
-import ru.mis2022.models.payload.response.JwtResponse;
+import ru.mis2022.config.security.jwt.LoginRequest;
+import ru.mis2022.config.security.jwt.JwtResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
