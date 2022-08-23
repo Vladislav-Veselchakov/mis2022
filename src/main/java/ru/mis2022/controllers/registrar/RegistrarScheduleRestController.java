@@ -56,6 +56,7 @@ public class RegistrarScheduleRestController {
     })
     @GetMapping("/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganizations() {
+        //todo MedicalOrganizationDtoService сразу получать дто
         List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
         return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
     }
@@ -69,8 +70,10 @@ public class RegistrarScheduleRestController {
     @PostMapping("/departments/{id}")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@Valid @PathVariable Long id) {
         ApiValidationUtils
+                //todo использовать isExist
                 .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(id),
                         414, "Медицинской организации с таким id нет!");
+        //todo DepartmentDtoService сразу получать дто
         List<Department> departments = departmentService.findAllByMedicalOrganizationId(id);
         return Response.ok(departmentMapper.toListDto(departments));
     }
@@ -84,8 +87,10 @@ public class RegistrarScheduleRestController {
     @PostMapping("/doctors/{id}")
     public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@Valid @PathVariable Long id) {
         ApiValidationUtils
+                //todo использовать isExist
                 .expectedNotNull(departmentService.findDepartmentById(id),
                         414, "Департамента с таким id нет!");
+        //todo DoctorDtoService сразу получать дто
         List<Doctor> doctors = doctorService.findAllByDepartmentId(id);
         return Response.ok(doctorMapper.toListDto(doctors));
     }
@@ -99,9 +104,10 @@ public class RegistrarScheduleRestController {
     @PostMapping("/talons/{id}")
     public Response<List<TalonDto>> getAllTalonsByDoctorId(@Valid @PathVariable Long id) {
         ApiValidationUtils
+                //todo использовать isExist
                 .expectedNotNull(doctorService.findByDoctorId(id),
                         414, "Доктора с таким id нет!");
-        //todo почему получаешь сущности? сразу получай дто
+        //todo TalonDtoService сразу получать дто
         List<Talon> talons = talonService.findAllByDoctorId(id);
         return Response.ok(talonMapper.toListDto(talons));
     }

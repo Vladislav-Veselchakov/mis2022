@@ -26,7 +26,6 @@ import java.util.List;
 public class HrManagerPersonalRestController {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
 
     @ApiOperation("find user by firstName and lastName")

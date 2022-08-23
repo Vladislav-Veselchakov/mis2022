@@ -1,4 +1,4 @@
-package ru.mis2022.models.payload.request;
+package ru.mis2022.config.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,5 +17,4 @@ public class LoginRequest {
 
     @NotBlank
     private String password;
-
 }
