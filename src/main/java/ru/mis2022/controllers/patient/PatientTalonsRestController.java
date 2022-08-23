@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.Talon.TalonDto;
+import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;

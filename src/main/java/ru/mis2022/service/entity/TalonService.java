@@ -1,6 +1,6 @@
 package ru.mis2022.service.entity;
 
-import ru.mis2022.models.dto.Talon.DoctorTalonsDto;
+import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;

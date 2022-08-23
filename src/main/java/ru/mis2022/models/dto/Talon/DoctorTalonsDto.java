@@ -1,4 +1,4 @@
-package ru.mis2022.models.dto.Talon;
+package ru.mis2022.models.dto.talon;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;

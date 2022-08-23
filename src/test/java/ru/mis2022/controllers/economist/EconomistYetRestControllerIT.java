@@ -5,7 +5,7 @@ import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import ru.mis2022.models.dto.Yet.YetDto;
+import ru.mis2022.models.dto.yet.YetDto;
 import ru.mis2022.models.entity.Economist;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.mapper.YetMapper;
