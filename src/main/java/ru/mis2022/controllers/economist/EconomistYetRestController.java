@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.Yet.YetDto;
+import ru.mis2022.models.dto.yet.YetDto;
 import ru.mis2022.models.entity.Yet;
 import ru.mis2022.models.mapper.YetMapper;
 import ru.mis2022.models.response.Response;

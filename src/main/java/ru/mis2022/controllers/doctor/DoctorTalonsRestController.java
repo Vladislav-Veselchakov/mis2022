@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,16 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.Talon.TalonByDay;
-import ru.mis2022.models.dto.Talon.DoctorTalonsDto;
-import ru.mis2022.models.dto.Talon.TalonDto;
-import ru.mis2022.models.dto.Talon.converter.TalonDtoConverter;
+import ru.mis2022.models.dto.talon.TalonByDay;
+import ru.mis2022.models.dto.talon.DoctorTalonsDto;
+import ru.mis2022.models.dto.talon.TalonDto;
+import ru.mis2022.models.dto.talon.converter.TalonDtoConverter;
 import ru.mis2022.models.entity.Patient;
-import ru.mis2022.models.dto.talon.converter.TalonConverter;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.entity.User;
-import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DoctorService;
@@ -32,7 +31,6 @@ import ru.mis2022.utils.validation.ApiValidationUtils;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,9 +48,8 @@ public class DoctorTalonsRestController {
     private final DoctorService doctorService;
     private final PatientService patientService;
     private final TalonService talonService;
-    private final TalonConverter talonConverter;
-    private final TalonDtoService talonDtoService;
     private final TalonDtoConverter converter;
+    private final TalonDtoService talonDtoService;
 
     @PostMapping("/add")
     public Response<List<TalonDto>> addTalons() {
@@ -67,7 +64,7 @@ public class DoctorTalonsRestController {
         //todo метод persistTalonsForDoctorAndPatient неверный - не надо передавать пациента. по логике метода он всегда должен быть null
         List<Talon> talons = talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
 
-        return Response.ok(talonConverter.toTalonDtoByDoctorId(talons, doctor.getId()));
+        return Response.ok(converter.toTalonDtoByDoctorId(talons, doctor.getId()));
     }
 
     @ApiOperation("get all talons by doctor id")

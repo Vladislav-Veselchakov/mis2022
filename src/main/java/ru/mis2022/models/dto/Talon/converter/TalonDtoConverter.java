@@ -1,8 +1,9 @@
-package ru.mis2022.models.dto.Talon.converter;
+package ru.mis2022.models.dto.talon.converter;
 
 import org.springframework.stereotype.Service;
-import ru.mis2022.models.dto.Talon.TalonByDay;
-import ru.mis2022.models.dto.Talon.TalonDto;
+import ru.mis2022.models.dto.talon.TalonByDay;
+import ru.mis2022.models.dto.talon.TalonDto;
+import ru.mis2022.models.entity.Talon;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,5 +34,17 @@ public class TalonDtoConverter {
         }
         result.sort(Comparator.comparing(TalonByDay::date));
         return result;
+    }
+
+    public List<TalonDto> toTalonDtoByDoctorId(List<Talon> talons, Long doctorId) {
+        List<TalonDto> setDto = new ArrayList<>();
+        for (Talon talon : talons) {
+            setDto.add(TalonDto.builder()
+                    .time(talon.getTime())
+                    .id(talon.getId())
+                    .doctorId(doctorId)
+                    .build());
+        }
+        return setDto;
     }
 }

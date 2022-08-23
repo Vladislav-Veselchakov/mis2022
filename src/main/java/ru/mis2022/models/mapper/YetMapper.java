@@ -2,7 +2,7 @@ package ru.mis2022.models.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.mis2022.models.dto.Yet.YetDto;
+import ru.mis2022.models.dto.yet.YetDto;
 import ru.mis2022.models.entity.Yet;
 import java.time.LocalDate;
 import java.time.YearMonth;

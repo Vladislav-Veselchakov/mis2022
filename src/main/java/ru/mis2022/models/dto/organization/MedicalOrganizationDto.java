@@ -1,4 +1,4 @@
-package ru.mis2022.models.dto.DepartmentDto;
+package ru.mis2022.models.dto.organization;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,14 @@ import javax.validation.constraints.Positive;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartmentDto {
+public class MedicalOrganizationDto {
 
     @Positive(message = "id должен быть положительным")
     private Long id;
 
     @NotBlank
     private String name;
+
+    @NotBlank
+    private String address;
 }

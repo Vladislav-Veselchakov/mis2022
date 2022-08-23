@@ -2,7 +2,7 @@ package ru.mis2022.service.dto.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.mis2022.models.dto.Talon.TalonDto;
+import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.repositories.TalonRepository;
 import ru.mis2022.service.dto.TalonDtoService;
 
