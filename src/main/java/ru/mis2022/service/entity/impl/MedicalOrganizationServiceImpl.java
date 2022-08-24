@@ -29,4 +29,14 @@ public class MedicalOrganizationServiceImpl implements MedicalOrganizationServic
     public MedicalOrganization findMedicalOrganizationById(Long id) {
         return medicalOrganizationRepository.findMedicalOrganizationById(id);
     }
+
+    @Override
+    public MedicalOrganization findMedicalOrganizationByName(String name) {
+        return medicalOrganizationRepository.findMedicalOrganizationByName(name);
+    }
+
+    @Override
+    public void delete(Long id) {
+        medicalOrganizationRepository.deleteById(id);
+    }
 }

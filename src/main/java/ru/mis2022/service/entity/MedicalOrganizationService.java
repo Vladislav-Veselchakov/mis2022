@@ -11,4 +11,8 @@ public interface MedicalOrganizationService {
     List<MedicalOrganization> findAll();
 
     MedicalOrganization findMedicalOrganizationById(Long id);
+
+    MedicalOrganization findMedicalOrganizationByName(String name);
+
+    void delete(Long id);
 }
