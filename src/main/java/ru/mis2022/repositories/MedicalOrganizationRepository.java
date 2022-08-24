@@ -9,4 +9,6 @@ public interface MedicalOrganizationRepository extends JpaRepository<MedicalOrga
 
     @Query("SELECT m FROM MedicalOrganization m WHERE m.id = :id")
     MedicalOrganization findMedicalOrganizationById(Long id);
+
+    MedicalOrganization findMedicalOrganizationByName(String name);
 }
