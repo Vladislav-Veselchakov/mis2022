@@ -51,17 +51,21 @@ public class DoctorTalonsRestController {
     private final TalonDtoConverter converter;
     private final TalonDtoService talonDtoService;
 
+    //todo list4 swagger
     @PostMapping("/add")
     public Response<List<TalonDto>> addTalons() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Doctor doctor = doctorService.findByEmail(currentUser.getEmail());
-        //todo здесь всегда будет null т.к. по \тому мейлу будет только доктор. это лишнее
+        //todo list4 здесь всегда будет null т.к. по этому мейлу будет только доктор. удалить
         Patient patient = patientService.findByEmail(currentUser.getEmail());
 
         ApiValidationUtils
                 .expectedFalse(talonService.findTalonsCountByIdAndDoctor(numberOfDays, doctor) >= 1, 401,
                         "У доктора есть талоны на данные дни");
-        //todo метод persistTalonsForDoctorAndPatient неверный - не надо передавать пациента. по логике метода он всегда должен быть null
+        //todo list4 метод persistTalonsForDoctorAndPatient неверный - не надо передавать пациента.
+        // по логике метода мы должны создать доктору талоны без пациентов
+        // проблема теперь в том что этот метод переиспользовали
+        // необходимо изменить этот метод, поправить тесты которые поломаны эти методом
         List<Talon> talons = talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
 
         return Response.ok(converter.toTalonDtoByDoctorId(talons, doctor.getId()));
