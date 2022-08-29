@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import ru.mis2022.models.dto.patient.CurrentPatientDto;
 import ru.mis2022.models.entity.Patient;
 
+import java.util.List;
+
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
@@ -30,4 +32,11 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("SELECT p FROM Patient p WHERE p.id = :id")
     Patient findPatientById(Long id);
 
+    @Query("""
+            SELECT p FROM Patient p
+            WHERE LOWER(CONCAT(p.lastName,' ',p.firstName))
+                LIKE LOWER(CONCAT('%',:fullName,'%'))
+            ORDER BY p.lastName, p.firstName, p.id
+            """)
+    List<Patient> findPatientByFullName (String fullName);
 }

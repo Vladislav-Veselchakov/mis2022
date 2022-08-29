@@ -51,5 +51,13 @@ public class Patient extends User {
         this.polis = polis;
         this.snils = snils;
         this.address = address;
+
+    }
+
+    public Patient(String email, String password,String firstName, String lastName, String surname, LocalDate birthday, Role role, String passport, String polis, String snils) {
+        super(email, password,firstName, lastName, surname, birthday, role);
+        this.passport = passport;
+        this.polis = polis;
+        this.snils = snils;
     }
 }

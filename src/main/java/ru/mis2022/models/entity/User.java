@@ -95,6 +95,14 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public User(String firstName, String lastName, @Nullable String surname, LocalDate birthday, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
