@@ -25,7 +25,6 @@ import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -68,8 +67,7 @@ public class PatientScheduleRestController {
     @GetMapping(value = "/medicalOrganization/{medOrgId}/getAllDepartments")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@PathVariable Long medOrgId) {
         ApiValidationUtils
-                //todo list1 использовать метод isExist
-                .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(medOrgId),
+                .expectedTrue(medicalOrganizationService.isExistById(medOrgId),
                         414, "Медицинской организации с таким id нет");
         //todo list2 DepartmentDtoService сразу получить дто
         List<Department> departments = departmentService.findAllByMedicalOrganizationId(medOrgId);

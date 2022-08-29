@@ -1,6 +1,8 @@
 package ru.mis2022.controllers.economist;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +23,9 @@ public class EconomistRestController {
     private final EconomistDtoService economistDtoService;
 
     @GetMapping("/mainPage/current")
-    //todo list1 добавить описание сваггера
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Метод возвращает экономиста"),
+    })
     @ApiOperation(value = "This method is used to get current economist.")
     public Response<CurrentEconomistDto> getCurrentEconomistDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.department.DepartmentDto;
-import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
+import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.MedicalOrganization;
@@ -69,8 +69,7 @@ public class RegistrarScheduleRestController {
     @PostMapping("/departments/{id}")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                //todo list1 использовать isExist
-                .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(id),
+                .expectedTrue(medicalOrganizationService.isExistById(id),
                         414, "Медицинской организации с таким id нет!");
         //todo list2 DepartmentDtoService сразу получать дто
         List<Department> departments = departmentService.findAllByMedicalOrganizationId(id);
@@ -86,8 +85,7 @@ public class RegistrarScheduleRestController {
     @PostMapping("/doctors/{id}")
     public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                //todo list1 использовать isExist
-                .expectedNotNull(departmentService.findDepartmentById(id),
+                .expectedTrue(departmentService.isExistById(id),
                         414, "Департамента с таким id нет!");
         //todo list2 DoctorDtoService сразу получать дто
         List<Doctor> doctors = doctorService.findAllByDepartmentId(id);
@@ -103,8 +101,7 @@ public class RegistrarScheduleRestController {
     @PostMapping("/talons/{id}")
     public Response<List<TalonDto>> getAllTalonsByDoctorId(@Valid @PathVariable Long id) {
         ApiValidationUtils
-                //todo list1 использовать isExist
-                .expectedNotNull(doctorService.findByDoctorId(id),
+                .expectedTrue(doctorService.isExistsById(id),
                         414, "Доктора с таким id нет!");
         //todo list2 TalonDtoService сразу получать дто
         List<Talon> talons = talonService.findAllByDoctorId(id);

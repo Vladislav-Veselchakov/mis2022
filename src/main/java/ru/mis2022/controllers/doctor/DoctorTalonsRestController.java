@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,12 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.talon.TalonByDay;
 import ru.mis2022.models.dto.talon.DoctorTalonsDto;
+import ru.mis2022.models.dto.talon.TalonByDay;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.dto.talon.converter.TalonDtoConverter;
-import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.models.response.Response;
@@ -79,7 +78,7 @@ public class DoctorTalonsRestController {
     @GetMapping("/get/group/{doctorId}")
     public Response<List<TalonByDay>> getAllTalonsByDoctorId(@PathVariable Long doctorId) {
         ApiValidationUtils
-                .expectedTrue(doctorService.existsById(doctorId),
+                .expectedTrue(doctorService.isExistsById(doctorId),
                         414, "Доктора с таким id нет!");
         return Response.ok(converter.groupByDay(
                 talonDtoService.findAllByDoctorId(doctorId).orElse(Collections.emptyList())));

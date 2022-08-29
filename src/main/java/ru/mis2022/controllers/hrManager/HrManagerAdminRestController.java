@@ -2,7 +2,6 @@ package ru.mis2022.controllers.hrManager;
 
 
 import io.swagger.annotations.ApiOperation;
-
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,7 @@ import ru.mis2022.service.entity.UserService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 import ru.mis2022.utils.validation.OnCreate;
 import ru.mis2022.utils.validation.OnUpdate;
+
 import javax.validation.Valid;
 
 import static ru.mis2022.models.entity.Role.RolesEnum.ADMIN;
@@ -67,12 +67,10 @@ public class HrManagerAdminRestController {
     @Validated(OnUpdate.class)
     public Response<AdministratorDto> updateAdmin(@Valid @RequestBody AdministratorDto administratorDto) {
         ApiValidationUtils
-                //todo list1 заменить запрос на isExist()
-                .expectedNotNull(administratorService.findAdministratorById(administratorDto.getId()),
+                .expectedTrue(administratorService.isExistById(administratorDto.getId()),
                         410, "По переданному id администратор не найден.");
-        ApiValidationUtils.expectedNull(
-                //todo list1 заменить запрос на isExist()
-                        userService.findByEmailAndExceptCurrentId(administratorDto.getEmail(),
+        ApiValidationUtils.expectedFalse(
+                        userService.isExistsByNameAndId(administratorDto.getEmail(),
                                 administratorDto.getId()),
                 412, "Такой адрес электронной почты уже используется!");
         Administrator administrator =

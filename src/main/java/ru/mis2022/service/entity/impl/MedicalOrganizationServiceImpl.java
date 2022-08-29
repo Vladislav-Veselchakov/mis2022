@@ -39,4 +39,14 @@ public class MedicalOrganizationServiceImpl implements MedicalOrganizationServic
     public void delete(Long id) {
         medicalOrganizationRepository.deleteById(id);
     }
+
+    @Override
+    public boolean isExistById(Long id) {
+        return medicalOrganizationRepository.existsById(id);
+    }
+
+    @Override
+    public boolean isExistByName(String name) {
+        return medicalOrganizationRepository.existsByName(name);
+    }
 }

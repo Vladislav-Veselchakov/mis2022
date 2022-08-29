@@ -39,4 +39,9 @@ public class AdministratorServiceImpl implements AdministratorService {
         administrator.setPassword(encoder.encode(administrator.getPassword()));
         return administratorRepository.save(administrator);
     }
+
+    @Override
+    public boolean isExistById(Long id) {
+        return administratorRepository.existsById(id);
+    }
 }

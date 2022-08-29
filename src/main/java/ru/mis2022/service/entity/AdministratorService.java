@@ -11,4 +11,6 @@ public interface AdministratorService {
     Administrator persist (Administrator administrator);
 
     Administrator merge (Administrator administrator);
+
+    boolean isExistById(Long id);
 }

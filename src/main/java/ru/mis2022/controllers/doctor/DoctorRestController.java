@@ -1,6 +1,8 @@
 package ru.mis2022.controllers.doctor;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +22,9 @@ public class DoctorRestController {
     private final DoctorDtoService doctorDtoService;
 
     @ApiOperation("get a current doctor")
-    //todo list1 swagger
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Метод возвращает доктора"),
+    })
     @GetMapping("/mainPage/current")
     public Response<CurrentDoctorDto> getCurrentDoctorDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

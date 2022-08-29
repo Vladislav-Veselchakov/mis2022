@@ -1,5 +1,8 @@
 package ru.mis2022.controllers.patient;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +21,10 @@ import ru.mis2022.service.dto.PatientDtoService;
 public class PatientRestController {
     private final PatientDtoService patientDtoService;
 
-    //todo list1 swagger
+    @ApiOperation("get a patient")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Метод возвращает пациента"),
+    })
     @GetMapping("/mainPage/current")
     public Response<CurrentPatientDto> getCurrentPatientDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -1,8 +1,9 @@
 package ru.mis2022.controllers.hrManager;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,9 @@ public class HrManagerRestController {
     private final HrManagerDtoService hrManagerDtoService;
 
     @ApiOperation("get a current HrManager")
-    //todo list1 swagger
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Метод возвращает кадровика"),
+    })
     @GetMapping("/mainPage/current")
     public Response<CurrentHrManagerDto> getCurrentHrManagerDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
