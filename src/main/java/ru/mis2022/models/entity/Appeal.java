@@ -1,5 +1,6 @@
 package ru.mis2022.models.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,16 +46,26 @@ public class Appeal {
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "disease_id")
     private Disease disease;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appeal")
     private Set<Visit> visits;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
     private Account account;
 
-    private boolean isClosed = false;
+    private boolean isClosed;
 
-    private LocalDate localDate = LocalDate.now();
+    private LocalDate localDate;
+
+    public Appeal(Patient patient, Disease disease, Set<Visit> visits, Account account, boolean isClosed, LocalDate localDate) {
+        this.patient = patient;
+        this.disease = disease;
+        this.visits = visits;
+        this.account = account;
+        this.isClosed = isClosed;
+        this.localDate = localDate;
+    }
 }

@@ -39,4 +39,10 @@ public class Attestation {
     @JoinColumn(name = "personal_history_id")
     private PersonalHistory personalHistory;
 
+    public Attestation(LocalDate dateFrom, LocalDate dateTo, String documentNumber, PersonalHistory personalHistory) {
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.documentNumber = documentNumber;
+        this.personalHistory = personalHistory;
+    }
 }

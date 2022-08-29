@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
@@ -34,13 +35,20 @@ public class Visit {
     private LocalDate dayOfVisit;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appeal_id")
     private Appeal appeal;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "visit")
     private Set<MedicalService> medicalServices;
 
-
+    public Visit(LocalDate dayOfVisit, Doctor doctor, Appeal appeal, Set<MedicalService> medicalServices) {
+        this.dayOfVisit = dayOfVisit;
+        this.doctor = doctor;
+        this.appeal = appeal;
+        this.medicalServices = medicalServices;
+    }
 }

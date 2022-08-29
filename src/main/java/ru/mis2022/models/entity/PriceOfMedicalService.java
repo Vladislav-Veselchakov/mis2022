@@ -4,12 +4,12 @@ package ru.mis2022.models.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
@@ -30,5 +30,6 @@ public class PriceOfMedicalService {
     private LocalDate dayTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_service_id")
     private MedicalService medicalService;
 }
