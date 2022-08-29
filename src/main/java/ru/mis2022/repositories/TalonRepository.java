@@ -53,14 +53,20 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
             t.id,
             t.time,
             t.patient.id,
-            t.patient.firstName,
-            t.patient.lastName,
-            t.patient.surname
+            p.firstName,
+            p.lastName,
+            p.surname
             )
             FROM Talon t 
-            JOIN Doctor d ON t.doctor.id = d.id
-            WHERE t.time BETWEEN :startDayTime AND :endDayTime 
-            AND d.id = :doctorId ORDER BY t.time
+            JOIN Doctor d 
+                ON t.doctor.id = d.id
+            LEFT JOIN Patient p 
+                ON p.id = t.patient.id
+            WHERE
+                t.time BETWEEN :startDayTime AND :endDayTime 
+                AND d.id = :doctorId
+            ORDER BY
+                t.time
             """)
     List<DoctorTalonsDto> talonsByDoctorByDay(long doctorId, LocalDateTime startDayTime, LocalDateTime endDayTime);
 }

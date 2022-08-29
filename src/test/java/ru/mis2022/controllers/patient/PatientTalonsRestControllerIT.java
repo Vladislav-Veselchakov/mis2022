@@ -4,6 +4,7 @@ import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Patient;
@@ -18,6 +19,8 @@ import ru.mis2022.util.ContextIT;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -81,6 +84,20 @@ public class PatientTalonsRestControllerIT extends ContextIT {
         Patient patient = initPatient(role, "patient1@email.com");
         Doctor doctor = initDoctor(role1, null, null, "doctor1@email.com");
         talonService.persistTalonsForDoctor(doctor, 14, 4);
+
+        // Берем все получившиеся талонры и в след. строке заполнряем их пациентами:
+        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(doctor.getId(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
+                LocalDateTime.of(LocalDate.now().plusDays(14), LocalTime.MAX));
+        // заполняем все талоны пациентом:
+        doc4Talons.stream()
+                .map(x-> {
+                    Talon talon = talonService.findTalonById(x.id());
+                    talon.setPatient(patient);
+                    return talon;
+                })
+                .forEach(talonService::save);
+
 
         accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
 
