@@ -49,7 +49,7 @@ public class TalonServiceImpl implements TalonService {
     @Override
     public long findTalonsCountByIdAndDoctor(int numberOfDays, Doctor doctor) {
         LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now().plusDays(numberOfDays);
+        LocalDateTime endTime = LocalDateTime.now().plusDays(numberOfDays).with(LocalTime.MAX);
 
         return talonRepository.findCountTalonsByParameters(doctor.getId(), startTime, endTime);
     }
@@ -72,7 +72,7 @@ public class TalonServiceImpl implements TalonService {
     @Override
     public List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId) {
         LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now().plusDays(countDays);
+        LocalDateTime endTime = LocalDateTime.now().plusDays(countDays).with(LocalTime.MAX);
         return talonRepository.findDoctorsWithTalonsSpecificTimeRange(startTime,endTime, departmentId);
     }
 
