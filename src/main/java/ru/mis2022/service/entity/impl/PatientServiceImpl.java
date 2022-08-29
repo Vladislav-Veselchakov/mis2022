@@ -8,6 +8,7 @@ import ru.mis2022.models.entity.Patient;
 import ru.mis2022.repositories.PatientRepository;
 import ru.mis2022.service.entity.PatientService;
 
+import java.util.List;
 
 
 @Service
@@ -37,6 +38,11 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public boolean isExistById(Long id) {
         return patientRepository.existsById(id);
+    }
+
+    @Override
+    public List<Patient> findPatientByFullName(String fullName) {
+        return patientRepository.findPatientByFullName(fullName);
     }
 
 }

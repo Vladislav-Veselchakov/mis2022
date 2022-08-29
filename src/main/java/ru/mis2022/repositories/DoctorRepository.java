@@ -53,4 +53,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             SELECT d FROM Doctor d WHERE d.id = :id
             """)
     Doctor findDoctorById(Long id);
+
 }

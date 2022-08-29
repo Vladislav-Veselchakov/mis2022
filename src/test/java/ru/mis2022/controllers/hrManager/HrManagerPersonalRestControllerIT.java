@@ -92,7 +92,7 @@ public class HrManagerPersonalRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data[1].id", Is.is(intValue(user8.getId()))))
                 //Коротков Александр
                 .andExpect(jsonPath("$.data[2].id", Is.is(intValue(user10.getId()))));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+//               .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         //Вывод списка сотрудников в фамилии которых есть "ров", в имени "сил"
         String fullName1 = "ров сил";
