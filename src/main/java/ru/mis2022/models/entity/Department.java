@@ -45,11 +45,11 @@ public class Department {
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Doctor> doctors;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<Disease> diseases;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    private List<Disease> diseases;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<MedicalService> medicalServices;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    private List<MedicalService> medicalServices;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_organization_id")

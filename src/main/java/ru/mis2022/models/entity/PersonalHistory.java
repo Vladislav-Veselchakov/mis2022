@@ -1,10 +1,10 @@
 package ru.mis2022.models.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,6 +21,7 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class PersonalHistory {
 
@@ -28,13 +29,13 @@ public class PersonalHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personalHistory")
     private Set<Attestation> attestations;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personalHistory")
     private Set<Diploma> diplomas;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personalHistory")
     private Set<Vacation> vacations;
 
     private LocalDate dateOfEmployment;
