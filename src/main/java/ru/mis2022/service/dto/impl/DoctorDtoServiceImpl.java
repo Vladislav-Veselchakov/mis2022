@@ -23,4 +23,11 @@ public class DoctorDtoServiceImpl implements DoctorDtoService {
     public List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department) {
         return doctorRepository.findDoctorDtoByDepartment(department);
     }
+
+    @Override
+    public boolean isExistsById(Long id) {
+        return doctorRepository.existsById(id);
+    }
+
+
 }

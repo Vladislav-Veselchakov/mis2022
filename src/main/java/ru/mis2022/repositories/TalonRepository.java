@@ -63,4 +63,17 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
             AND d.id = :doctorId ORDER BY t.time
             """)
     List<DoctorTalonsDto> talonsByDoctorByDay(long doctorId, LocalDateTime startDayTime, LocalDateTime endDayTime);
+
+    @Query("""
+        SELECT new ru.mis2022.models.dto.talon.TalonDto(
+        t.id,
+        t.time,
+        t.doctor.id,
+        t.patient.id)
+        FROM Talon t
+        WHERE t.doctor.id = :doctorId
+         AND t.patient.id is NULL
+         AND t.time BETWEEN :timeNow AND :timeEnd
+        """)
+    List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd);
 }
