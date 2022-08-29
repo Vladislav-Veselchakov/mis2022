@@ -11,4 +11,6 @@ public interface MedicalOrganizationRepository extends JpaRepository<MedicalOrga
     MedicalOrganization findMedicalOrganizationById(Long id);
 
     MedicalOrganization findMedicalOrganizationByName(String name);
+
+    boolean existsByName(String name);
 }

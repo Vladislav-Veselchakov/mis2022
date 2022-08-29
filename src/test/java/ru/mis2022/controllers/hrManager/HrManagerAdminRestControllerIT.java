@@ -15,6 +15,7 @@ import ru.mis2022.service.entity.AdministratorService;
 import ru.mis2022.service.entity.HrManagerService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.util.ContextIT;
+
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -154,7 +155,7 @@ public class HrManagerAdminRestControllerIT extends ContextIT {
         Role roleAdministrator = initRole("ADMIN");
         Administrator administrator = initAdministrator(roleAdministrator);
         AdministratorDto validDtoUpdate = initAdministratorDto(administrator.getId(), "administrator3@email.com");
-        AdministratorDto noValidIdDtoUpdate = initAdministratorDto(null, "administrator3@email.com");
+        AdministratorDto noValidIdDtoUpdate = initAdministratorDto(4567876L, "administrator3@email.com");
         AdministratorDto noValidExistIdDtoUpdate = initAdministratorDto((long) 100, "administrator3@email.com");
         AdministratorDto noValidEmailDtoUpdate = initAdministratorDto(administrator.getId(), "123456");
 

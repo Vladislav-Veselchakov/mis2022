@@ -1,6 +1,9 @@
 package ru.mis2022.controllers.patient;
 
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,23 +31,26 @@ public class PatientTalonsRestController {
     private final TalonMapper talonMapper;
     private final PatientService patientService;
 
-    //todo list1 swagger
-   @GetMapping("/{patientId}")
+    @ApiOperation("get all patient")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Метод возвращает всех пациентов"),
+            @ApiResponse(code = 402, message = "Пациента с таким id нет"),
+    })
+    @GetMapping("/{patientId}")
     public Response<List<TalonDto>> getAllTalonsByPatientId(@PathVariable Long patientId) {
-       ApiValidationUtils
-               //todo list1 использовать метод isExist
-               .expectedNotNull(patientService.findPatientById(patientId),
-                       402, "Пациента с таким id нет!");
-       //todo list2 PatientDtoService сразу получать дто
-       List<Talon> talons = talonService.findAllByPatientId(patientId);
-       return Response.ok(talonMapper.toListDto(talons));
+        ApiValidationUtils
+                .expectedTrue(patientService.isExistById(patientId),
+                        402, "Пациента с таким id нет!");
+        //todo list2 PatientDtoService сразу получать дто
+        List<Talon> talons = talonService.findAllByPatientId(patientId);
+        return Response.ok(talonMapper.toListDto(talons));
     }
 
     //todo list 3 swagger
     // пациент может отменить запись только на себя поэтому не вариант передавать в параметры ИД пациента
     // надо получать текущего пациента и по нему удалять запись
     // надо найти талон по двум параметрам и если он null кинуть эксепшн, а если нет то снять пациента с талона
-    @PatchMapping ("/{talonId}/{patientId}")
+    @PatchMapping("/{talonId}/{patientId}")
     public Response<Void> cancelRecordTalons(@PathVariable Long talonId, @PathVariable Long patientId) {
 
         ApiValidationUtils

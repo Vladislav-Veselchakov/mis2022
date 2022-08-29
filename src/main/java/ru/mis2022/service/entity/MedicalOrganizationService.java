@@ -15,4 +15,8 @@ public interface MedicalOrganizationService {
     MedicalOrganization findMedicalOrganizationByName(String name);
 
     void delete(Long id);
+
+    boolean isExistById(Long id);
+
+    boolean isExistByName(String name);
 }

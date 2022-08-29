@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isExistsByNameAndId(String name, Long id) {
+        return userRepository.existsByEmailAndId(name,id);
+    }
+
+    @Override
     public User findByEmailAndExceptCurrentId(String email, Long id) {
         return userRepository.findByEmailAndExceptCurrentId(email, id);
     }

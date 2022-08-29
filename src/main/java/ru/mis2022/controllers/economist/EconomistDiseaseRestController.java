@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import ru.mis2022.models.entity.Disease;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.entity.DiseaseService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
+import ru.mis2022.utils.validation.OnCreate;
 
 import java.util.List;
 
@@ -39,13 +41,13 @@ public class EconomistDiseaseRestController {
         return Response.ok(diseaseService.findAllDiseaseDto());
     }
 
-    //todo list1  добавить валидацию на уровне дто onCreate
     @PostMapping("/create")
     @ApiOperation(value = "This method is used to save new disease.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Заболевание было сохранено."),
             @ApiResponse(code = 410, message = "Заболевание с данным идентификатором уже существует."),
     })
+    @Validated(OnCreate.class)
     public Response<DiseaseDto> persistDisease(@RequestBody DiseaseDto diseaseDto) {
         ApiValidationUtils
                 .expectedFalse(diseaseService.isExistByIdentifier(diseaseDto.identifier()), 410,
@@ -70,4 +72,5 @@ public class EconomistDiseaseRestController {
         diseaseService.deleteById(diseaseId);
         return Response.ok();
     }
+
 }

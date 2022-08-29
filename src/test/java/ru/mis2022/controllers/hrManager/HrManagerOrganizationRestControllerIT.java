@@ -153,7 +153,7 @@ public class HrManagerOrganizationRestControllerIT extends ContextIT {
         HrManager hrManager = initHrManager(role);
 
         MedicalOrganization validMedOrganizationUpdate = initMedicalOrganizations("Больница №2", "Москва, Разина, 3");
-        MedicalOrganization noValid = new MedicalOrganization(null, "Больница 1", "Москва, Разина, 3",
+        MedicalOrganization noValid = new MedicalOrganization(987654567L, "Больница 1", "Москва, Разина, 3",
                 null);
         validMedOrganizationUpdate.setAddress("Москва, Разина, 55");
 

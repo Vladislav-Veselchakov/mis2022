@@ -15,6 +15,6 @@ public interface DoctorService {
 
     Doctor findByDoctorId(Long id);
 
-    boolean existsById(long doctorId);
+    boolean isExistsById(long doctorId);
 
 }

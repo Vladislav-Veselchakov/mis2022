@@ -57,8 +57,7 @@ public class HrManagerOrganizationRestController {
     public Response<MedicalOrganizationDto> saveMedicalOrganization(@Valid @RequestBody
                                                                     MedicalOrganizationDto medicalOrganizationDto) {
         ApiValidationUtils
-                //todo list1 использовать метод isExist
-                .expectedNull(medicalOrganizationService.findMedicalOrganizationByName(medicalOrganizationDto.getName()),
+                .expectedFalse(medicalOrganizationService.isExistByName(medicalOrganizationDto.getName()),
                         412, "Такое имя медицинской организации уже используется!");
         MedicalOrganization medicalOrganization =
                 medicalOrganizationService.save(
@@ -78,8 +77,7 @@ public class HrManagerOrganizationRestController {
     public Response<MedicalOrganizationDto> updateMedicalOrganization(@Valid @RequestBody
                                                                       MedicalOrganizationDto medicalOrganizationDto) {
         ApiValidationUtils
-                //todo list1 использовать метод isExist
-                .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(medicalOrganizationDto.getId()),
+                .expectedTrue(medicalOrganizationService.isExistById(medicalOrganizationDto.getId()),
                         410, "По переданному id медицинская организация не найдена.");
         MedicalOrganization medicalOrganization =
                 medicalOrganizationService.save(medicalOrganizationMapper
@@ -95,8 +93,7 @@ public class HrManagerOrganizationRestController {
     @DeleteMapping("/deleteMedicalOrganization/{id}")
     public Response<Void> deleteMedicalOrganization(@PathVariable Long id) {
         ApiValidationUtils
-                //todo list1 использовать метод isExist
-                .expectedNotNull(medicalOrganizationService.findMedicalOrganizationById(id),
+                .expectedTrue(medicalOrganizationService.isExistById(id),
                         414, "Медицинской организации с таким id нет!");
         medicalOrganizationService.delete(id);
         return Response.ok();
