@@ -33,14 +33,14 @@ public class TalonServiceImpl implements TalonService {
     //todo list4 разблокировать метод после решения его проблемы
     @Deprecated
     //todo метод не использовать - он не корректный
-    public List<Talon> persistTalonsForDoctorAndPatient(Doctor doctor, Patient patient, int numberOfDays, int numbersOfTalons) {
+    public List<Talon> persistTalonsForDoctor(Doctor doctor, int numberOfDays, int numbersOfTalons) {
 
         List<Talon> talons = new ArrayList<>();
         LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));
 
         for (int day = 0; day < numberOfDays; day++) {
             for (int hour = 0; hour < numbersOfTalons; hour++) {
-                talons.add(talonRepository.save(new Talon(time.plusDays(day).plusHours(hour), doctor, patient)));
+                talons.add(talonRepository.save(new Talon(time.plusDays(day).plusHours(hour), doctor)));
             }
         }
         return talons;

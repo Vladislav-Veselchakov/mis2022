@@ -160,6 +160,9 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     }
 
     @Test
+    // todo на стыке месяцов тест не работет. Например, если сегодня 28.08 то далее к этой дате добавляется 4 дня и
+    // получается 02.09. Тест ожидает первый талон с датой 28.08, а получает 02.09, т.к. в классе
+    // TalonDtoConverter.groupByDay(..) идет сортировка по строке
     public void getAllTalonsByDoctorIdTest() throws Exception {
         Role role = initRole("DOCTOR");
         Role role1 = initRole("PATIENT");
@@ -243,7 +246,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         Department department = initDepartment("Therapy");
         Doctor doctor = initDoctor(role, department, null, "doctor@email.com");
         Patient patient = initPatient(role1);
-        talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
 
         accessToken = tokenUtil.obtainNewAccessToken(doctor.getEmail(), "1", mockMvc);
 

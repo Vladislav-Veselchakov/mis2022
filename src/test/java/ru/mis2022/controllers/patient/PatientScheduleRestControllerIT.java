@@ -186,10 +186,10 @@ public class PatientScheduleRestControllerIT extends ContextIT {
         Doctor doctor3 = initDoctor(roleDoctor, department, null, "doctor3@email.com");
         Doctor doctor4 = initDoctor(roleDoctor, department, null, "doctor4@email.com");
 
-        talonService.persistTalonsForDoctorAndPatient(doctor, null, numberOfDays, numbersOfTalons);
-        talonService.persistTalonsForDoctorAndPatient(doctor2, patient, numberOfDays, numbersOfTalons);
-        talonService.persistTalonsForDoctorAndPatient(doctor3, null, numberOfDays, numbersOfTalons);
-        talonService.persistTalonsForDoctorAndPatient(doctor4, patient, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor,  numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor2,  numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor3,  numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor4,  numberOfDays, numbersOfTalons);
 
 
         accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);

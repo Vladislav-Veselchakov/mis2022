@@ -203,7 +203,7 @@ public class RegistrarScheduleRestControllerIT extends ContextIT {
 
         Role rolePatient = initRole("PATIENT");
         Patient patient = initPatient(rolePatient);
-        talonService.persistTalonsForDoctorAndPatient(doctor, patient,14, 4);
+        talonService.persistTalonsForDoctor(doctor,14, 4);
 
         //Вывод талонов доктора
         mockMvc.perform(post("/api/registrar/schedule/talons/{id}", doctor.getId())

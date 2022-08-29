@@ -80,7 +80,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
         Role role1 = initRole("DOCTOR");
         Patient patient = initPatient(role, "patient1@email.com");
         Doctor doctor = initDoctor(role1, null, null, "doctor1@email.com");
-        talonService.persistTalonsForDoctorAndPatient(doctor, patient,14, 4);
+        talonService.persistTalonsForDoctor(doctor, 14, 4);
 
         accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
 
@@ -116,7 +116,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
         Role role1 = initRole("DOCTOR");
         Patient patient = initPatient(role, "patient1@email.com");
         Doctor doctor = initDoctor(role1, null, null, "doctor1@email.com");
-        talonService.persistTalonsForDoctorAndPatient(doctor, patient,14, 4);
+        talonService.persistTalonsForDoctor(doctor,14, 4);
         Talon talon = initTalon(null, doctor, patient);
         talonService.save(talon);
 

@@ -191,10 +191,10 @@ public class DataInitializer {
         Doctor doctor3 = doctorService.findByEmail("doctor3@email.com");
         Doctor doctor4 = doctorService.findByEmail("doctor4@email.com");
         Patient patient = patientService.findByEmail("patient1@email.com");
-        talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
-        talonService.persistTalonsForDoctorAndPatient(doctor2, null, numberOfDays, numbersOfTalons);
-        talonService.persistTalonsForDoctorAndPatient(doctor3, null, numberOfDays, numbersOfTalons);
-        talonService.persistTalonsForDoctorAndPatient(doctor4, null, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor2,  numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor3,  numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor4,  numberOfDays, numbersOfTalons);
 
 
         for (int num = 1; num < 2; num++) {
