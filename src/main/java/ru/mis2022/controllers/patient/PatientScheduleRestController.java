@@ -14,17 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.department.DepartmentDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
+import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.mapper.DepartmentMapper;
 import ru.mis2022.models.mapper.DoctorMapper;
 import ru.mis2022.models.mapper.MedicalOrganizationMapper;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.DoctorDtoService;
+import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -44,6 +49,8 @@ public class PatientScheduleRestController {
     private final DepartmentMapper departmentMapper;
     private final DoctorMapper doctorMapper;
     private final TalonService talonService;
+    private final TalonDtoService talonDtoService;
+    private final DoctorDtoService doctorDtoService;
 
 
     @ApiOperation("get all medical organizations")
@@ -86,5 +93,22 @@ public class PatientScheduleRestController {
                         414, "Департамента с таким id нет!");
         return Response.ok(doctorMapper.toListDto(
                 talonService.findDoctorsWithTalonsSpecificTimeRange(numberOfDays, departmentId)));
+    }
+
+
+    @ApiOperation("get all talons by doctor id and between dates")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Список всех свободных талонов доктора"),
+            @ApiResponse(code = 414, message = "Доктора с таким id нет"),
+    })
+    @GetMapping("/departments/{doctorId}/getFreeTalons")
+    public Response<List<TalonDto>> getAllTalonsByDoctorId(@PathVariable Long doctorId) {
+        ApiValidationUtils
+                .expectedTrue(doctorDtoService.isExistsById(doctorId), 414, "Доктора с таким id нет!");
+        return Response.ok(
+                talonDtoService.findTalonsByDoctorIdAndTimeBetween(
+                        doctorId,
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(numberOfDays).with(LocalTime.MAX)));
     }
 }

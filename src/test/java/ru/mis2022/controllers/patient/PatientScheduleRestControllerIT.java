@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Talon;
+import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.entity.Patient;
-import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
@@ -19,8 +20,10 @@ import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.util.ContextIT;
-
+import ru.mis2022.utils.DateFormatter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,7 +71,7 @@ public class PatientScheduleRestControllerIT extends ContextIT {
 
     Patient initPatient(Role role) {
         return patientService.persist(new Patient(
-                "patient1@email.com",
+                "patient1test@email.com",
                 "1",
                 "f_name",
                 "l_name",
@@ -80,6 +83,12 @@ public class PatientScheduleRestControllerIT extends ContextIT {
                 "Snils 123 456789",
                 "Moscow, Mira st. 12-4-35"
         ));
+    }
+
+    Talon initTalon(LocalDateTime time, Doctor doctor, Patient patient) {
+
+
+        return talonService.save(new Talon(time, doctor, patient));
     }
 
     Doctor initDoctor(Role role, Department department, PersonalHistory personalHistory, String email) {
@@ -113,11 +122,11 @@ public class PatientScheduleRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.code", Is.is(200)));
 
 
-       initMedicalOrganization("City Hospital", "Moscow, Pravda street, 30");
+        initMedicalOrganization("City Hospital", "Moscow, Pravda street, 30");
 
-       initMedicalOrganization("Hospital №1", "St. Peterburg, Lenina avenue, 3");
+        initMedicalOrganization("Hospital №1", "St. Peterburg, Lenina avenue, 3");
 
-       initMedicalOrganization("City Clinic Hospital", "Saratov, Grin street, 25");
+        initMedicalOrganization("City Clinic Hospital", "Saratov, Grin street, 25");
 
         //Вывод списка мед организаций
         mockMvc.perform(get("/api/patient/medicalOrganizations")
@@ -163,8 +172,8 @@ public class PatientScheduleRestControllerIT extends ContextIT {
         initDepartment("Pediatrics", medicalOrganization);
 
         mockMvc.perform(get("/api/patient/medicalOrganization/{medOrgId}/getAllDepartments", medicalOrganization.getId())
-                .header("Authorization", accessToken)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", Is.is(true)))
                 .andExpect(jsonPath("$.data.[0].name", Is.is("Therapy")))
@@ -232,14 +241,96 @@ public class PatientScheduleRestControllerIT extends ContextIT {
 
         //В этом департаменте нет докторов с пустыми талонами
         mockMvc.perform(get("/api/patient/departments/{departmentId}/getAllDoctors", department2.getId())
-                .header("Authorization", accessToken)
-                .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", Is.is(true)))
                 .andExpect(jsonPath("$.code", Is.is(200)))
                 .andExpect(jsonPath("$.data.length()", Is.is(0)));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+    }
+
+    @Test
+    void findTalonsByDoctorIdAndTimeBetweenTest() throws Exception {
+
+        Role rolePatient = initRole("PATIENT");
+        Role roleDoctor = initRole("DOCTOR");
+        Patient patient = initPatient(rolePatient);
+        Doctor doctor = initDoctor(roleDoctor, null, null, "doctor1test@email.com");
+
+        LocalDateTime fixedTimeNow = LocalDateTime.now();
+
+        //подходящие талоны
+        initTalon(fixedTimeNow.plusDays(2), doctor, null);
+        initTalon(fixedTimeNow.plusDays(2).plusHours(1), doctor, null);
+        initTalon(fixedTimeNow.plusDays(2).plusHours(2), doctor, null);
+        initTalon(fixedTimeNow.plusDays(3), doctor, null);
+        initTalon(fixedTimeNow.plusDays(3).plusHours(1), doctor, null);
+        initTalon(fixedTimeNow.plusDays(3).plusHours(2), doctor, null);
+        initTalon(fixedTimeNow.plusDays(7).with(LocalTime.MAX).minusMinutes(30), doctor, null);
+
+        //Неподходящие талоны
+        initTalon(fixedTimeNow.minusDays(100), doctor, null);
+        initTalon(fixedTimeNow.plusDays(100), doctor, null);
+
+        //Занятые талоны
+        initTalon(fixedTimeNow.plusDays(2), doctor, patient);
+        initTalon(fixedTimeNow.plusDays(2).minusHours(1), doctor, patient);
+        initTalon(fixedTimeNow.plusDays(2).minusHours(2), doctor, patient);
+        initTalon(fixedTimeNow.plusDays(3), doctor, patient);
+        initTalon(fixedTimeNow.plusDays(3).minusHours(1), doctor, patient);
+        initTalon(fixedTimeNow.plusDays(3).minusHours(2), doctor, patient);
+
+        accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
+
+        //Доктора с таким id нет
+        mockMvc.perform(get("/api/patient/departments/{doctorId}/getFreeTalons", 6666)
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.success", Is.is(false)))
+                .andExpect(jsonPath("$.code", Is.is(414)))
+                .andExpect(jsonPath("$.text", Is.is("Доктора с таким id нет!")));
+        //.andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
+        //проверяем валидные талоны
+        mockMvc.perform(get("/api/patient/departments/{doctorId}/getFreeTalons", doctor.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+
+                .andExpect(jsonPath("$.data[0].time", Is.is(fixedTimeNow.plusDays(2).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[0].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[0].patientId", Matchers.nullValue()))
+
+                .andExpect(jsonPath("$.data[1].time", Is.is(fixedTimeNow.plusDays(2).plusHours(1).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[1].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[1].patientId", Matchers.nullValue()))
+
+                .andExpect(jsonPath("$.data[2].time", Is.is(fixedTimeNow.plusDays(2).plusHours(2).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[2].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[2].patientId", Matchers.nullValue()))
+
+                .andExpect(jsonPath("$.data[3].time", Is.is(fixedTimeNow.plusDays(3).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[3].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[3].patientId", Matchers.nullValue()))
+
+                .andExpect(jsonPath("$.data[4].time", Is.is(fixedTimeNow.plusDays(3).plusHours(1).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[4].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[4].patientId", Matchers.nullValue()))
+
+                .andExpect(jsonPath("$.data[5].time", Is.is(fixedTimeNow.plusDays(3).plusHours(2).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[5].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[5].patientId", Matchers.nullValue()))
+
+                .andExpect(jsonPath("$.data[6].time", Is.is(fixedTimeNow.plusDays(7).with(LocalTime.MAX).minusMinutes(29).format(DateFormatter.DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data[6].doctorId", Is.is(doctor.getId().intValue())))
+                .andExpect(jsonPath("$.data[6].patientId", Matchers.nullValue()));
+              //.andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
     }
 }
 

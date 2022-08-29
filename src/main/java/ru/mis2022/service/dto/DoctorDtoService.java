@@ -11,4 +11,7 @@ public interface DoctorDtoService {
 
     CurrentDoctorDto getCurrentDoctorDtoByEmail(String email);
     List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department);
+
+
+    boolean isExistsById(Long id);
 }

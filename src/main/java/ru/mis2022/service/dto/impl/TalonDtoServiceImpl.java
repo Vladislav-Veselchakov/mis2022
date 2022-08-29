@@ -6,6 +6,7 @@ import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.repositories.TalonRepository;
 import ru.mis2022.service.dto.TalonDtoService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,10 @@ public class TalonDtoServiceImpl implements TalonDtoService {
     public Optional<List<TalonDto>> findAllByDoctorId(long doctorId) {
         return talonRepository.findAllDtosByDoctorId(doctorId);
     }
+
+    @Override
+    public List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd) {
+        return talonRepository.findTalonsByDoctorIdAndTimeBetween(doctorId, timeNow, timeEnd);
+    }
+
 }
