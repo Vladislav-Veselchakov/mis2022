@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;

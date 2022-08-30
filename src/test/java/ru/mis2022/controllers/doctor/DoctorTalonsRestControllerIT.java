@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Patient;
@@ -23,6 +24,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjuster;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -160,6 +163,9 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     }
 
     @Test
+    // todo на стыке месяцов тест не работет. Например, если сегодня 28.08 то далее к этой дате добавляется 4 дня и
+    // получается 02.09. Тест ожидает первый талон с датой 28.08, а получает 02.09, т.к. в классе
+    // TalonDtoConverter.groupByDay(..) идет сортировка по строке
     public void getAllTalonsByDoctorIdTest() throws Exception {
         Role role = initRole("DOCTOR");
         Role role1 = initRole("PATIENT");
@@ -243,7 +249,21 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         Department department = initDepartment("Therapy");
         Doctor doctor = initDoctor(role, department, null, "doctor@email.com");
         Patient patient = initPatient(role1);
-        talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
+        talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
+
+        // Берем получившиеся талоны (чтобы дальше заполнить пациентом)
+        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(doctor.getId(),
+                                                    LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
+                                                    LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
+
+        // Заполняем все свободные талоны пациентом:
+        doc4Talons.stream()
+                .map(x-> {
+                    Talon talon = talonService.findTalonById(x.id());
+                    talon.setPatient(patient);
+                    return talon;
+                })
+                .forEach(talonService::save);
 
         accessToken = tokenUtil.obtainNewAccessToken(doctor.getEmail(), "1", mockMvc);
 

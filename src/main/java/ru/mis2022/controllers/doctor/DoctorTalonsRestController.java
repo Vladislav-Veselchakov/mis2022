@@ -50,13 +50,17 @@ public class DoctorTalonsRestController {
     private final TalonDtoConverter converter;
     private final TalonDtoService talonDtoService;
 
-    //todo list4 swagger
+    //========== DONE todo list4 swagger
+    @ApiOperation("Add empty talons for the doctor")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Создать пустые талонгы на несколько дней вперёд"),
+            @ApiResponse(code = 401, message = "У доктора есть талоны на данные дни"),
+    })
+
     @PostMapping("/add")
     public Response<List<TalonDto>> addTalons() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Doctor doctor = doctorService.findByEmail(currentUser.getEmail());
-        //todo list4 здесь всегда будет null т.к. по этому мейлу будет только доктор. удалить
-        Patient patient = patientService.findByEmail(currentUser.getEmail());
 
         ApiValidationUtils
                 .expectedFalse(talonService.findTalonsCountByIdAndDoctor(numberOfDays, doctor) >= 1, 401,
@@ -65,7 +69,7 @@ public class DoctorTalonsRestController {
         // по логике метода мы должны создать доктору талоны без пациентов
         // проблема теперь в том что этот метод переиспользовали
         // необходимо изменить этот метод, поправить тесты которые поломаны эти методом
-        List<Talon> talons = talonService.persistTalonsForDoctorAndPatient(doctor, patient, numberOfDays, numbersOfTalons);
+        List<Talon> talons = talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
 
         return Response.ok(converter.toTalonDtoByDoctorId(talons, doctor.getId()));
     }

@@ -15,7 +15,7 @@ public interface TalonService {
 
     long findTalonsCountByIdAndDoctor(int countDays, Doctor doctor);
 
-    List<Talon> persistTalonsForDoctorAndPatient(Doctor doctor, Patient patient, int numberOfDays, int numbersOfTalons);
+    List<Talon> persistTalonsForDoctor(Doctor doctor, int numberOfDays, int numbersOfTalons);
 
     List<Talon> findAllByPatientId(Long id);
 
