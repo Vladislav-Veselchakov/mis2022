@@ -30,9 +30,6 @@ public class TalonServiceImpl implements TalonService {
 
     @Override
     @Transactional
-    //todo list4 разблокировать метод после решения его проблемы
-    @Deprecated
-    //todo метод не использовать - он не корректный
     public List<Talon> persistTalonsForDoctor(Doctor doctor, int numberOfDays, int numbersOfTalons) {
 
         List<Talon> talons = new ArrayList<>();

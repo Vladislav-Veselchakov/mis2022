@@ -50,7 +50,6 @@ public class DoctorTalonsRestController {
     private final TalonDtoConverter converter;
     private final TalonDtoService talonDtoService;
 
-    //========== DONE todo list4 swagger
     @ApiOperation("Add empty talons for the doctor")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Создать пустые талонгы на несколько дней вперёд"),
@@ -65,10 +64,7 @@ public class DoctorTalonsRestController {
         ApiValidationUtils
                 .expectedFalse(talonService.findTalonsCountByIdAndDoctor(numberOfDays, doctor) >= 1, 401,
                         "У доктора есть талоны на данные дни");
-        //todo list4 метод persistTalonsForDoctorAndPatient неверный - не надо передавать пациента.
-        // по логике метода мы должны создать доктору талоны без пациентов
-        // проблема теперь в том что этот метод переиспользовали
-        // необходимо изменить этот метод, поправить тесты которые поломаны эти методом
+
         List<Talon> talons = talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
 
         return Response.ok(converter.toTalonDtoByDoctorId(talons, doctor.getId()));
