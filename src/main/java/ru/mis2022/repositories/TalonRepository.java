@@ -28,6 +28,20 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
     List<Talon> findAllByPatientId(Long id);
 
     @Query("""
+    SELECT new ru.mis2022.models.dto.talon.TalonDto(
+        t.id,
+        t.time,
+        t.doctor.id,
+        t.patient.id
+    )
+    FROM Talon t
+    WHERE 
+        t.patient.id = :id
+    """)
+    List<TalonDto> findAllByPatientIdDto(Long id);
+
+
+    @Query("""
                 select count(t) from Talon t
                 where t.doctor.id = :doctorId
                     and t.time between :startTime and :endTime

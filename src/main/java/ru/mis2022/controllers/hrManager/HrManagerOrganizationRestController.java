@@ -18,6 +18,7 @@ import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.mapper.MedicalOrganizationMapper;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.MedicalOrganizationDtoService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 import ru.mis2022.utils.validation.OnCreate;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequestMapping("/api/hr_manager")
 public class HrManagerOrganizationRestController {
     private final MedicalOrganizationService medicalOrganizationService;
+    private final MedicalOrganizationDtoService medicalOrganizationDtoService;
     private final MedicalOrganizationMapper medicalOrganizationMapper;
 
     @ApiOperation("get all medical organization")
@@ -41,9 +43,7 @@ public class HrManagerOrganizationRestController {
     })
     @GetMapping("/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> medicalOrganizationList() {
-        //todo list2 MedicalOrganizationDtoService получать сразу дто
-        List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
-        return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
+        return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
 

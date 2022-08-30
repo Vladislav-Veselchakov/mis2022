@@ -10,7 +10,10 @@ import ru.mis2022.utils.validation.OnCreate;
 import ru.mis2022.utils.validation.OnUpdate;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 
 
 @Builder
@@ -32,5 +35,9 @@ public record YetDto(
         @JsonDeserialize(using = YearMonthDeserializer.class)
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.yyyy")
         YearMonth dayTo) {
+
+        public YetDto(Long id, Double price, LocalDate pdayFrom, LocalDate pdayTo) {
+                this(id, price, YearMonth.from((TemporalAccessor) pdayFrom), YearMonth.from((TemporalAccessor) pdayTo));
+        }
 
 }
