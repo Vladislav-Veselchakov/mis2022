@@ -15,6 +15,7 @@ import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.PatientDtoService;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
@@ -30,6 +31,7 @@ public class PatientTalonsRestController {
     private final TalonService talonService;
     private final TalonMapper talonMapper;
     private final PatientService patientService;
+    private final PatientDtoService patientDtoService;
 
     @ApiOperation("get all patient")
     @ApiResponses(value = {
@@ -38,12 +40,10 @@ public class PatientTalonsRestController {
     })
     @GetMapping("/{patientId}")
     public Response<List<TalonDto>> getAllTalonsByPatientId(@PathVariable Long patientId) {
-        ApiValidationUtils
-                .expectedTrue(patientService.isExistById(patientId),
-                        402, "Пациента с таким id нет!");
-        //todo list2 PatientDtoService сразу получать дто
-        List<Talon> talons = talonService.findAllByPatientId(patientId);
-        return Response.ok(talonMapper.toListDto(talons));
+       ApiValidationUtils
+               .expectedTrue(patientService.isExistById(patientId),
+                       402, "Пациента с таким id нет!");
+       return Response.ok(patientDtoService.findAllByPatientId(patientId));
     }
 
     //todo list 3 swagger

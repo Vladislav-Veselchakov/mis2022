@@ -24,6 +24,10 @@ import ru.mis2022.models.mapper.DoctorMapper;
 import ru.mis2022.models.mapper.MedicalOrganizationMapper;
 import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.DepartmentDtoService;
+import ru.mis2022.service.dto.DoctorDtoService;
+import ru.mis2022.service.dto.MedicalOrganizationDtoService;
+import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
@@ -32,6 +36,7 @@ import ru.mis2022.utils.validation.ApiValidationUtils;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Validated
 @RestController
@@ -40,9 +45,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RegistrarScheduleRestController {
     private final MedicalOrganizationService medicalOrganizationService;
+    private final MedicalOrganizationDtoService medicalOrganizationDtoService;
     private final DepartmentService departmentService;
+    private final DepartmentDtoService departmentDtoService;
     private final DoctorService doctorService;
+    private final DoctorDtoService doctorDtoService;
     private final TalonService talonService;
+    private final TalonDtoService talonDtoService;
     private final MedicalOrganizationMapper medicalOrganizationMapper;
     private final DepartmentMapper departmentMapper;
     private final DoctorMapper doctorMapper;
@@ -55,9 +64,7 @@ public class RegistrarScheduleRestController {
     })
     @GetMapping("/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganizations() {
-        //todo list2 MedicalOrganizationDtoService сразу получать дто
-        List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
-        return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
+        return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
     @ApiOperation("get all departments in medical organization by id")
@@ -71,9 +78,7 @@ public class RegistrarScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(medicalOrganizationService.isExistById(id),
                         414, "Медицинской организации с таким id нет!");
-        //todo list2 DepartmentDtoService сразу получать дто
-        List<Department> departments = departmentService.findAllByMedicalOrganizationId(id);
-        return Response.ok(departmentMapper.toListDto(departments));
+        return Response.ok(departmentDtoService.findAllByMedicalOrganizationId(id));
     }
 
     @ApiOperation("get all doctors in department by id")
@@ -87,9 +92,7 @@ public class RegistrarScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(departmentService.isExistById(id),
                         414, "Департамента с таким id нет!");
-        //todo list2 DoctorDtoService сразу получать дто
-        List<Doctor> doctors = doctorService.findAllByDepartmentId(id);
-        return Response.ok(doctorMapper.toListDto(doctors));
+        return Response.ok(doctorDtoService.findAllByDepartmentId(id));
     }
 
     @ApiOperation("get all talons by doctor id")
@@ -103,8 +106,6 @@ public class RegistrarScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(doctorService.isExistsById(id),
                         414, "Доктора с таким id нет!");
-        //todo list2 TalonDtoService сразу получать дто
-        List<Talon> talons = talonService.findAllByDoctorId(id);
-        return Response.ok(talonMapper.toListDto(talons));
+        return Response.ok(talonDtoService.findAllByDoctorId(id).get());
     }
 }

@@ -21,6 +21,8 @@ import ru.mis2022.models.mapper.DepartmentMapper;
 import ru.mis2022.models.mapper.DoctorMapper;
 import ru.mis2022.models.mapper.MedicalOrganizationMapper;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.DepartmentDtoService;
+import ru.mis2022.service.dto.MedicalOrganizationDtoService;
 import ru.mis2022.service.dto.DoctorDtoService;
 import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DepartmentService;
@@ -44,7 +46,9 @@ public class PatientScheduleRestController {
     private Integer numberOfDays;
 
     private final DepartmentService departmentService;
+    private final DepartmentDtoService departmentDtoService;
     private final MedicalOrganizationService medicalOrganizationService;
+    private final MedicalOrganizationDtoService medicalOrganizationDtoService;
     private final MedicalOrganizationMapper medicalOrganizationMapper;
     private final DepartmentMapper departmentMapper;
     private final DoctorMapper doctorMapper;
@@ -60,9 +64,7 @@ public class PatientScheduleRestController {
     })
     @GetMapping(value = "/medicalOrganizations")
     public Response<List<MedicalOrganizationDto>> getAllMedicalOrganization() {
-        //todo list2 MedicalOrganizationDtoService сразу получить дто
-        List<MedicalOrganization> medicalOrganizations = medicalOrganizationService.findAll();
-        return Response.ok(medicalOrganizationMapper.toListDto(medicalOrganizations));
+        return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
     @ApiOperation("get all departments by medical organization id")
@@ -76,9 +78,7 @@ public class PatientScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(medicalOrganizationService.isExistById(medOrgId),
                         414, "Медицинской организации с таким id нет");
-        //todo list2 DepartmentDtoService сразу получить дто
-        List<Department> departments = departmentService.findAllByMedicalOrganizationId(medOrgId);
-        return Response.ok(departmentMapper.toListDto(departments));
+        return Response.ok(departmentDtoService.findAllByMedicalOrganizationId(medOrgId));
     }
 
     @ApiOperation("get all doctors by department id")

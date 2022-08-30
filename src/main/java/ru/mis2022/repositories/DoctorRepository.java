@@ -3,6 +3,7 @@ package ru.mis2022.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
+import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 
@@ -48,6 +49,26 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     //todo дубль удалить
     List<Doctor> findAllByDepartmentId(Long id);
+    
+    @Query("""
+    SELECT new ru.mis2022.models.dto.doctor.DoctorDto(
+        d.id,
+        d.email,
+        d.password,
+        d.firstName,
+        d.lastName,
+        d.surname,
+        CAST(d.birthday as string),
+        d.role.name,
+        d.department.name
+    )
+    FROM 
+        Doctor d
+    WHERE 
+        d.department.id = :deptId
+    
+    """)
+    List<DoctorDto> findAllByDepartmentIdDto(Long deptId);
 
     @Query("""
             SELECT d FROM Doctor d WHERE d.id = :id
