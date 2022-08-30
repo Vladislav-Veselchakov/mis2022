@@ -269,8 +269,7 @@ public class DataInitializer {
         //Создаем расписание докторам (присваиваем доктору
         // numberOfDaysDoctor * numbersOfTalons талонов)
         for (Doctor doctor : doctorsList) {
-            talonService.persistTalonsForDoctorAndPatient(doctor,
-                    null, numberOfDaysDoctor, numbersOfTalons);
+            talonService.persistTalonsForDoctor(doctor, numberOfDaysDoctor, numbersOfTalons);
         }
 
         //Создаем персональные истории, аттестации, отпуска докторам
