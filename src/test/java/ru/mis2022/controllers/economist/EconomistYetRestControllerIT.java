@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.dto.yet.YetDto;
+import ru.mis2022.models.dto.yet.converter.YetDtoConverter;
 import ru.mis2022.models.entity.Economist;
 import ru.mis2022.models.entity.Role;
-import ru.mis2022.models.mapper.YetMapper;
 import ru.mis2022.service.entity.EconomistService;
 import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.YetService;
 import ru.mis2022.util.ContextIT;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -36,7 +37,7 @@ public class EconomistYetRestControllerIT extends ContextIT {
     @Autowired
     YetService yetService;
     @Autowired
-    YetMapper yetMapper;
+    YetDtoConverter yetDtoConverter;
 
     Role initRole(String name) {
         return roleService.save(Role.builder()
@@ -137,7 +138,7 @@ public class EconomistYetRestControllerIT extends ContextIT {
 
         //Создаем в базе второй ует
         YetDto newYet = initYetDto(null, 1000, "07.2000", "09.2000");
-        yetService.save(yetMapper.toEntity(newYet));
+        yetService.save(yetDtoConverter.toEntity(newYet));
 
         //Валидный ует, новый интервал ует перекрывает 2 существующих полностью
         YetDto noValidDayFromDayToDtoCreate2 = initYetDto(null, 500, "01.2000", "12.2000");
@@ -193,7 +194,7 @@ public class EconomistYetRestControllerIT extends ContextIT {
 
         //Создаем в базе ует, находим его id.
         YetDto newYet = initYetDto(null, 1000, "07.2000", "09.2000");
-        yetService.save(yetMapper.toEntity(newYet));
+        yetService.save(yetDtoConverter.toEntity(newYet));
         Long idDto = yetService.findAll().listIterator().next().getId();
 
         //Валидный ует, обновляем ует.
@@ -216,7 +217,7 @@ public class EconomistYetRestControllerIT extends ContextIT {
 
         //Создаем в базе еще один ует.
         YetDto newYet1 = initYetDto(null, 1000, "02.2001", "09.2001");
-        yetService.save(yetMapper.toEntity(newYet1));
+        yetService.save(yetDtoConverter.toEntity(newYet1));
 
         //Валидный ует, обновляем ует. Обновленный ует перекрывает полностью существующий интервал
         YetDto validDtoUpdate1 = initYetDto(idDto, 900, "01.2001", "10.2001");
@@ -250,7 +251,7 @@ public class EconomistYetRestControllerIT extends ContextIT {
 
         //Создаем в базе еще один ует.
         YetDto newYet2 = initYetDto(null, 1000, "10.2001", "12.2001");
-        yetService.save(yetMapper.toEntity(newYet2));
+        yetService.save(yetDtoConverter.toEntity(newYet2));
 
         //Валидный ует, обновляем ует. Интервал обновленного ует перекрывает частично 2 существующих
         YetDto validDtoUpdate3 = initYetDto(idDto, 900, "08.2001", "11.2001");
@@ -306,7 +307,7 @@ public class EconomistYetRestControllerIT extends ContextIT {
 
         //Создаем в базе ует, находим его id.
         YetDto newYet = initYetDto(null, 1000, "07.2000", "09.2000");
-        yetService.save(yetMapper.toEntity(newYet));
+        yetService.save(yetDtoConverter.toEntity(newYet));
         Long idDto = yetService.findAll().listIterator().next().getId();
 
         accessToken = tokenUtil.obtainNewAccessToken(economist.getEmail(), "1", mockMvc);
@@ -342,15 +343,15 @@ public class EconomistYetRestControllerIT extends ContextIT {
         accessToken = tokenUtil.obtainNewAccessToken(economist.getEmail(), "1", mockMvc);
 
         YetDto newYetDto = initYetDto(null, 100, "01.2001", "06.2001");
-        yetService.save(yetMapper.toEntity(newYetDto));
+        yetService.save(yetDtoConverter.toEntity(newYetDto));
         YetDto newYetDto1 = initYetDto(null, 200, "01.2002", "06.2002");
-        yetService.save(yetMapper.toEntity(newYetDto1));
+        yetService.save(yetDtoConverter.toEntity(newYetDto1));
         YetDto newYetDto2 = initYetDto(null, 300, "01.2003", "02.2003");
-        yetService.save(yetMapper.toEntity(newYetDto2));
+        yetService.save(yetDtoConverter.toEntity(newYetDto2));
         YetDto newYetDto3 = initYetDto(null, 400, "01.2004", "06.2004");
-        yetService.save(yetMapper.toEntity(newYetDto3));
+        yetService.save(yetDtoConverter.toEntity(newYetDto3));
         YetDto newYetDto4 = initYetDto(null, 500, "01.2005", "02.2005");
-        yetService.save(yetMapper.toEntity(newYetDto4));
+        yetService.save(yetDtoConverter.toEntity(newYetDto4));
         Long idDto = yetService.findAll().listIterator().next().getId();
 
         //Вывод списка записей Yet
