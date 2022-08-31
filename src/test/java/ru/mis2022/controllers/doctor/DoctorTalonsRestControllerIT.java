@@ -258,8 +258,8 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
 
         // Заполняем все свободные талоны пациентом:
         doc4Talons.stream()
-                .map(x-> {
-                    Talon talon = talonService.findTalonById(x.id());
+                .map(doctorTalonsDto-> {
+                    Talon talon = talonService.findTalonById(doctorTalonsDto.id());
                     talon.setPatient(patient);
                     return talon;
                 })
