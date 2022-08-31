@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.yet.YetDto;
+import ru.mis2022.models.dto.yet.converter.YetDtoConverter;
 import ru.mis2022.models.entity.Yet;
-import ru.mis2022.models.mapper.YetMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.YetDtoService;
 import ru.mis2022.service.entity.YetService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 import ru.mis2022.utils.validation.OnCreate;
 import ru.mis2022.utils.validation.OnUpdate;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,7 +36,7 @@ import java.util.List;
 public class EconomistYetRestController {
     private final YetService yetService;
     private final YetDtoService yetDtoService;
-    private final YetMapper yetMapper;
+    private final YetDtoConverter yetDtoConverter;
 
     @ApiOperation("create yet by Economist")
     @ApiResponses(value = {
@@ -50,12 +51,12 @@ public class EconomistYetRestController {
         ApiValidationUtils
                 .expectedFalse(yetDto.dayFrom().isAfter(yetDto.dayTo()),
                         417, "Даты указаны неверно!");
-        Yet yet = yetMapper.toEntity(yetDto);
+        Yet yet = yetDtoConverter.toEntity(yetDto);
         ApiValidationUtils.expectedFalse(
                 yetService.existYetDayFromDayTo(yet.getDayFrom(), yet.getDayTo()).size()!=0,
                 415, "Данные yet на этот период времени уже установлены!");
         yetService.save(yet);
-        return Response.ok(yetMapper.toDto(yet));
+        return Response.ok(yetDtoConverter.toDto(yet));
     }
 
     @ApiOperation("update yet by Economist")
@@ -75,7 +76,7 @@ public class EconomistYetRestController {
         ApiValidationUtils
                 .expectedNotNull(yetService.existById(yetDto.id()),
                         416, "По переданному id запись в базе отсутствует!");
-        Yet yet = yetMapper.toEntity(yetDto);
+        Yet yet = yetDtoConverter.toEntity(yetDto);
         ApiValidationUtils.expectedFalse(
                 yetService.existYetDayFromDayToExceptCurrentId(
                         yet.getId(), yet.getDayFrom(), yet.getDayTo()).size()!=0,
