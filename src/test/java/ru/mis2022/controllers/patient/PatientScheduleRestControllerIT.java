@@ -203,9 +203,10 @@ public class PatientScheduleRestControllerIT extends ContextIT {
         talonService.persistTalonsForDoctor(doctor4,  numberOfDays, numbersOfTalons);
 
         // Заполняем пациентами талоны доктора 4 (так было в тесте у Анны Муравьевой)
-        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(doctor4.getId(),
-                                                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
-                                                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
+        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(
+                doctor4.getId(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
+                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
 
         doc4Talons.stream()
             .map(doctorTalonsDto-> {
@@ -216,9 +217,10 @@ public class PatientScheduleRestControllerIT extends ContextIT {
             .forEach(talonService::save);
 
         // Заполняем пациентами талоны доктора 2 (так было в тесте у Анны Муравьевой)
-        List<DoctorTalonsDto> doc2Talons = talonService.getTalonsByDoctorIdAndDay(doctor2.getId(),
-                                                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
-                                                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
+        List<DoctorTalonsDto> doc2Talons = talonService.getTalonsByDoctorIdAndDay(
+                doctor2.getId(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
+                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
 
         doc2Talons.stream()
                 .map(doctorTalonsDto-> {
