@@ -2,11 +2,14 @@ package ru.mis2022.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import ru.mis2022.models.dto.doctor.CurrentChiefReportDto;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -49,7 +52,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     //todo дубль удалить
     List<Doctor> findAllByDepartmentId(Long id);
-    
+
     @Query("""
     SELECT new ru.mis2022.models.dto.doctor.DoctorDto(
         d.id,
@@ -74,5 +77,47 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             SELECT d FROM Doctor d WHERE d.id = :id
             """)
     Doctor findDoctorById(Long id);
+
+    //Отчет заведующего отделения по загруженности докторов его департамента
+    @Query("""
+    SELECT new ru.mis2022.models.dto.doctor.CurrentChiefReportDto(
+        d.id,
+        CONCAT(d.firstName, ' ', d.lastName, ' ', d.surname),
+        TO_CHAR(t.time,'YYYY-MM-DD'),
+        SUM(
+            CASE
+                WHEN (t.patient is not null) THEN 1
+                ELSE 0
+            END 
+            ),
+        SUM(
+            CASE
+                WHEN (t.id is not null) THEN 1
+                ELSE 0
+            END 
+            )
+    )
+    FROM  Doctor d
+    LEFT JOIN Talon t
+        on t.doctor.id = d.id
+        AND t.time BETWEEN :dateHome AND :DateEnd
+    WHERE
+        d.department.id = :deptId
+    GROUP BY
+        d.id,
+        d.firstName,
+        TO_CHAR(t.time,'YYYY-MM-DD')
+    ORDER BY
+        d.id,
+        TO_CHAR(t.time,'YYYY-MM-DD')
+""")
+    List<CurrentChiefReportDto> getWorkloadEmployeesReport(@Param("deptId") Long deptId, @Param("dateHome") LocalDateTime dateHome, @Param("DateEnd") LocalDateTime DateEnd);
+
+    @Query("""
+    SELECT d.department.id
+    FROM  Doctor d
+    WHERE d.id = :docId
+    """)
+    Long getDepartmentIdByDoctorId(@Param("docId") Long docId);
 
 }
