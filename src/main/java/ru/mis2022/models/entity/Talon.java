@@ -44,4 +44,8 @@ public class Talon {
         this.doctor = doctor;
         this.patient = patient;
     }
+    public Talon(LocalDateTime time, Doctor doctor) {
+        this.time = time;
+        this.doctor = doctor;
+    }
 }
