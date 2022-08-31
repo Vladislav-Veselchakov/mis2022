@@ -7,24 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.dto.talon.DoctorTalonsDto;
-import ru.mis2022.models.entity.Department;
-import ru.mis2022.models.entity.Doctor;
-import ru.mis2022.models.entity.Patient;
-import ru.mis2022.models.entity.PersonalHistory;
-import ru.mis2022.models.entity.Role;
-import ru.mis2022.models.entity.Talon;
-import ru.mis2022.service.entity.DepartmentService;
-import ru.mis2022.service.entity.DoctorService;
-import ru.mis2022.service.entity.PatientService;
-import ru.mis2022.service.entity.RoleService;
-import ru.mis2022.service.entity.TalonService;
+import ru.mis2022.models.entity.*;
+import ru.mis2022.service.entity.*;
 import ru.mis2022.util.ContextIT;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjuster;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -252,9 +242,11 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
 
         // Берем получившиеся талоны (чтобы дальше заполнить пациентом)
-        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(doctor.getId(),
-                                                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
-                                                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
+        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(
+                doctor.getId(),
+                LocalDateTime.of(LocalDate.now(),
+                LocalTime.MIN),
+                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
 
         // Заполняем все свободные талоны пациентом:
         doc4Talons.stream()
