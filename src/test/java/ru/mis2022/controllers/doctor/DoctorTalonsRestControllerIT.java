@@ -253,8 +253,8 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
 
         // Берем получившиеся талоны (чтобы дальше заполнить пациентом)
         List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(doctor.getId(),
-                                                    LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
-                                                    LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
+                                                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
+                                                LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
 
         // Заполняем все свободные талоны пациентом:
         doc4Talons.stream()
