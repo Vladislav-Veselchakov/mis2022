@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
+import ru.mis2022.models.dto.organization.converter.MedicalOrganizationDtoConverter;
 import ru.mis2022.models.entity.MedicalOrganization;
-import ru.mis2022.models.mapper.MedicalOrganizationMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.MedicalOrganizationDtoService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
@@ -35,7 +35,7 @@ import java.util.List;
 public class HrManagerOrganizationRestController {
     private final MedicalOrganizationService medicalOrganizationService;
     private final MedicalOrganizationDtoService medicalOrganizationDtoService;
-    private final MedicalOrganizationMapper medicalOrganizationMapper;
+    private final MedicalOrganizationDtoConverter medicalOrganizationDtoConverter;
 
     @ApiOperation("get all medical organization")
     @ApiResponses(value = {
@@ -61,9 +61,8 @@ public class HrManagerOrganizationRestController {
                         412, "Такое имя медицинской организации уже используется!");
         MedicalOrganization medicalOrganization =
                 medicalOrganizationService.save(
-                        medicalOrganizationMapper.toEntity(
-                                medicalOrganizationDto));
-        return Response.ok(medicalOrganizationMapper.toDto(medicalOrganization));
+                        medicalOrganizationDtoConverter.toEntity(medicalOrganizationDto));
+        return Response.ok(medicalOrganizationDtoConverter.toDto(medicalOrganization));
     }
 
 
@@ -80,9 +79,9 @@ public class HrManagerOrganizationRestController {
                 .expectedTrue(medicalOrganizationService.isExistById(medicalOrganizationDto.getId()),
                         410, "По переданному id медицинская организация не найдена.");
         MedicalOrganization medicalOrganization =
-                medicalOrganizationService.save(medicalOrganizationMapper
-                        .toEntity(medicalOrganizationDto));
-        return Response.ok(medicalOrganizationMapper.toDto(medicalOrganization));
+                medicalOrganizationService.save(medicalOrganizationDtoConverter.toEntity(medicalOrganizationDto));
+        return Response.ok(medicalOrganizationDtoConverter.toDto(medicalOrganization));
+
     }
 
     @ApiOperation("delete medical organization")
