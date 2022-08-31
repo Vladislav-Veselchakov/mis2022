@@ -221,8 +221,8 @@ public class PatientScheduleRestControllerIT extends ContextIT {
                                                 LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
 
         doc2Talons.stream()
-                .map(x-> {
-                    Talon talon = talonService.findTalonById(x.id());
+                .map(doctorTalonsDto-> {
+                    Talon talon = talonService.findTalonById(doctorTalonsDto.id());
                     talon.setPatient(patient);
                     return talon;
                 })
