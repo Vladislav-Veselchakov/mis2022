@@ -15,14 +15,6 @@ import ru.mis2022.models.dto.department.DepartmentDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
 import ru.mis2022.models.dto.talon.TalonDto;
-import ru.mis2022.models.entity.Department;
-import ru.mis2022.models.entity.Doctor;
-import ru.mis2022.models.entity.MedicalOrganization;
-import ru.mis2022.models.entity.Talon;
-import ru.mis2022.models.mapper.DepartmentMapper;
-import ru.mis2022.models.mapper.DoctorMapper;
-import ru.mis2022.models.mapper.MedicalOrganizationMapper;
-import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.DepartmentDtoService;
 import ru.mis2022.service.dto.DoctorDtoService;
@@ -31,12 +23,10 @@ import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
-import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Validated
 @RestController
@@ -50,12 +40,7 @@ public class RegistrarScheduleRestController {
     private final DepartmentDtoService departmentDtoService;
     private final DoctorService doctorService;
     private final DoctorDtoService doctorDtoService;
-    private final TalonService talonService;
     private final TalonDtoService talonDtoService;
-    private final MedicalOrganizationMapper medicalOrganizationMapper;
-    private final DepartmentMapper departmentMapper;
-    private final DoctorMapper doctorMapper;
-    private final TalonMapper talonMapper;
 
     @ApiOperation("get all medical organizations")
     @ApiResponses(value = {
