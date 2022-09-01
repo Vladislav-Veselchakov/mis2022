@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChiefReportServiceImpl implements ChiefReportService {
     private final DoctorRepository docRepository;
+
     @Override
     public List<ChiefReportDto> getReport(LocalDate dateStart, LocalDate dateEnd) {
         Doctor signedInDoc = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -20,7 +20,6 @@ import ru.mis2022.service.dto.AdministratorDtoService;
 @Api(tags = "Administrator")
 
 public class AdministratorRestController {
-
     private final AdministratorDtoService administratorDtoService;
 
     @ApiOperation(value = "This method is used to get the administrator.")

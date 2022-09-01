@@ -1,15 +1,12 @@
 package ru.mis2022.models.dto.administrator;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mis2022.models.response.ErrorResponse;
 import ru.mis2022.utils.validation.OnCreate;
 import ru.mis2022.utils.validation.OnUpdate;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
@@ -24,7 +21,7 @@ public class AdministratorDto {
     @Positive(groups = OnUpdate.class, message = "id должен быть положительным")
     private Long id;
 
-    @NotBlank(groups = {OnCreate.class, OnUpdate.class}, message = "email не должен быть пустым")
+    @NotBlank(message = "email не должен быть пустым")
     @Pattern(regexp = "^(.+)@(\\S+)$", groups = {OnCreate.class, OnUpdate.class},
             message = "email должен быть корректным адресом электронной почты")
     private String email;

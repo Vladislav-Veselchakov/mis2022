@@ -21,7 +21,7 @@ public class DoctorDto {
     @Positive(groups = OnUpdate.class, message = "id должен быть положительным")
     private Long id;
 
-    @NotBlank(groups = {OnCreate.class, OnUpdate.class}, message = "email не должен быть пустым")
+    @NotBlank(message = "email не должен быть пустым")
     @Pattern(regexp = "^(.+)@(\\S+)$", groups = {OnCreate.class, OnUpdate.class},
             message = "email должен быть корректным адресом электронной почты")
     private String email;

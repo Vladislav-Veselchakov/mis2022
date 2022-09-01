@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TalonDto {
 
-    @Positive(message = "id должен быть положительным")
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")

@@ -1,6 +1,6 @@
 package ru.mis2022.service.dto.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
 import ru.mis2022.repositories.MedicalOrganizationRepository;
@@ -9,9 +9,10 @@ import ru.mis2022.service.dto.MedicalOrganizationDtoService;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MedicalOrganizationDtoServiceImpl implements MedicalOrganizationDtoService {
-    MedicalOrganizationRepository medicalOrganizationRepository;
+    private final MedicalOrganizationRepository medicalOrganizationRepository;
+
     @Override
     public List<MedicalOrganizationDto> findAll() {
         return medicalOrganizationRepository.findAllDto();

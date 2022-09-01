@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +24,9 @@ import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Validated
+
 @RestController
 @RequestMapping("/api/registrar/schedule")
 @PreAuthorize("hasRole('REGISTRAR')")
@@ -59,7 +57,7 @@ public class RegistrarScheduleRestController {
             @ApiResponse(code = 415, message = "У медицинской организации нет департаментов!")
     })
     @PostMapping("/departments/{id}")
-    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@Valid @PathVariable Long id) {
+    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@PathVariable Long id) {
         ApiValidationUtils
                 .expectedTrue(medicalOrganizationService.isExistById(id),
                         414, "Медицинской организации с таким id нет!");
@@ -73,7 +71,7 @@ public class RegistrarScheduleRestController {
             @ApiResponse(code = 415, message = "В департаменте нет докторов!")
     })
     @PostMapping("/doctors/{id}")
-    public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@Valid @PathVariable Long id) {
+    public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@PathVariable Long id) {
         ApiValidationUtils
                 .expectedTrue(departmentService.isExistById(id),
                         414, "Департамента с таким id нет!");
@@ -87,7 +85,7 @@ public class RegistrarScheduleRestController {
             @ApiResponse(code = 415, message = "У доктора нет талонов!")
     })
     @PostMapping("/talons/{id}")
-    public Response<List<TalonDto>> getAllTalonsByDoctorId(@Valid @PathVariable Long id) {
+    public Response<List<TalonDto>> getAllTalonsByDoctorId(@PathVariable Long id) {
         ApiValidationUtils
                 .expectedTrue(doctorService.isExistsById(id),
                         414, "Доктора с таким id нет!");

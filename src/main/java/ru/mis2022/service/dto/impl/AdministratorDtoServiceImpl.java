@@ -9,7 +9,6 @@ import ru.mis2022.service.dto.AdministratorDtoService;
 @Service
 @RequiredArgsConstructor
 public class AdministratorDtoServiceImpl implements AdministratorDtoService {
-
     private final AdministratorRepository administratorRepository;
 
     @Override

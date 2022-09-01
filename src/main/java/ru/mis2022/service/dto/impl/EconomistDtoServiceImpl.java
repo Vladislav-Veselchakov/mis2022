@@ -10,7 +10,6 @@ import ru.mis2022.service.dto.EconomistDtoService;
 @Service
 @RequiredArgsConstructor
 public class EconomistDtoServiceImpl implements EconomistDtoService {
-
     private final EconomistRepository economistRepository;
 
     @Override

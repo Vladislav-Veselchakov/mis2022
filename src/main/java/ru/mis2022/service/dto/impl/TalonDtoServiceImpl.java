@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TalonDtoServiceImpl implements TalonDtoService {
-
     private final TalonRepository talonRepository;
 
     @Override

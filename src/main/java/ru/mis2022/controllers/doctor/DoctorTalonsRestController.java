@@ -18,13 +18,11 @@ import ru.mis2022.models.dto.talon.TalonByDay;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.dto.talon.converter.TalonDtoConverter;
 import ru.mis2022.models.entity.Doctor;
-import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DoctorService;
-import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
@@ -45,7 +43,6 @@ public class DoctorTalonsRestController {
     private Integer numbersOfTalons;
 
     private final DoctorService doctorService;
-    private final PatientService patientService;
     private final TalonService talonService;
     private final TalonDtoConverter converter;
     private final TalonDtoService talonDtoService;
