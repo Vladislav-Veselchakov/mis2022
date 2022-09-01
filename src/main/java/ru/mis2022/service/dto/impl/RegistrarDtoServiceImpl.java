@@ -9,7 +9,6 @@ import ru.mis2022.service.dto.RegistrarDtoService;
 @Service
 @RequiredArgsConstructor
 public class RegistrarDtoServiceImpl implements RegistrarDtoService {
-
     private final RegistrarRepository registrarRepository;
 
     @Override

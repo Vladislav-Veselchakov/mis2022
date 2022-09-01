@@ -56,6 +56,7 @@ public class HrManagerAdminRestController {
                                 administratorDto, roleService.findByName(ADMIN.name())));
         return Response.ok(administratorMapper.toDto(administrator));
     }
+
     @ApiOperation("update admin by HrManager")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Данные администратора обновлены в базе."),

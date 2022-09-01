@@ -46,7 +46,6 @@ public class HrManagerOrganizationRestController {
         return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
-
     @ApiOperation("creatе medical organization ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Медицинская организация создана"),
@@ -64,7 +63,6 @@ public class HrManagerOrganizationRestController {
                         medicalOrganizationDtoConverter.toEntity(medicalOrganizationDto));
         return Response.ok(medicalOrganizationDtoConverter.toDto(medicalOrganization));
     }
-
 
     @ApiOperation("update medical organization")
     @ApiResponses(value = {

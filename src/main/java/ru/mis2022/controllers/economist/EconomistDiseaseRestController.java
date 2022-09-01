@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.disease.DiseaseConverter;
+import ru.mis2022.models.dto.disease.converter.DiseaseConverter;
 import ru.mis2022.models.dto.disease.DiseaseDto;
 import ru.mis2022.models.entity.Disease;
 import ru.mis2022.models.response.Response;

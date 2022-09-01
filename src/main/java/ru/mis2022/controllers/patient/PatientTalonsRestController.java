@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
-import ru.mis2022.models.mapper.TalonMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.PatientDtoService;
 import ru.mis2022.service.entity.PatientService;
@@ -29,7 +28,6 @@ import java.util.List;
 @RequestMapping("/api/patient/talons")
 public class PatientTalonsRestController {
     private final TalonService talonService;
-    private final TalonMapper talonMapper;
     private final PatientService patientService;
     private final PatientDtoService patientDtoService;
 

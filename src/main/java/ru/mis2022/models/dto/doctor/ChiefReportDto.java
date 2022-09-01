@@ -27,6 +27,6 @@ public class ChiefReportDto implements Comparable{
     @Override
     public int compareTo(Object o) {
         ChiefReportDto pDoc = (ChiefReportDto)o;
-        return this.doctorId > pDoc.getDoctorId() ? 1 : this.doctorId == pDoc.getDoctorId() ? 0 : -1;
+        return this.doctorId.compareTo(pDoc.getDoctorId());
     }
 }

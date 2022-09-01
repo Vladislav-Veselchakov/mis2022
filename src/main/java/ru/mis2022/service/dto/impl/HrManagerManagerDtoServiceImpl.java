@@ -9,7 +9,6 @@ import ru.mis2022.service.dto.HrManagerDtoService;
 @Service
 @RequiredArgsConstructor
 public class HrManagerManagerDtoServiceImpl implements HrManagerDtoService {
-
     private final HrManagerRepository hrManagerRepository;
 
     @Override
