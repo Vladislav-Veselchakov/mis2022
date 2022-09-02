@@ -125,33 +125,28 @@ public class PatientTalonsRestControllerIT extends ContextIT {
                         "Пациента с таким id нет!")));
     }
 
-
     @Test
     public void cancelRecordTalonsTest() throws Exception {
 
         Role role = initRole("PATIENT");
         Role role1 = initRole("DOCTOR");
-        Patient patient = initPatient(role, "patient1@email.com");
-        Doctor doctor = initDoctor(role1, null, null, "doctor1@email.com");
+        Patient patient = initPatient(role, "patient1test@email.com");
+        Patient patient2 = initPatient(role, "patient2test@email.com");
+        Doctor doctor = initDoctor(role1, null, null, "doctor1test@email.com");
         talonService.persistTalonsForDoctor(doctor,14, 4);
         Talon talon = initTalon(null, doctor, patient);
-        talonService.save(talon);
+        Talon talon2 = initTalon(LocalDateTime.now(), doctor, patient2);
+        talon = talonService.save(talon);
+        talon2 = talonService.save(talon2);
 
         accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
 
-        //Проверка на наличие талона
-        mockMvc.perform(patch("/api/patient/talons/{talonId}/{patientId}", talon.getId(), patient.getId())
-                        .header("Authorization", accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success", Is.is(true)))
-                .andExpect(jsonPath("$.code", Is.is(200)));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
-
+        if (talon.getPatient()==null || talon2.getPatient()==null || talon.getId()==null || talon2.getId() ==null) {
+            throw new Exception("Неправильно созданы талоны для теста");
+        }
 
         //Проверка на несуществующий талон
-        mockMvc.perform(patch("/api/patient/talons/{talonId}/{patientId}", 150, patient.getId())
+        mockMvc.perform(patch("/api/patient/talons/{talonId}", 150000)
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -160,11 +155,10 @@ public class PatientTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.code", Is.is(402)))
                 .andExpect(jsonPath("$.text", Is.is(
                         "Талона с таким id нет!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+//              .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-
-        //Проверка на несуществующий талон
-        mockMvc.perform(patch("/api/patient/talons/{talonId}/{patientId}", talon.getId(), 150)
+        //Пациент пытается удалить чужую запись
+        mockMvc.perform(patch("/api/patient/talons/{talonId}", talon2.getId())
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -172,20 +166,22 @@ public class PatientTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.success", Is.is(false)))
                 .andExpect(jsonPath("$.code", Is.is(403)))
                 .andExpect(jsonPath("$.text", Is.is(
-                        "Пациента с таким id нет!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+                        "Пациент не записан по этому талону")));
+//               .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-
-        //У талона пациент null
-        mockMvc.perform(patch("/api/patient/talons/{talonId}/{patientId}", talon.getId(), patient.getId())
+        //эндпоинт отработал успешно
+        mockMvc.perform(patch("/api/patient/talons/{talonId}", talon.getId())
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", Is.is(true)))
                 .andExpect(jsonPath("$.code", Is.is(200)));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
+//        Запись на талон успешно удалена
+        if (talon.getPatient()!=null || talon2.getPatient()==null) {
+            throw new Exception("Запись по талону не удалена");
+        }
     }
 }

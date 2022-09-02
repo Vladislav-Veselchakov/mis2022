@@ -96,4 +96,9 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
          AND t.time BETWEEN :timeNow AND :timeEnd
         """)
     List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd);
+
+    @Query(value = "SELECT patient_id FROM talon t WHERE t.id = ?1",
+            nativeQuery = true)
+    Long findPatientIdByTalonId(Long talonId);
+
 }
