@@ -25,4 +25,7 @@ public interface TalonService {
 
     List<DoctorTalonsDto> getTalonsByDoctorIdAndDay(long doctorId, LocalDateTime startDayTime, LocalDateTime endDayTime);
 
+
+    Long findPatientIdByTalonId(Long talonId);
+
 }

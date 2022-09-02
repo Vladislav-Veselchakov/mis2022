@@ -78,4 +78,8 @@ public class TalonServiceImpl implements TalonService {
             long doctorId, LocalDateTime startDayTime, LocalDateTime endDayTime) {
         return talonRepository.talonsByDoctorByDay(doctorId, startDayTime, endDayTime);
     }
+
+    public Long findPatientIdByTalonId(Long talonId){
+        return talonRepository.findPatientIdByTalonId(talonId);
+    };
 }

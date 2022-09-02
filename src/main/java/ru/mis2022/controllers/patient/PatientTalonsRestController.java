@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
+import ru.mis2022.models.entity.User;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.PatientDtoService;
 import ru.mis2022.service.entity.PatientService;
@@ -44,22 +46,29 @@ public class PatientTalonsRestController {
        return Response.ok(patientDtoService.findAllByPatientId(patientId));
     }
 
-    //todo list 3 swagger
-    // пациент может отменить запись только на себя поэтому не вариант передавать в параметры ИД пациента
-    // надо получать текущего пациента и по нему удалять запись
-    // надо найти талон по двум параметрам и если он null кинуть эксепшн, а если нет то снять пациента с талона
-    @PatchMapping("/{talonId}/{patientId}")
-    public Response<Void> cancelRecordTalons(@PathVariable Long talonId, @PathVariable Long patientId) {
+    @ApiOperation("Пациент удаляет запись к врачу по id талона")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Запись по талону удалена"),
+            @ApiResponse(code = 402, message = "Талона с таким id нет!"),
+            @ApiResponse(code = 403, message = "Пациент не записан по этому талону"),
+    })
+    @PatchMapping("/{talonId}")
+    public Response<Void> cancelRecordTalons(@PathVariable Long talonId) {
 
-        ApiValidationUtils
-                .expectedNotNull(talonService.findTalonById(talonId),
-                        402, "Талона с таким id нет!");
+        Talon talon;
+        ApiValidationUtils.expectedNotNull(
+                talon = talonService.findTalonById(talonId),
+                402,
+                "Талона с таким id нет!"
+        );
 
-        ApiValidationUtils
-                .expectedNotNull(patientService.findPatientById(patientId),
-                        403, "Пациента с таким id нет!");
+        Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        ApiValidationUtils.expectedTrue(
+                userId == talonService.findPatientIdByTalonId(talonId),
+                403,
+                "Пациент не записан по этому талону"
+        );
 
-        Talon talon = talonService.findTalonById(talonId);
         talon.setPatient(null);
         talonService.save(talon);
         return Response.ok();
