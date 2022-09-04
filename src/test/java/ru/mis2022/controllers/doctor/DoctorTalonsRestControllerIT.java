@@ -162,7 +162,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     }
 
     @Test
-    // todo на стыке месяцов тест не работет. Например, если сегодня 28.08 то далее к этой дате добавляется 4 дня и
+    // todo list4 на стыке месяцов тест не работет. Например, если сегодня 28.08 то далее к этой дате добавляется 4 дня и
     // получается 02.09. Тест ожидает первый талон с датой 28.08, а получает 02.09, т.к. в классе
     // TalonDtoConverter.groupByDay(..) идет сортировка по строке
     public void getAllTalonsByDoctorIdTest() throws Exception {

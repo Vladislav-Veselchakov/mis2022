@@ -40,7 +40,6 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
     """)
     List<TalonDto> findAllByPatientIdDto(Long id);
 
-
     @Query("""
                 select count(t) from Talon t
                 where t.doctor.id = :doctorId
@@ -97,6 +96,7 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
         """)
     List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd);
 
+    //todo list1 перенести в PatientRepository, попробовать заметить запрос на hql
     @Query(value = "SELECT patient_id FROM talon t WHERE t.id = ?1",
             nativeQuery = true)
     Long findPatientIdByTalonId(Long talonId);

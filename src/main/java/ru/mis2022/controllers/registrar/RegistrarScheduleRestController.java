@@ -40,7 +40,7 @@ public class RegistrarScheduleRestController {
     private final DoctorDtoService doctorDtoService;
     private final TalonDtoService talonDtoService;
 
-    @ApiOperation("get all medical organizations")
+    @ApiOperation("Регистратор получает все медицинские организации")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список медицинских организаций"),
             @ApiResponse(code = 414, message = "Список медицинских организаций пуст!")
@@ -50,11 +50,10 @@ public class RegistrarScheduleRestController {
         return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
-    @ApiOperation("get all departments in medical organization by id")
+    @ApiOperation("Регистратор получает все отделения по переданной медицинской организации")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список департаментов"),
             @ApiResponse(code = 414, message = "Медицинской организации с таким id нет!"),
-            @ApiResponse(code = 415, message = "У медицинской организации нет департаментов!")
     })
     @PostMapping("/departments/{id}")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@PathVariable Long id) {
@@ -64,11 +63,10 @@ public class RegistrarScheduleRestController {
         return Response.ok(departmentDtoService.findAllByMedicalOrganizationId(id));
     }
 
-    @ApiOperation("get all doctors in department by id")
+    @ApiOperation("Регистратор получает всех врачей по переданному отделению")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список докторов"),
             @ApiResponse(code = 414, message = "Департамента с таким id нет!"),
-            @ApiResponse(code = 415, message = "В департаменте нет докторов!")
     })
     @PostMapping("/doctors/{id}")
     public Response<List<DoctorDto>> getAllDoctorsByDepartmentId(@PathVariable Long id) {
@@ -78,11 +76,10 @@ public class RegistrarScheduleRestController {
         return Response.ok(doctorDtoService.findAllByDepartmentId(id));
     }
 
-    @ApiOperation("get all talons by doctor id")
+    @ApiOperation("Регистратор получает все талоны по переданному доктору")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список талонов"),
             @ApiResponse(code = 414, message = "Доктора с таким id нет!"),
-            @ApiResponse(code = 415, message = "У доктора нет талонов!")
     })
     @PostMapping("/talons/{id}")
     public Response<List<TalonDto>> getAllTalonsByDoctorId(@PathVariable Long id) {

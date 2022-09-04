@@ -32,22 +32,22 @@ public class EconomistDiseaseRestController {
     private final DiseaseService diseaseService;
     private final DiseaseConverter converter;
 
+    @ApiOperation(value = "Экономист получает все заболевания")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Все заболевания были получены из базы данных.")
     })
     @GetMapping("/getAll")
-    @ApiOperation(value = "This method is used to get all diseases.")
     public Response<List<DiseaseDto>> getAllDisease() {
         return Response.ok(diseaseService.findAllDiseaseDto());
     }
 
-    @PostMapping("/create")
-    @ApiOperation(value = "This method is used to save new disease.")
+    @ApiOperation(value = "Экономист сохраняет новое заболевание")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Заболевание было сохранено."),
             @ApiResponse(code = 410, message = "Заболевание с данным идентификатором уже существует."),
     })
     @Validated(OnCreate.class)
+    @PostMapping("/create")
     public Response<DiseaseDto> persistDisease(@RequestBody DiseaseDto diseaseDto) {
         ApiValidationUtils
                 .expectedFalse(diseaseService.isExistByIdentifier(diseaseDto.identifier()), 410,
@@ -59,12 +59,12 @@ public class EconomistDiseaseRestController {
                         .build())));
     }
 
-    @DeleteMapping("/delete/{diseaseId}")
+    @ApiOperation(value = "Экономист удаляет заболевание")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Заболевание было удалено."),
             @ApiResponse(code = 411, message = "Заболевание с переданным id не существует."),
     })
-    @ApiOperation(value = "This method is used to delete disease by Id.")
+    @DeleteMapping("/delete/{diseaseId}")
     public Response<Void> deleteDiseaseById(@PathVariable Long diseaseId) {
         ApiValidationUtils
                 .expectedTrue(diseaseService.isExistById(diseaseId), 411,

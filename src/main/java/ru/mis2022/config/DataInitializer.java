@@ -81,7 +81,6 @@ public class DataInitializer {
     private final RegistrarService registrarService;
     private final AdministratorService administratorService;
     private final HrManagerService hrManagerService;
-    // todo удалить неиспользуемое
     private final AttestationService attestationService;
     private final PersonalHistoryService personalHistoryService;
     private final TalonService talonService;

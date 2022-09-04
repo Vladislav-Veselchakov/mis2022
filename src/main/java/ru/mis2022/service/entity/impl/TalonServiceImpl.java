@@ -42,7 +42,7 @@ public class TalonServiceImpl implements TalonService {
         }
         return talons;
     }
-    //todo endTime должен учитывать талоны до конца дня
+    //todo list3 endTime должен учитывать талоны до конца дня
     @Override
     public long findTalonsCountByIdAndDoctor(int numberOfDays, Doctor doctor) {
         LocalDateTime startTime = LocalDateTime.now();
@@ -65,7 +65,7 @@ public class TalonServiceImpl implements TalonService {
     public Talon findTalonById(Long id) {
         return talonRepository.findTalonById(id);
     }
-    //todo endTime должен учитывать талоны до конца дня
+    //todo list3 endTime должен учитывать талоны до конца дня
     @Override
     public List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId) {
         LocalDateTime startTime = LocalDateTime.now();

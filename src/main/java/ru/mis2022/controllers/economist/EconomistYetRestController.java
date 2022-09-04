@@ -38,15 +38,15 @@ public class EconomistYetRestController {
     private final YetDtoService yetDtoService;
     private final YetDtoConverter yetDtoConverter;
 
-    @ApiOperation("create yet by Economist")
+    @ApiOperation("Экономист создает новую УЕТ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Данные yet добавлены в базу."),
             @ApiResponse(code = 400, message = "Некорректные данные переданы в ДТО."),
             @ApiResponse(code = 415, message = "Данные yet на этот период времени уже установлены!"),
             @ApiResponse(code = 417, message = "Даты указаны неверно!")
     })
-    @PostMapping("/create")
     @Validated(OnCreate.class)
+    @PostMapping("/create")
     public Response<YetDto> createYet(@Valid @RequestBody YetDto yetDto) {
         ApiValidationUtils
                 .expectedFalse(yetDto.dayFrom().isAfter(yetDto.dayTo()),
@@ -59,7 +59,7 @@ public class EconomistYetRestController {
         return Response.ok(yetDtoConverter.toDto(yet));
     }
 
-    @ApiOperation("update yet by Economist")
+    @ApiOperation("Экономист обновляет существующую УЕТ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Данные Yet обновлены в базе."),
             @ApiResponse(code = 400, message = "Некорректные данные переданы в ДТО."),
@@ -67,8 +67,8 @@ public class EconomistYetRestController {
             @ApiResponse(code = 416, message = "По переданному id запись в базе отсутствует!"),
             @ApiResponse(code = 417, message = "Даты указаны неверно!")
     })
-    @PutMapping("/update")
     @Validated(OnUpdate.class)
+    @PutMapping("/update")
     public Response<YetDto> updateYet(@Valid @RequestBody YetDto yetDto) {
         ApiValidationUtils
                 .expectedFalse(yetDto.dayFrom().isAfter(yetDto.dayTo()),
@@ -85,7 +85,7 @@ public class EconomistYetRestController {
         return Response.ok(yetDto);
     }
 
-    @ApiOperation("delete yet by Economist")
+    @ApiOperation("Экономист удаляет УЕТ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Данные Yet удалены из базы."),
             @ApiResponse(code = 416, message = "По переданному id запись в базе отсутствует!")
@@ -99,7 +99,7 @@ public class EconomistYetRestController {
         return Response.ok();
     }
 
-    @ApiOperation("get all yet by Economist")
+    @ApiOperation("Экономист получет все УЕТ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список Yet."),
     })

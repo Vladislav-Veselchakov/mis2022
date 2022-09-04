@@ -35,14 +35,14 @@ public class HrManagerAdminRestController {
     private final AdministratorDtoConverter administratorDtoConverter;
     private final UserService userService;
 
-    @ApiOperation("create admin by HrManager")
+    @ApiOperation("Кадровик сохраняет нового админа")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Администратор добавлен в базу."),
             @ApiResponse(code = 400, message = "Некорректные данные переданы в ДТО."),
             @ApiResponse(code = 412, message = "Такой адрес электронной почты уже используется!")
     })
-    @PostMapping("/admin/createAdmin")
     @Validated(OnCreate.class)
+    @PostMapping("/admin/createAdmin")
     public Response<AdministratorDto> createAdmin(@Valid @RequestBody AdministratorDto administratorDto) {
         ApiValidationUtils
                 .expectedFalse(userService.existsByEmail(administratorDto.getEmail()),
@@ -54,15 +54,15 @@ public class HrManagerAdminRestController {
         return Response.ok(administratorDtoConverter.toDto(administrator));
     }
 
-    @ApiOperation("update admin by HrManager")
+    @ApiOperation("Кадровик обновляет существующего админа")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Данные администратора обновлены в базе."),
             @ApiResponse(code = 400, message = "Некорректные данные переданы в ДТО."),
             @ApiResponse(code = 410, message = "По переданному id администратор не найден."),
             @ApiResponse(code = 412, message = "Такой адрес электронной почты уже используется.")
     })
-    @PutMapping("/admin/updateAdmin")
     @Validated(OnUpdate.class)
+    @PutMapping("/admin/updateAdmin")
     public Response<AdministratorDto> updateAdmin(@Valid @RequestBody AdministratorDto administratorDto) {
         ApiValidationUtils
                 .expectedTrue(administratorService.isExistById(administratorDto.getId()),

@@ -49,7 +49,7 @@ public class PatientScheduleRestController {
     private final DoctorDtoService doctorDtoService;
 
 
-    @ApiOperation("get all medical organizations")
+    @ApiOperation("Пациент получает все медицинские организации")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список медицинских организаций"),
             @ApiResponse(code = 414, message = "Список медицинских организаций пуст")
@@ -59,11 +59,10 @@ public class PatientScheduleRestController {
         return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
-    @ApiOperation("get all departments by medical organization id")
+    @ApiOperation("Пациент получает все отделения переданной медицинской организации")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список департаментов"),
             @ApiResponse(code = 414, message = "Медицинской организации с таким id нет"),
-            @ApiResponse(code = 415, message = "У медицинской организации нет департаментов")
     })
     @GetMapping(value = "/medicalOrganization/{medOrgId}/getAllDepartments")
     public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(@PathVariable Long medOrgId) {
@@ -73,9 +72,9 @@ public class PatientScheduleRestController {
         return Response.ok(departmentDtoService.findAllByMedicalOrganizationId(medOrgId));
     }
 
-    @ApiOperation("get all doctors by department id")
+    @ApiOperation("Пациент получает всех врачей по переданному отделению с видимым для пациента свободными талонами")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список всех докторов с пустыми талонами"),
+            @ApiResponse(code = 200, message = "Список всех докторов со свободными талонами"),
             @ApiResponse(code = 414, message = "Департамента с таким id нет")
     })
     @GetMapping("/departments/{departmentId}/getAllDoctors")
@@ -88,7 +87,7 @@ public class PatientScheduleRestController {
     }
 
 
-    @ApiOperation("get all talons by doctor id and between dates")
+    @ApiOperation("Пациент получает все видимые для него свободные талоны переданного доктора")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список всех свободных талонов доктора"),
             @ApiResponse(code = 414, message = "Доктора с таким id нет"),

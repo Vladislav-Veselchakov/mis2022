@@ -22,11 +22,12 @@ import ru.mis2022.service.dto.EconomistDtoService;
 public class EconomistRestController {
     private final EconomistDtoService economistDtoService;
 
-    @GetMapping("/mainPage/current")
+
+    @ApiOperation(value = "Авторизованный экономист получает информацию о себе")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Метод возвращает экономиста"),
     })
-    @ApiOperation(value = "This method is used to get current economist.")
+    @GetMapping("/mainPage/current")
     public Response<CurrentEconomistDto> getCurrentEconomistDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Response.ok(economistDtoService.getCurrentEconomistDtoByEmail(currentUser.getEmail()));

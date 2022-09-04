@@ -27,7 +27,7 @@ public class HrManagerPersonalRestController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @ApiOperation("find user by firstName and lastName")
+    @ApiOperation("Кадровик получает всех сотрудников по паттерну")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список сотрудников"),
     })

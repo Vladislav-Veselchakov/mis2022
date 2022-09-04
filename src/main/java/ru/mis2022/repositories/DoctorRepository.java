@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import ru.mis2022.models.dto.doctor.CurrentChiefReportDto;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
-import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 
 import java.time.LocalDateTime;
@@ -31,26 +30,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     Doctor findByEmail(String email);
 
-    @Query("""
-        SELECT new ru.mis2022.models.dto.doctor.CurrentDoctorDto(
-            doc.firstName,
-            doc.lastName,
-            doc.birthday,
-            role.name,
-            dep.name)
-        FROM Doctor doc
-            JOIN Role role ON doc.role.id = role.id
-            JOIN Department dep ON doc.department.id = dep.id
-        WHERE doc.email = :email
-        AND doc.department = :department
-        """)
-        //todo имя метода неправильное - отобразить получение коллекции
-    List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department);
-
-    //todo надо искать по ид департамента и необходимо писать запрос с джойнами
-    List<Doctor> findByDepartment (Department department);
-
-    //todo дубль удалить
     List<Doctor> findAllByDepartmentId(Long id);
 
     @Query("""
@@ -113,6 +92,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 """)
     List<CurrentChiefReportDto> getWorkloadEmployeesReport(@Param("deptId") Long deptId, @Param("dateHome") LocalDateTime dateHome, @Param("DateEnd") LocalDateTime DateEnd);
 
+    //todo list3 перенести в DepartmentRepository
     @Query("""
     SELECT d.department.id
     FROM  Doctor d

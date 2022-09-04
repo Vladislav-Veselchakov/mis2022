@@ -20,11 +20,6 @@ public class DoctorDtoServiceImpl implements DoctorDtoService {
     }
 
     @Override
-    public List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department) {
-        return doctorRepository.findDoctorDtoByDepartment(department);
-    }
-
-    @Override
     public List<DoctorDto> findAllByDepartmentId(Long id) {
         return doctorRepository.findAllByDepartmentIdDto(id);
     }

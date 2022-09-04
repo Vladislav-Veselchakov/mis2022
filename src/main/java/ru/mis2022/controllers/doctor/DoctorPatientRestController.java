@@ -25,9 +25,9 @@ public class DoctorPatientRestController {
     private final PatientService patientService;
     private final PatientConverter patientConverter;
 
-    @ApiOperation("Find patient by firstName and lastName")
+    @ApiOperation("Доктор получает пациентов по паттерну")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список сотрудников")
+            @ApiResponse(code = 200, message = "Список пациентов")
     })
     @GetMapping("/stringPattern")
     public Response<List<PatientDto>> findPatientByFullName(

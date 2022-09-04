@@ -33,16 +33,17 @@ public class PatientTalonsRestController {
     private final PatientService patientService;
     private final PatientDtoService patientDtoService;
 
-    @ApiOperation("get all patient")
+    @ApiOperation("Авторизованный пациент получает все свои талоны на которые у него есть запись")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Метод возвращает всех пациентов"),
-            @ApiResponse(code = 402, message = "Пациента с таким id нет"),
+            @ApiResponse(code = 200, message = "Получение всех талонов, занятых пациентом")
     })
+    //todo list2 пациент должен браться не из id а из авторизации
     @GetMapping("/{patientId}")
     public Response<List<TalonDto>> getAllTalonsByPatientId(@PathVariable Long patientId) {
        ApiValidationUtils
                .expectedTrue(patientService.isExistById(patientId),
                        402, "Пациента с таким id нет!");
+       //todo list2 пренести логику из patientDtoService в talonDtoService
        return Response.ok(patientDtoService.findAllByPatientId(patientId));
     }
 

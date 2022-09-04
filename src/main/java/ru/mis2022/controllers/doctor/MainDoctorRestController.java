@@ -20,7 +20,7 @@ import ru.mis2022.service.dto.DoctorDtoService;
 public class MainDoctorRestController {
     private final DoctorDtoService doctorDtoService;
 
-    @ApiOperation("get a current main doctor")
+    @ApiOperation("Авторизованный главный врач получает информацию о себе")
     @GetMapping("/mainPage/current")
     public Response<CurrentDoctorDto> getCurrentDoctorDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

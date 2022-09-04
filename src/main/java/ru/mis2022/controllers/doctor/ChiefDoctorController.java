@@ -23,7 +23,7 @@ import ru.mis2022.service.dto.DoctorDtoService;
 public class ChiefDoctorController {
     private final DoctorDtoService doctorDtoService;
 
-    @ApiOperation("get a current chief doctor")
+    @ApiOperation("Авторизованный главный врач получает информацию о себе")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Метод возвращает заведующего отделением"),
     })

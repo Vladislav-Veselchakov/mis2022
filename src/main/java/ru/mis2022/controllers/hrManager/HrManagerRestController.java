@@ -23,7 +23,7 @@ import ru.mis2022.service.dto.HrManagerDtoService;
 public class HrManagerRestController {
     private final HrManagerDtoService hrManagerDtoService;
 
-    @ApiOperation("get a current HrManager")
+    @ApiOperation("Авторизованный кадровик получает информацию о себе")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Метод возвращает кадровика"),
     })

@@ -37,7 +37,7 @@ public class HrManagerOrganizationRestController {
     private final MedicalOrganizationDtoService medicalOrganizationDtoService;
     private final MedicalOrganizationDtoConverter medicalOrganizationDtoConverter;
 
-    @ApiOperation("get all medical organization")
+    @ApiOperation("Кадровик получает все медицинские организации")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Метод возвращает все организации"),
     })
@@ -46,13 +46,13 @@ public class HrManagerOrganizationRestController {
         return Response.ok(medicalOrganizationDtoService.findAll());
     }
 
-    @ApiOperation("creatе medical organization ")
+    @ApiOperation("Кадровик создает медицинскую организацию")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Медицинская организация создана"),
             @ApiResponse(code = 412, message = "Такое имя медицинской организации уже используется!")
     })
-    @PostMapping("/createMedicalOrganizations")
     @Validated(OnCreate.class)
+    @PostMapping("/createMedicalOrganizations")
     public Response<MedicalOrganizationDto> saveMedicalOrganization(@Valid @RequestBody
                                                                     MedicalOrganizationDto medicalOrganizationDto) {
         ApiValidationUtils
@@ -64,13 +64,13 @@ public class HrManagerOrganizationRestController {
         return Response.ok(medicalOrganizationDtoConverter.toDto(medicalOrganization));
     }
 
-    @ApiOperation("update medical organization")
+    @ApiOperation("Кадровик обновляет существующую медицинскую организацию")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Медицинская организация обновлена"),
             @ApiResponse(code = 410, message = "По переданному id медицинская организация не найдена."),
     })
-    @PutMapping("/updateMedicalOrganizations")
     @Validated(OnUpdate.class)
+    @PutMapping("/updateMedicalOrganizations")
     public Response<MedicalOrganizationDto> updateMedicalOrganization(@Valid @RequestBody
                                                                       MedicalOrganizationDto medicalOrganizationDto) {
         ApiValidationUtils
@@ -82,7 +82,7 @@ public class HrManagerOrganizationRestController {
 
     }
 
-    @ApiOperation("delete medical organization")
+    @ApiOperation("Кадровик удаляет медицинскую организацию")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Медицинская организация удалена"),
             @ApiResponse(code = 414, message = "Медицинской организации с таким id нет!")

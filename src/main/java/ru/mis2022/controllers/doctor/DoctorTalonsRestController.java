@@ -47,12 +47,11 @@ public class DoctorTalonsRestController {
     private final TalonDtoConverter converter;
     private final TalonDtoService talonDtoService;
 
-    @ApiOperation("Add empty talons for the doctor")
+    @ApiOperation("Доктор создает себе пустые талоны на диапазон времени")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Создать пустые талонгы на несколько дней вперёд"),
+            @ApiResponse(code = 200, message = "Талоны созданы"),
             @ApiResponse(code = 401, message = "У доктора есть талоны на данные дни"),
     })
-
     @PostMapping("/add")
     public Response<List<TalonDto>> addTalons() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -67,11 +66,12 @@ public class DoctorTalonsRestController {
         return Response.ok(converter.toTalonDtoByDoctorId(talons, doctor.getId()));
     }
 
-    @ApiOperation("get all talons by doctor id")
+    @ApiOperation("Доктор получает все свои талоны")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список талонов"),
             @ApiResponse(code = 414, message = "Доктора с таким id нет!"),
     })
+    //todo list1 удалить id доктора из урл, доктор должен находить только свои талоны
     @GetMapping("/get/group/{doctorId}")
     public Response<List<TalonByDay>> getAllTalonsByDoctorId(@PathVariable Long doctorId) {
         ApiValidationUtils
@@ -81,7 +81,7 @@ public class DoctorTalonsRestController {
                 talonDtoService.findAllByDoctorId(doctorId).orElse(Collections.emptyList())));
     }
 
-    @ApiOperation("find current doctor talons on today")
+    @ApiOperation("Доктор получает свои талоны на сегодня")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список талонов доктора на сегодня"),
     })

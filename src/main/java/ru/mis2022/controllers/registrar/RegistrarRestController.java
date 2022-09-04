@@ -21,11 +21,11 @@ import ru.mis2022.service.dto.RegistrarDtoService;
 public class RegistrarRestController {
     private final RegistrarDtoService registrarDtoService;
 
-    @GetMapping("/mainPage/current")
+    @ApiOperation(value = "Авторизованный регистратор получает информацию о себе")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Метод возвращает мед.регистратора"),
     })
-    @ApiOperation(value = "This method is used to get current registrar.")
+    @GetMapping("/mainPage/current")
     public Response<CurrentRegistrarDto> getCurrentRegistrarDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Response.ok(registrarDtoService.getCurrentRegistrarDtoByEmail(currentUser.getEmail()));

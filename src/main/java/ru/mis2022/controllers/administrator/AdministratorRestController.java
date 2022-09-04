@@ -22,7 +22,7 @@ import ru.mis2022.service.dto.AdministratorDtoService;
 public class AdministratorRestController {
     private final AdministratorDtoService administratorDtoService;
 
-    @ApiOperation(value = "This method is used to get the administrator.")
+    @ApiOperation(value = "Авторизованный администратор получает информацию о себе")
     @GetMapping("/mainPage/current")
     public Response<CurrentAdministratorDto> getCurrentAdministratorDto() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

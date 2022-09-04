@@ -21,7 +21,7 @@ import ru.mis2022.service.dto.PatientDtoService;
 public class PatientRestController {
     private final PatientDtoService patientDtoService;
 
-    @ApiOperation("get a patient")
+    @ApiOperation("Авторизованный пациент получает информацию о себе")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Метод возвращает пациента"),
     })
