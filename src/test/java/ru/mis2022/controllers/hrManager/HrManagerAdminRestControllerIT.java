@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.dto.administrator.AdministratorDto;
+import ru.mis2022.models.dto.administrator.converter.AdministratorDtoConverter;
 import ru.mis2022.models.entity.Administrator;
 import ru.mis2022.models.entity.HrManager;
 import ru.mis2022.models.entity.Role;
-import ru.mis2022.models.mapper.AdministratorMapper;
 import ru.mis2022.service.entity.AdministratorService;
 import ru.mis2022.service.entity.HrManagerService;
 import ru.mis2022.service.entity.RoleService;
@@ -32,7 +32,7 @@ public class HrManagerAdminRestControllerIT extends ContextIT {
     AdministratorService administratorService;
 
     @Autowired
-    AdministratorMapper administratorMapper;
+    AdministratorDtoConverter administratorDtoConverter;
 
     @Autowired
     RoleService roleService;

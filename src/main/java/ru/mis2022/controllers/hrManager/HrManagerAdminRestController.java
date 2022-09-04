@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.administrator.AdministratorDto;
+import ru.mis2022.models.dto.administrator.converter.AdministratorDtoConverter;
 import ru.mis2022.models.entity.Administrator;
-import ru.mis2022.models.mapper.AdministratorMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.entity.AdministratorService;
-import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.UserService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 import ru.mis2022.utils.validation.OnCreate;
@@ -25,7 +24,6 @@ import ru.mis2022.utils.validation.OnUpdate;
 
 import javax.validation.Valid;
 
-import static ru.mis2022.models.entity.Role.RolesEnum.ADMIN;
 
 @Validated
 @RestController
@@ -34,8 +32,7 @@ import static ru.mis2022.models.entity.Role.RolesEnum.ADMIN;
 @RequestMapping("/api/hr_manager")
 public class HrManagerAdminRestController {
     private final AdministratorService administratorService;
-    private final RoleService roleService;
-    private final AdministratorMapper administratorMapper;
+    private final AdministratorDtoConverter administratorDtoConverter;
     private final UserService userService;
 
     @ApiOperation("create admin by HrManager")
@@ -52,9 +49,9 @@ public class HrManagerAdminRestController {
                         412, "Такой адрес электронной почты уже используется!");
         Administrator administrator =
                 administratorService.persist(
-                        administratorMapper.toEntity(
-                                administratorDto, roleService.findByName(ADMIN.name())));
-        return Response.ok(administratorMapper.toDto(administrator));
+                        administratorDtoConverter.toEntity(
+                                administratorDto));
+        return Response.ok(administratorDtoConverter.toDto(administrator));
     }
     @ApiOperation("update admin by HrManager")
     @ApiResponses(value = {
@@ -75,8 +72,8 @@ public class HrManagerAdminRestController {
                 412, "Такой адрес электронной почты уже используется!");
         Administrator administrator =
                 administratorService.merge(
-                        administratorMapper.toEntity(
-                                administratorDto, roleService.findByName(ADMIN.name())));
-        return Response.ok(administratorMapper.toDto(administrator));
+                        administratorDtoConverter.toEntity(
+                                administratorDto));
+        return Response.ok(administratorDtoConverter.toDto(administrator));
     }
 }
