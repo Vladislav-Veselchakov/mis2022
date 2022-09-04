@@ -1,11 +1,13 @@
 package ru.mis2022.models.dto.administrator;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.mis2022.utils.validation.OnCreate;
 import ru.mis2022.utils.validation.OnUpdate;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
@@ -13,6 +15,7 @@ import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdministratorDto {
