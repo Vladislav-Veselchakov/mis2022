@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.user.UserDto;
+import ru.mis2022.models.dto.user.converter.UserDtoConverter;
 import ru.mis2022.models.entity.Role;
-import ru.mis2022.models.mapper.UserMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.entity.UserService;
 
@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/api/hr_manager")
 public class HrManagerPersonalRestController {
     private final UserService userService;
-    private final UserMapper userMapper;
+    private final UserDtoConverter converter;
 
     @ApiOperation("Кадровик получает всех сотрудников по паттерну")
     @ApiResponses(value = {
@@ -35,7 +35,7 @@ public class HrManagerPersonalRestController {
     public Response<List<UserDto>> findPersonalByFirstAndLastName(
             @RequestParam(required = false, defaultValue = "") String fullName) {
         String fullNames = fullName.replaceAll("\\s+", "%");
-        return Response.ok(userMapper.toListDto(
+        return Response.ok(converter.toListDto(
                 userService.findPersonalByFullName(fullNames, Role.RolesEnum.PATIENT.name())));
     }
 }
