@@ -1,5 +1,8 @@
 package ru.mis2022.models.dto.user;
 
+import lombok.Builder;
+
+@Builder
 public record UserDto(
 
         Long id,
