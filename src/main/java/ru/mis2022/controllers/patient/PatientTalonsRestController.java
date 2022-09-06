@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
-import ru.mis2022.models.entity.User;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.PatientDtoService;
 import ru.mis2022.service.entity.PatientService;
