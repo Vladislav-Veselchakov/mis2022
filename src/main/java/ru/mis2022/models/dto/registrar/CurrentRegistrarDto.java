@@ -1,9 +1,8 @@
 package ru.mis2022.models.dto.registrar;
 
 
-import java.time.LocalDate;
-
-public record CurrentRegistrarDto(String firstName,
-                                  String lastName,
-                                  LocalDate birthday,
-                                  String roleName) {}
+public record CurrentRegistrarDto(Long id,
+                                String firstName,
+                                String lastName,
+                                 String roleName
+) {}
