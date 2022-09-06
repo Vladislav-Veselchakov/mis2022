@@ -23,6 +23,7 @@ import ru.mis2022.utils.DateFormatter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
@@ -113,12 +114,12 @@ class ChiefDoctorReportRestControllerTest extends ContextIT {
         Doctor docWithAllFreeTalons = initDoctor(roleDoc, department, "docWithAllFreeTalons@email.com", "доктор со всеми", "свободными талонами" ,  null);
 
         Patient patient = initPatient(rolePatient);
-        initTalon(LocalDateTime.now().minusHours(2), ChiefDoctor, patient);
-        initTalon(LocalDateTime.now().plusHours(1), ChiefDoctor, null);
+        initTalon(LocalDateTime.now().with(LocalTime.MAX).minusHours(2), ChiefDoctor, patient);
+        initTalon(LocalDateTime.now().with(LocalTime.MIN).plusHours(1), ChiefDoctor, null);
 
-        initTalon(LocalDateTime.now().minusHours(1), docWithAllFreeTalons, null);
-        initTalon(LocalDateTime.now().plusHours(1), docWithAllFreeTalons, null);
-        initTalon(LocalDateTime.now().plusHours(2), docWithAllFreeTalons, null);
+        initTalon(LocalDateTime.now().with(LocalTime.MAX).minusHours(1), docWithAllFreeTalons, null);
+        initTalon(LocalDateTime.now().with(LocalTime.MIN).plusHours(1), docWithAllFreeTalons, null);
+        initTalon(LocalDateTime.now().with(LocalTime.MIN).plusHours(2), docWithAllFreeTalons, null);
 
 
         accessToken = tokenUtil.obtainNewAccessToken(ChiefDoctor.getEmail(), "1", mockMvc);

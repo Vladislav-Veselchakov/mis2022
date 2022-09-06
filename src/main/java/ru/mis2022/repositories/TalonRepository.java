@@ -2,6 +2,7 @@ package ru.mis2022.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ru.mis2022.models.dto.registrar.CurrentDepartamentDoctorTalonsDto;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Doctor;
@@ -100,5 +101,32 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
     @Query(value = "SELECT patient_id FROM talon t WHERE t.id = ?1",
             nativeQuery = true)
     Long findPatientIdByTalonId(Long talonId);
+
+    @Query("""
+    SELECT new ru.mis2022.models.dto.registrar.CurrentDepartamentDoctorTalonsDto(
+        dp.id,
+        dp.name,
+        d.id,
+        d.firstName,
+        d.lastName,
+        t.id,
+        t.time,
+        p.id,
+        CONCAT(p.firstName, ' ', p.lastName) 
+        
+    )
+    FROM Department dp
+    LEFT JOIN Doctor d
+        ON dp.id = d.department.id
+    LEFT JOIN Talon t
+        ON t.doctor.id = d.id AND t.time BETWEEN :timeStrart AND :timeEnd
+    LEFT JOIN Patient p
+        ON p.id = t.patient.id
+    ORDER BY 
+        dp.name,
+        d.lastName, d.firstName,
+        t.time
+    """)
+    List<CurrentDepartamentDoctorTalonsDto> getCurrentDepartamentDoctorTalonsDto(LocalDateTime timeStrart, LocalDateTime timeEnd);
 
 }
