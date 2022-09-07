@@ -7,6 +7,7 @@ import ru.mis2022.models.dto.doctor.ChiefReportDto;
 import ru.mis2022.models.dto.doctor.CurrentChiefReportDto;
 import ru.mis2022.models.dto.talon.TalonsBusyTotal;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.repositories.DepartmentRepository;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.dto.ChiefReportService;
 
@@ -21,11 +22,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChiefReportServiceImpl implements ChiefReportService {
     private final DoctorRepository docRepository;
+    private final DepartmentRepository depRepository;
 
     @Override
     public List<ChiefReportDto> getReport(LocalDate dateStart, LocalDate dateEnd) {
         Doctor signedInDoc = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long deptId = docRepository.getDepartmentIdByDoctorId(signedInDoc.getId());
+        Long deptId = depRepository.getDepartmentIdByDoctorId(signedInDoc.getId());
 
         List<CurrentChiefReportDto> dataset = docRepository.getWorkloadEmployeesReport(
                 deptId, dateStart.atTime(LocalTime.MIN), dateEnd.atTime(LocalTime.MAX));

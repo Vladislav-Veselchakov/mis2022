@@ -92,12 +92,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 """)
     List<CurrentChiefReportDto> getWorkloadEmployeesReport(@Param("deptId") Long deptId, @Param("dateHome") LocalDateTime dateHome, @Param("DateEnd") LocalDateTime DateEnd);
 
-    //todo list3 перенести в DepartmentRepository
-    @Query("""
-    SELECT d.department.id
-    FROM  Doctor d
-    WHERE d.id = :docId
-    """)
-    Long getDepartmentIdByDoctorId(@Param("docId") Long docId);
+
+
 
 }
