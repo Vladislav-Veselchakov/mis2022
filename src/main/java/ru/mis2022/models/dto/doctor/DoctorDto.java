@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ru.mis2022.utils.validation.OnCreate;
 import ru.mis2022.utils.validation.OnUpdate;
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class DoctorDto {
 
     @Null(groups = OnCreate.class, message = "id должен быть равен null")

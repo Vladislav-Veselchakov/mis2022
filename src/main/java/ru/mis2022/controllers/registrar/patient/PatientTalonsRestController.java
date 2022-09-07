@@ -1,4 +1,4 @@
-package ru.mis2022.controllers.patient;
+package ru.mis2022.controllers.registrar.patient;
 
 
 import io.swagger.annotations.ApiOperation;

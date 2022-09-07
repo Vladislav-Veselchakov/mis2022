@@ -1,11 +1,14 @@
 package ru.mis2022.models.dto.doctor.converter;
 
 import org.springframework.stereotype.Component;
+import ru.mis2022.models.dto.doctor.DoctorDto;
+import ru.mis2022.models.entity.Doctor;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import ru.mis2022.models.dto.registrar.DoctorsWithTalonsDto;
 import ru.mis2022.models.dto.registrar.TalonsWithoutDoctorDto;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -47,8 +50,24 @@ public class DoctorDtoConverter {
                 .sorted()
                 .collect(Collectors.toList());
 
-
         return docsWitnTalons;
     }
 
+    public List<DoctorDto> toDoctorDtoList(List<Doctor> doctors) {
+        List<DoctorDto> setDto = new ArrayList<>();
+        for(Doctor d : doctors) {
+            setDto.add(DoctorDto.builder()
+                    .id(d.getId())
+                    .email((d.getEmail()))
+                    .password(d.getPassword())
+                    .firstName(d.getFirstName())
+                    .lastName((d.getLastName()))
+                    .surname((d.getSurname()))
+                    .role((d.getRole()).getName())
+                    .birthday((d.getBirthday()).format(DateTimeFormatter.ISO_DATE))
+                    .department((d.getDepartment()).getName())
+                    .build());
+        }
+        return setDto;
+    }
 }

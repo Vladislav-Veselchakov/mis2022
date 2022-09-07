@@ -1,4 +1,4 @@
-package ru.mis2022.controllers.patient;
+package ru.mis2022.controllers.registrar.patient;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.models.dto.department.DepartmentDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
+import ru.mis2022.models.dto.doctor.converter.DoctorDtoConverter;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
 import ru.mis2022.models.dto.talon.TalonDto;
-import ru.mis2022.models.mapper.DoctorMapper;
 import ru.mis2022.models.response.Response;
 import ru.mis2022.service.dto.DepartmentDtoService;
 import ru.mis2022.service.dto.DoctorDtoService;
@@ -24,7 +24,6 @@ import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
-
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -43,7 +42,7 @@ public class PatientScheduleRestController {
     private final DepartmentDtoService departmentDtoService;
     private final MedicalOrganizationService medicalOrganizationService;
     private final MedicalOrganizationDtoService medicalOrganizationDtoService;
-    private final DoctorMapper doctorMapper;
+    private final DoctorDtoConverter doctorDtoConverter;
     private final TalonService talonService;
     private final TalonDtoService talonDtoService;
     private final DoctorDtoService doctorDtoService;
@@ -82,10 +81,10 @@ public class PatientScheduleRestController {
         ApiValidationUtils
                 .expectedTrue(departmentService.isExistById(departmentId),
                         414, "Департамента с таким id нет!");
-        return Response.ok(doctorMapper.toListDto(
-                talonService.findDoctorsWithTalonsSpecificTimeRange(numberOfDays, departmentId)));
-    }
+        return Response.ok(doctorDtoConverter.toDoctorDtoList((
+                talonService.findDoctorsWithTalonsSpecificTimeRange(numberOfDays, departmentId))));
 
+    }
 
     @ApiOperation("Пациент получает все видимые для него свободные талоны переданного доктора")
     @ApiResponses(value = {

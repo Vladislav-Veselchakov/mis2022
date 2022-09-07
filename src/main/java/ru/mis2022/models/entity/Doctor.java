@@ -1,9 +1,11 @@
 package ru.mis2022.models.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
@@ -37,6 +39,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class Doctor extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,6 +52,7 @@ public class Doctor extends User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private List<Talon> talons;
+
 
     public Doctor(String email, String password, String firstName, String lastName, @Nullable String surname,
                   LocalDate birthday, Role role, Department department) {
