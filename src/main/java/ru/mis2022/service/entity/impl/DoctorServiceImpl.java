@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mis2022.models.dto.doctor.DoctorDto;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.entity.DoctorService;
@@ -48,6 +49,11 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public boolean isExistsById(long doctorId) {
         return doctorRepository.existsById(doctorId);
+    }
+
+    @Override
+    public List<DoctorDto> findDoctorsDtoByDepartmentId(Long departmentId) {
+        return doctorRepository.findAllByDepartmentIdDto(departmentId);
     }
 
 }

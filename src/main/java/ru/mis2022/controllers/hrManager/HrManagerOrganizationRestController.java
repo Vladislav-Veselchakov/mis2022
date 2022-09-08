@@ -14,11 +14,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mis2022.models.dto.department.DepartmentDto;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
 import ru.mis2022.models.dto.organization.converter.MedicalOrganizationDtoConverter;
+import ru.mis2022.models.dto.user.UserDto;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.DepartmentDtoService;
 import ru.mis2022.service.dto.MedicalOrganizationDtoService;
+import ru.mis2022.service.dto.UserDtoService;
+import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 import ru.mis2022.utils.validation.OnCreate;
@@ -34,8 +39,11 @@ import java.util.List;
 @RequestMapping("/api/hr_manager")
 public class HrManagerOrganizationRestController {
     private final MedicalOrganizationService medicalOrganizationService;
+    private final DepartmentDtoService departmentDtoService;
     private final MedicalOrganizationDtoService medicalOrganizationDtoService;
     private final MedicalOrganizationDtoConverter medicalOrganizationDtoConverter;
+    private final UserDtoService userDtoService;
+    private final DepartmentService departmentService;
 
     @ApiOperation("Кадровик получает все медицинские организации")
     @ApiResponses(value = {
@@ -96,4 +104,42 @@ public class HrManagerOrganizationRestController {
         return Response.ok();
     }
 
+    @ApiOperation("Получение всех отделений по id медицинской организации")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Список отделений"),
+            @ApiResponse(code = 414, message = "Медицинской организации с таким id нет")
+    })
+    @GetMapping(value = "/medicalOrganization/{medOrgId}/getAllDepartments")
+    public Response<List<DepartmentDto>> getAllDepartmentsByMedicalMedicalOrganizationId(
+            @Valid @PathVariable Long medOrgId) {
+        ApiValidationUtils
+                .expectedFalse(!medicalOrganizationService.isExist(medOrgId),
+                        414, "Медицинской организации с таким id нет");
+        List<DepartmentDto> departmentsDtoList = departmentDtoService.findAllByMedicalOrganizationId(medOrgId);
+
+        departmentsDtoList.add(new DepartmentDto(0L, "Other staff"));
+
+        return Response.ok(departmentsDtoList);
+    }
+
+    @ApiOperation("Получение всех сотрудников по id отделения")
+    @ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Список сотрудников отделения"),
+            @ApiResponse(code = 414, message = "Отделения с таким id нет")
+    })
+    @GetMapping(value = "/departments/{depId}/getEmployees")
+    public Response <List<UserDto>> getAllEmployesByDepartmentId(@PathVariable Long depId){
+
+        List<UserDto> users;
+
+        if(depId != 0) {
+            ApiValidationUtils
+                    .expectedFalse(!departmentService.isExistById(depId),
+                            414, "Отделения с таким id нет");
+            users = userDtoService.findDoctorsByDepartment(depId);
+        } else {
+            users = userDtoService.findStaffByDepartment(depId);
+        }
+        return Response.ok(users);
+    }
 }
