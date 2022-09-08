@@ -9,11 +9,12 @@ import org.springframework.http.MediaType;
 import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
-import ru.mis2022.models.entity.Talon;
-import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.entity.Patient;
+import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.Role;
+import ru.mis2022.models.entity.Talon;
+import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
@@ -22,6 +23,7 @@ import ru.mis2022.service.entity.RoleService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.util.ContextIT;
 import ru.mis2022.utils.DateFormatter;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -50,6 +52,8 @@ public class PatientScheduleRestControllerIT extends ContextIT {
     DoctorService doctorService;
     @Autowired
     TalonService talonService;
+    @Autowired
+    TalonDtoService talonDtoService;
 
     MedicalOrganization initMedicalOrganization(String name, String address) {
         return medicalOrganizationService.save(MedicalOrganization.builder()
@@ -203,7 +207,7 @@ public class PatientScheduleRestControllerIT extends ContextIT {
         talonService.persistTalonsForDoctor(doctor4,  numberOfDays, numbersOfTalons);
 
         // Заполняем пациентами талоны доктора 4 (так было в тесте у Анны Муравьевой)
-        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(
+        List<DoctorTalonsDto> doc4Talons = talonDtoService.getTalonsByDoctorIdAndDay(
                 doctor4.getId(),
                 LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
                 LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
@@ -217,7 +221,7 @@ public class PatientScheduleRestControllerIT extends ContextIT {
             .forEach(talonService::save);
 
         // Заполняем пациентами талоны доктора 2 (так было в тесте у Анны Муравьевой)
-        List<DoctorTalonsDto> doc2Talons = talonService.getTalonsByDoctorIdAndDay(
+        List<DoctorTalonsDto> doc2Talons = talonDtoService.getTalonsByDoctorIdAndDay(
                 doctor2.getId(),
                 LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
                 LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
