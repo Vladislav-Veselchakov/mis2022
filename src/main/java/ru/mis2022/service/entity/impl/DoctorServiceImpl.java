@@ -5,9 +5,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mis2022.models.dto.doctor.DoctorDto;
+import ru.mis2022.models.dto.talon.TalonDto;
+import ru.mis2022.models.dto.talon.converter.TalonDtoConverter;
 import ru.mis2022.models.entity.Doctor;
+import ru.mis2022.models.entity.Patient;
+import ru.mis2022.models.entity.Talon;
 import ru.mis2022.repositories.DoctorRepository;
 import ru.mis2022.service.entity.DoctorService;
+import ru.mis2022.service.entity.PatientService;
+import ru.mis2022.service.entity.TalonService;
 
 import java.util.List;
 
@@ -18,6 +24,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final PasswordEncoder encoder;
+    private final TalonDtoConverter talonDtoConverter;
+    private final TalonService talonService;
+    public final PatientService patientService;
 
     @Override
     public Doctor findByEmail(String email) {

@@ -3,12 +3,14 @@ package ru.mis2022.service.entity.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.mis2022.models.dto.talon.DoctorTalonsDto;
+import ru.mis2022.models.dto.talon.TalonDto;
+import ru.mis2022.models.dto.talon.converter.TalonDtoConverter;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.repositories.TalonRepository;
 import ru.mis2022.service.entity.TalonService;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,7 +23,7 @@ import java.util.List;
 public class TalonServiceImpl implements TalonService {
 
     private final TalonRepository talonRepository;
-
+    private final TalonDtoConverter talonDtoConverter;
 
     @Override
     public Talon save(Talon talon) {
@@ -56,11 +58,6 @@ public class TalonServiceImpl implements TalonService {
     }
 
     @Override
-    public List<Talon> findAllByPatientId(Long id) {
-        return talonRepository.findAllByPatientId(id);
-    }
-
-    @Override
     public Talon findTalonById(Long id) {
         return talonRepository.findTalonById(id);
     }
@@ -71,13 +68,15 @@ public class TalonServiceImpl implements TalonService {
         return talonRepository.findDoctorsWithTalonsSpecificTimeRange(startTime,endTime, departmentId);
     }
 
-    @Override
-    public List<DoctorTalonsDto> getTalonsByDoctorIdAndDay(
-            long doctorId, LocalDateTime startDayTime, LocalDateTime endDayTime) {
-        return talonRepository.talonsByDoctorByDay(doctorId, startDayTime, endDayTime);
-    }
-
     public Long findPatientIdByTalonId(Long talonId){
         return talonRepository.findPatientIdByTalonId(talonId);
     };
+
+    @Override
+    public TalonDto registerPatientInTalon(Talon talon, Patient patient) {
+        talon.setPatient(patient);
+        talon = talonRepository.save(talon);
+        return talonDtoConverter.talonToTalonDto(talon);
+    }
+
 }

@@ -47,4 +47,15 @@ public class TalonDtoConverter {
         }
         return setDto;
     }
+
+    public  TalonDto talonToTalonDto(Talon talon) {
+        TalonDto talonDto = new TalonDto();
+        talonDto = TalonDto.builder()
+                .id(talon.getId())
+                .time(talon.getTime())
+                .doctorId(talon.getDoctor().getId())
+                .patientId(talon.getPatient().getId())
+                .build();
+        return talonDto;
+    }
 }

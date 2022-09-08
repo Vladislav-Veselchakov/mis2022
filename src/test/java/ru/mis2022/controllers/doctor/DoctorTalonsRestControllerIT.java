@@ -13,6 +13,7 @@ import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.Talon;
+import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DepartmentService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.PatientService;
@@ -38,6 +39,8 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
 
     @Autowired
     TalonService talonService;
+    @Autowired
+    TalonDtoService talonDtoService;
     @Autowired
     DoctorService doctorService;
     @Autowired
@@ -251,7 +254,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         talonService.persistTalonsForDoctor(doctor, numberOfDays, numbersOfTalons);
 
         // Берем получившиеся талоны (чтобы дальше заполнить пациентом)
-        List<DoctorTalonsDto> doc4Talons = talonService.getTalonsByDoctorIdAndDay(
+        List<DoctorTalonsDto> doc4Talons = talonDtoService.getTalonsByDoctorIdAndDay(
                 doctor.getId(),
                 LocalDateTime.of(LocalDate.now(),
                 LocalTime.MIN),
