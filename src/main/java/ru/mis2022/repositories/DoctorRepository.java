@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import ru.mis2022.models.dto.doctor.CurrentChiefReportDto;
 import ru.mis2022.models.dto.doctor.CurrentDoctorDto;
 import ru.mis2022.models.dto.doctor.DoctorDto;
+import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 
 import java.time.LocalDateTime;
@@ -44,13 +45,32 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
         d.role.name,
         d.department.name
     )
-    FROM 
+    FROM
         Doctor d
-    WHERE 
+    WHERE
         d.department.id = :deptId
     
     """)
     List<DoctorDto> findAllByDepartmentIdDto(Long deptId);
+
+    @Query("""
+        SELECT new ru.mis2022.models.dto.doctor.CurrentDoctorDto(
+            doc.firstName,
+            doc.lastName,
+            doc.birthday,
+            role.name,
+            dep.name)
+        FROM Doctor doc
+            JOIN Role role ON doc.role.id = role.id
+            JOIN Department dep ON doc.department.id = dep.id
+        WHERE doc.email = :email
+        AND doc.department = :department
+        """)
+        //todo имя метода неправильное - отобразить получение коллекции
+    List<CurrentDoctorDto> findDoctorDtoByDepartment(Department department);
+
+    //todo надо искать по ид департамента и необходимо писать запрос с джойнами
+    List<DoctorDto> findDoctorsDtoByDepartmentId (Long departmentId);
 
     @Query("""
             SELECT d FROM Doctor d WHERE d.id = :id
@@ -67,13 +87,13 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             CASE
                 WHEN (t.patient is not null) THEN 1
                 ELSE 0
-            END 
+            END
             ),
         SUM(
             CASE
                 WHEN (t.id is not null) THEN 1
                 ELSE 0
-            END 
+            END
             )
     )
     FROM  Doctor d

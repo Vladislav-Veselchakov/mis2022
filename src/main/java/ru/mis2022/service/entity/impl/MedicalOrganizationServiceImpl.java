@@ -41,6 +41,11 @@ public class MedicalOrganizationServiceImpl implements MedicalOrganizationServic
     }
 
     @Override
+    public boolean isExist(Long medicalOrganizationId) {
+        return medicalOrganizationRepository.existsById(medicalOrganizationId);
+    }
+
+    @Override
     public boolean isExistById(Long id) {
         return medicalOrganizationRepository.existsById(id);
     }

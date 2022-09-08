@@ -16,6 +16,8 @@ public interface MedicalOrganizationService {
 
     void delete(Long id);
 
+    boolean isExist(Long medicalOrganizationId);
+
     boolean isExistById(Long id);
 
     boolean isExistByName(String name);

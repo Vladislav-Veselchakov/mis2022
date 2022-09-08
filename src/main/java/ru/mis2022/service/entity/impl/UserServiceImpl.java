@@ -55,5 +55,4 @@ public class UserServiceImpl implements UserService {
     public User persist(User user) {
         return userRepository.save(user);
     }
-
 }

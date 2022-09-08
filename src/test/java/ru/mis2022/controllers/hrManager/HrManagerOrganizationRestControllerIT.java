@@ -8,12 +8,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import ru.mis2022.models.dto.organization.MedicalOrganizationDto;
+import ru.mis2022.models.entity.Department;
+import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.HrManager;
 import ru.mis2022.models.entity.MedicalOrganization;
 import ru.mis2022.models.entity.Role;
+import ru.mis2022.models.entity.User;
+import ru.mis2022.service.entity.DepartmentService;
+import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.HrManagerService;
 import ru.mis2022.service.entity.MedicalOrganizationService;
 import ru.mis2022.service.entity.RoleService;
+import ru.mis2022.service.entity.UserService;
 import ru.mis2022.util.ContextIT;
 
 import java.time.LocalDate;
@@ -33,6 +39,13 @@ public class HrManagerOrganizationRestControllerIT extends ContextIT {
     RoleService roleService;
     @Autowired
     MedicalOrganizationService medicalOrganizationService;
+    @Autowired
+    DepartmentService departmentService;
+    @Autowired
+    DoctorService doctorService;
+    @Autowired
+    UserService userService;
+
 
     Role initRole(String name) {
         return roleService.save(Role.builder()
@@ -57,6 +70,31 @@ public class HrManagerOrganizationRestControllerIT extends ContextIT {
                 .name(name)
                 .address(address)
                 .build());
+    }
+
+    Department initDepartment(String name, MedicalOrganization medicalOrganization) {
+        return departmentService.save(Department.builder()
+                .name(name)
+                .medicalOrganization(medicalOrganization)
+                .build());
+    }
+
+    Doctor initDoctor(String email, String password, String firstName, String lastName, String surName, LocalDate age, Role role, Department department) {
+        return doctorService.persist(new Doctor(
+                email,
+                password,
+                firstName,
+                lastName,
+                surName,
+                age,
+                role,
+                department
+        ));
+    }
+
+    User initUser(String firstName, String lastName, String surname, LocalDate birthday, String email, Role role) {
+        return userService.persist(new User(
+                email, null, firstName, lastName, surname, birthday, role));
     }
 
     @Test
@@ -226,5 +264,108 @@ public class HrManagerOrganizationRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.code", Is.is(414)))
                 .andExpect(jsonPath("$.text", Is.is("Медицинской организации с таким id нет!")));
         //.andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+    }
+
+    @Test
+    public void getAllDepartmentsInMedicalOrganizationTest() throws Exception {
+        Role roleHrManager = initRole("HR_MANAGER");
+        HrManager hrManager = initHrManager(roleHrManager);
+        MedicalOrganization medicalOrganization = initMedicalOrganizations("Городской госпиталь", "Москва, ул. Ленина д. 7");
+
+        accessToken = tokenUtil.obtainNewAccessToken(hrManager.getEmail(), "1", mockMvc);
+
+        //Организация с неверным Id
+        mockMvc.perform(get("/api/hr_manager/medicalOrganization/{medOrgId}/getAllDepartments", 100)
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.success", Is.is(false)))
+                .andExpect(jsonPath("$.code", Is.is(414)))
+                .andExpect(jsonPath("$.text", Is.is(
+                        "Медицинской организации с таким id нет")));
+
+        initDepartment("Therapy", medicalOrganization);
+        initDepartment("Surgery", medicalOrganization);
+        initDepartment("Pediatrics", medicalOrganization);
+
+        //Вывод списка отделений медицинской организации
+        mockMvc.perform(get("/api/hr_manager/medicalOrganization/{medOrgId}/getAllDepartments", medicalOrganization.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data[0].name", Is.is("Therapy")))
+                .andExpect(jsonPath("$.data[1].name", Is.is("Surgery")))
+                .andExpect(jsonPath("$.data[2].name", Is.is("Pediatrics")))
+                .andExpect(jsonPath("$.data[3].name", Is.is("Other staff")));
+    }
+
+    @Test
+    public void getAllEmployesByDepartmentId() throws Exception {
+        Role roleHrManager = initRole("HR_MANAGER");
+        HrManager hrManager = initHrManager(roleHrManager);
+        MedicalOrganization medicalOrganization = initMedicalOrganizations("Городской госпиталь", "Москва, ул. Ленина д. 7");
+
+        accessToken = tokenUtil.obtainNewAccessToken(hrManager.getEmail(), "1", mockMvc);
+
+        Department therapyDepartment = initDepartment("Therapy", medicalOrganization);
+
+        //Отделение с неверным Id
+        mockMvc.perform(get("/api/hr_manager/departments/{depId}/getEmployees", 88888)
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.success", Is.is(false)))
+                .andExpect(jsonPath("$.code", Is.is(414)))
+                .andExpect(jsonPath("$.text", Is.is(
+                        "Отделения с таким id нет")));
+
+        //Нет сотрудников (врачей) в отделении
+        mockMvc.perform(get("/api/hr_manager/departments/{depId}/getEmployees", therapyDepartment.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data.length()", Is.is(0)));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
+        initDoctor("therapist1@email.com", String.valueOf(1), "f_name", "l_name", "surname", LocalDate.now().minusYears(20),  initRole("DOCTOR"), therapyDepartment);
+        initDoctor("therapist2@email.com", String.valueOf(1), "f_name", "l_name", "surname", LocalDate.now().minusYears(15),  initRole("CHIEF_DOCTOR"), therapyDepartment);
+        initDoctor("therapist3@email.com", String.valueOf(1), "f_name", "l_name", "surname", LocalDate.now().minusYears(10),  initRole("MAIN_DOCTOR"), therapyDepartment);
+        initUser("f_name", "l_name", "surname", LocalDate.now().minusYears(20), "admin@email.com", initRole("ADMIN"));
+        initUser( "f_name", "l_name", "surname", LocalDate.now().minusYears(15), "registrar@email.com", initRole("REGISTRAR"));
+        initUser( "f_name", "l_name", "surname", LocalDate.now().minusYears(10), "economist@email.com", initRole("ECONOMIST"));
+
+        //Вывод списка врачей в отделении
+        mockMvc.perform(get("/api/hr_manager/departments/{depId}/getEmployees", therapyDepartment.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data.[0].email", Is.is("therapist1@email.com")))
+                .andExpect(jsonPath("$.data.[1].email", Is.is("therapist2@email.com")))
+                .andExpect(jsonPath("$.data.[2].email", Is.is("therapist3@email.com")))
+                .andExpect(jsonPath("$.data.[0].roleName", Is.is("DOCTOR")))
+                .andExpect(jsonPath("$.data.[1].roleName", Is.is("CHIEF_DOCTOR")))
+                .andExpect(jsonPath("$.data.[2].roleName", Is.is("MAIN_DOCTOR")));
+
+        //Вывод административного персонала
+        mockMvc.perform(get("/api/hr_manager/departments/{depId}/getEmployees", 0)
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.data[0].roleName", Is.is("HR_MANAGER")))
+                .andExpect(jsonPath("$.data[1].roleName", Is.is("ADMIN")))
+                .andExpect(jsonPath("$.data[2].roleName", Is.is("REGISTRAR")))
+                .andExpect(jsonPath("$.data[3].roleName", Is.is("ECONOMIST")));
+
     }
 }

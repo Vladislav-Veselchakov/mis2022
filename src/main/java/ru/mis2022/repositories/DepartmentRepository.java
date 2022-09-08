@@ -16,12 +16,13 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             SELECT d FROM Department d WHERE d.id = :id
             """)
     Department findDepartmentById(Long id);
+
     @Query("""
     SELECT new ru.mis2022.models.dto.department.DepartmentDto(
         d.id,
         d.name
     )
-    FROM 
+    FROM
         Department d
     WHERE
         d.medicalOrganization.id = :medId

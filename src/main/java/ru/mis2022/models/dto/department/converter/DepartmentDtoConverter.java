@@ -1,6 +1,8 @@
 package ru.mis2022.models.dto.department.converter;
 
 import org.springframework.stereotype.Component;
+import ru.mis2022.models.dto.department.DepartmentDto;
+import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.dto.registrar.CurrentDepartamentDoctorTalonsDto;
 import ru.mis2022.models.dto.registrar.DepartmentsWithDoctorsDto;
 import ru.mis2022.models.dto.registrar.DoctorsWithTalonsDto;
@@ -70,4 +72,11 @@ public class DepartmentDtoConverter {
     }
 
 
-}
+        public DepartmentDto toDto(Department entityDepartment) {
+            DepartmentDto  departmentDto = new DepartmentDto();
+            departmentDto.setId(entityDepartment.getId());
+            departmentDto.setName(entityDepartment.getName());
+
+            return departmentDto;
+        }
+    }

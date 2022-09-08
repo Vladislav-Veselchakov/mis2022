@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface DepartmentService {
     Department save(Department department);
-    List<Department> findAllByMedicalOrganizationId(Long id);
-    Department findDepartmentById(Long id);
     boolean isExistById(Long departmentId);
 }

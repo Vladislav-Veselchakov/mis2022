@@ -5,15 +5,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.mis2022.utils.validation.OnCreate;
+import ru.mis2022.utils.validation.OnUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +42,8 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Null(groups = OnCreate.class, message = "id должен быть равен null")
+    @Positive(groups = OnUpdate.class, message = "id должен быть положительным")
     private Long id;
 
     private String name;
