@@ -32,6 +32,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("SELECT p FROM Patient p WHERE p.id = :id")
     Patient findPatientById(Long id);
 
+
     @Query("""
             SELECT p FROM Patient p
             WHERE LOWER(CONCAT(p.lastName,' ',p.firstName))
@@ -39,4 +40,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             ORDER BY p.lastName, p.firstName, p.id
             """)
     List<Patient> findPatientByFullName (String fullName);
+
+
+    @Query("SELECT t.patient.id FROM Talon t WHERE t.id = :talonId")
+    Long findPatientIdByTalonId(Long talonId);
+
 }

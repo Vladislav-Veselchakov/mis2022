@@ -3,13 +3,14 @@ package ru.mis2022.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.mis2022.models.dto.registrar.CurrentDepartamentDoctorTalonsDto;
-import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.dto.talon.DoctorTalonsDto;
+import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Talon;
+
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 public interface TalonRepository extends JpaRepository<Talon, Long> {
 
@@ -97,10 +98,6 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
         """)
     List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd);
 
-    //todo list1 перенести в PatientRepository, попробовать заметить запрос на hql
-    @Query(value = "SELECT patient_id FROM talon t WHERE t.id = ?1",
-            nativeQuery = true)
-    Long findPatientIdByTalonId(Long talonId);
 
     @Query("""
     SELECT new ru.mis2022.models.dto.registrar.CurrentDepartamentDoctorTalonsDto(

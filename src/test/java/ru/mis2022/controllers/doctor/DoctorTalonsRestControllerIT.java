@@ -121,7 +121,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         LocalDate date = LocalDate.now();
 
         LocalDateTime time2 = LocalDateTime.of(LocalDate.now().plusDays(13), LocalTime.of(8, 0).plusHours(3));
-        String foramttedString2 = time2.format(DATE_TIME_FORMATTER);
+        String formattedString2 = time2.format(DATE_TIME_FORMATTER);
 
         accessToken = tokenUtil.obtainNewAccessToken(doctor1.getEmail(), "1", mockMvc);
 
@@ -148,7 +148,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data[3].doctorId", Is.is(doctor1.getId().intValue())))
 
                 .andExpect(jsonPath("$.data[55].id", Matchers.notNullValue()))
-                .andExpect(jsonPath("$.data[55].time", Is.is(foramttedString2)))
+                .andExpect(jsonPath("$.data[55].time", Is.is(formattedString2)))
                 .andExpect(jsonPath("$.data[55].doctorId", Is.is(doctor1.getId().intValue())));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
@@ -168,7 +168,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     //todo list4 на стыке месяцов тест не работет. Например, если сегодня 28.08 то далее к этой дате добавляется 4 дня и
     // получается 02.09. Тест ожидает первый талон с датой 28.08, а получает 02.09, т.к. в классе
     // TalonDtoConverter.groupByDay(..) идет сортировка по строке
-    public void getAllTalonsByDoctorIdTest() throws Exception {
+    public void getAllTalonsByCurrentDoctorTest() throws Exception {
         Role role = initRole("DOCTOR");
         Role role1 = initRole("PATIENT");
         Department department = initDepartment("Therapy");
@@ -186,7 +186,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         accessToken = tokenUtil.obtainNewAccessToken(doctor1.getEmail(), "1", mockMvc);
 
         // У ДОКТОРА 5 ТАЛОНОВ ИЗ КОТОРЫХ 2 ЗАНЯТО
-        mockMvc.perform(get("/api/doctor/talon/get/group/{doctorId}", doctor1.getId())
+        mockMvc.perform(get("/api/doctor/talon/group")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -197,7 +197,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data[0].talonsDto[0].time", Is.is(talon1.getTime().format(DATE_TIME_FORMATTER))))
                 .andExpect(jsonPath("$.data[0].talonsDto[0].doctorId", Is.is(doctor1.getId().intValue())))
                 .andExpect(jsonPath("$.data[0].talonsDto[0].patientId", Is.is(Matchers.nullValue())))
-        //      .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+                //      .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
                 .andExpect(jsonPath("$.data[0].talonsDto[1].id", Is.is(talon2.getId().intValue())))
                 .andExpect(jsonPath("$.data[0].talonsDto[1].time", Is.is(talon2.getTime().format(DATE_TIME_FORMATTER))))
@@ -220,7 +220,9 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data[2].talonsDto[0].patientId", Is.is(Matchers.nullValue())));
 
         // У ДОКТОРА НЕТ ТАЛОНОВ
-        mockMvc.perform(get("/api/doctor/talon/get/group/{doctorId}", doctor2.getId())
+        accessToken = tokenUtil.obtainNewAccessToken(doctor2.getEmail(), "1", mockMvc);
+
+        mockMvc.perform(get("/api/doctor/talon/group")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -230,18 +232,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data.length()", Is.is(0)));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
-        // ДОКТОРА С ТАКИМ ID НЕТ
-        mockMvc.perform(get("/api/doctor/talon/get/group/{doctorId}", 888888)
-                        .header("Authorization", accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(414)))
-                .andExpect(jsonPath("$.text", Is.is("Доктора с таким id нет!")));
-//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
-
-        }
+    }
 
     @Test
     public void onTodayTalonsTest() throws Exception {
