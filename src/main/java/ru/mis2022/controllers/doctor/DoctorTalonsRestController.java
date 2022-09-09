@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,14 +68,10 @@ public class DoctorTalonsRestController {
     @ApiOperation("Доктор получает все свои талоны")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список талонов"),
-            @ApiResponse(code = 414, message = "Доктора с таким id нет!"),
     })
-    //todo list1 удалить id доктора из урл, доктор должен находить только свои талоны
-    @GetMapping("/get/group/{doctorId}")
-    public Response<List<TalonByDay>> getAllTalonsByDoctorId(@PathVariable Long doctorId) {
-        ApiValidationUtils
-                .expectedTrue(doctorService.isExistsById(doctorId),
-                        414, "Доктора с таким id нет!");
+    @GetMapping("/group")
+    public Response<List<TalonByDay>> getAllTalonsByCurrentDoctor() {
+        long doctorId = ((Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         return Response.ok(converter.groupByDay(
                 talonDtoService.findAllByDoctorId(doctorId).orElse(Collections.emptyList())));
     }
