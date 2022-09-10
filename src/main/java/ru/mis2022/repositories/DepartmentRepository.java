@@ -35,4 +35,13 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     WHERE d.id = :docId
     """)
     Long getDepartmentIdByDoctorId(@Param("docId") Long docId);
+
+    @Query("""
+    SELECT new ru.mis2022.models.dto.department.DepartmentDto(
+        d.id,
+        d.name
+    )
+    FROM Department d
+    """)
+    List<DepartmentDto> getAllDepartments();
 }
