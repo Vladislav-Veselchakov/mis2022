@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DepartmentDtoService {
     List<DepartmentDto> findAllByMedicalOrganizationId(Long id);
+    List<DepartmentDto> getAllDepartments();
 }

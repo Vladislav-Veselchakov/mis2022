@@ -17,4 +17,9 @@ public class DepartmentDtoServiceImpl implements DepartmentDtoService {
     public List<DepartmentDto> findAllByMedicalOrganizationId(Long id) {
         return departmentRepository.findAllByMedicalOrganizationIdDto(id);
     }
+
+    @Override
+    public List<DepartmentDto> getAllDepartments() {
+        return departmentRepository.getAllDepartments();
+    }
 }
