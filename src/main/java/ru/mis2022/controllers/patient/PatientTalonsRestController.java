@@ -16,8 +16,7 @@ import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.response.Response;
-import ru.mis2022.service.dto.PatientDtoService;
-import ru.mis2022.service.entity.PatientService;
+import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 
@@ -30,21 +29,16 @@ import java.util.List;
 @RequestMapping("/api/patient/talons")
 public class PatientTalonsRestController {
     private final TalonService talonService;
-    private final PatientService patientService;
-    private final PatientDtoService patientDtoService;
+    private final TalonDtoService talonDtoService;
 
     @ApiOperation("Авторизованный пациент получает все свои талоны на которые у него есть запись")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Получение всех талонов, занятых пациентом")
     })
-    //todo list2 пациент должен браться не из id а из авторизации
-    @GetMapping("/{patientId}")
-    public Response<List<TalonDto>> getAllTalonsByPatientId(@PathVariable Long patientId) {
-       ApiValidationUtils
-               .expectedTrue(patientService.isExistById(patientId),
-                       402, "Пациента с таким id нет!");
-       //todo list2 пренести логику из patientDtoService в talonDtoService
-       return Response.ok(patientDtoService.findAllByPatientId(patientId));
+    @GetMapping
+    public Response<List<TalonDto>> getAllTalonsByCurrentPatient() {
+        long patientId = ((Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        return Response.ok(talonDtoService.findAllByPatientId(patientId));
     }
 
     @ApiOperation("Пациент удаляет запись к врачу по id талона")
