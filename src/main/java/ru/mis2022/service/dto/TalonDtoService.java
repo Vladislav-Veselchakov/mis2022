@@ -13,7 +13,12 @@ public interface TalonDtoService {
     Optional<List<TalonDto>> findAllByDoctorId(long doctorId);
 
     List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd);
+
     List<DoctorTalonsDto> getTalonsByDoctorIdAndDay(long doctorId, LocalDateTime startDayTime,
                                                     LocalDateTime endDayTime);
+
+    List<TalonDto> findAllByPatientId(long patientId);
+
     List<CurrentDepartamentDoctorTalonsDto> getCurrentDepartamentDoctorTalonsDto(LocalDateTime timeStrart, LocalDateTime timeEnd);
+
 }

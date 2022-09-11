@@ -40,7 +40,7 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
     WHERE 
         t.patient.id = :id
     """)
-    List<TalonDto> findAllByPatientIdDto(Long id);
+    List<TalonDto> findAllDtoByPatientId(Long id);
 
     @Query("""
                 select count(t) from Talon t

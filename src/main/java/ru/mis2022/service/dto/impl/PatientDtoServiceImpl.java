@@ -14,15 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PatientDtoServiceImpl implements PatientDtoService {
     private final PatientRepository patientRepository;
-    private final TalonRepository talonRepository;
-
     @Override
     public CurrentPatientDto getCurrentPatientDtoByEmail(String email) {
         return patientRepository.getCurrentPatientDtoByEmail(email);
     }
 
-    @Override
-    public List<TalonDto> findAllByPatientId(Long id) {
-        return talonRepository.findAllByPatientIdDto(id);
-    }
 }

@@ -27,6 +27,11 @@ public class TalonDtoServiceImpl implements TalonDtoService {
         return talonRepository.findTalonsByDoctorIdAndTimeBetween(doctorId, timeNow, timeEnd);
     }
 
+    @Override
+    public List<TalonDto> findAllByPatientId(long patientId) {
+        return talonRepository.findAllDtoByPatientId(patientId);
+    }
+
 
     @Override
     public List<DoctorTalonsDto> getTalonsByDoctorIdAndDay(

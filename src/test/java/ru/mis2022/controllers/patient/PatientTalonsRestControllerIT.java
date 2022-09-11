@@ -11,7 +11,6 @@ import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.PersonalHistory;
 import ru.mis2022.models.entity.Role;
 import ru.mis2022.models.entity.Talon;
-import ru.mis2022.service.dto.TalonDtoService;
 import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.RoleService;
@@ -20,8 +19,6 @@ import ru.mis2022.util.ContextIT;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -36,8 +33,6 @@ public class PatientTalonsRestControllerIT extends ContextIT {
     PatientService patientService;
     @Autowired
     TalonService talonService;
-    @Autowired
-    TalonDtoService talonDtoService;
     @Autowired
     DoctorService doctorService;
 
@@ -80,52 +75,83 @@ public class PatientTalonsRestControllerIT extends ContextIT {
     }
 
     @Test
-    public void getAllTalonsPatient() throws Exception {
+    public void getAllTalonsPatientTest() throws Exception {
 
         Role role = initRole("PATIENT");
         Role role1 = initRole("DOCTOR");
-        Patient patient = initPatient(role, "patient1@email.com");
-        Doctor doctor = initDoctor(role1, null, null, "doctor1@email.com");
-        talonService.persistTalonsForDoctor(doctor, 14, 4);
+        Patient patient1 = initPatient(role, "patient1@email.com");
+        Patient patient2 = initPatient(role, "patient2@email.com");
+        Doctor doctor1 = initDoctor(role1, null, null, "doctor1@email.com");
+        Doctor doctor2 = initDoctor(role1, null, null, "doctor2@email.com");
+        Talon doc1talon1 = initTalon(null, doctor1, null);
+        Talon doc1talon2 = initTalon(null, doctor1, null);
+        Talon doc1talon3 = initTalon(null, doctor1, null);
+        Talon doc1talon4 = initTalon(null, doctor1, null);
+        Talon doc2talon1 = initTalon(null, doctor2, null);
+        Talon doc2talon2 = initTalon(null, doctor2, null);
+        Talon doc2talon3 = initTalon(null, doctor2, null);
+        Talon doc2talon4 = initTalon(null, doctor2, null);
 
-        // Берем все получившиеся талонры и в след. строке заполнряем их пациентами:
-        List<DoctorTalonsDto> doc4Talons = talonDtoService.getTalonsByDoctorIdAndDay(doctor.getId(),
-                LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
-                LocalDateTime.of(LocalDate.now().plusDays(14), LocalTime.MAX));
-        // заполняем все талоны пациентом:
-        doc4Talons.stream()
-                .map(doctorTalonsDto-> {
-                    Talon talon = talonService.findTalonById(doctorTalonsDto.id());
-                    talon.setPatient(patient);
-                    return talon;
-                })
-                .forEach(talonService::save);
+        doc1talon1 = talonService.save(doc1talon1);
+        doc1talon2 = talonService.save(doc1talon2);
+        doc1talon3 = talonService.save(doc1talon3);
+        doc1talon4 = talonService.save(doc1talon4);
+        doc2talon1 = talonService.save(doc2talon1);
+        doc2talon2 = talonService.save(doc2talon2);
+        doc2talon3 = talonService.save(doc2talon3);
+        doc2talon4 = talonService.save(doc2talon4);
 
+        // Запись пациента2 на 2 талона к 2 докторам
 
-        accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
+        doc1talon1.setPatient(patient2);
+        doc1talon2.setPatient(patient2);
+        doc2talon1.setPatient(patient2);
+        doc2talon2.setPatient(patient2);
 
-        //Вывод всех талонов где есть запись пациента
-        mockMvc.perform(get("/api/patient/talons/{patientId}", patient.getId())
-                .header("Authorization", accessToken)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+//        Проверка, что пациент1 пациент не записан
+
+        accessToken = tokenUtil.obtainNewAccessToken(patient1.getEmail(), "1", mockMvc);
+
+        mockMvc.perform(get("/api/patient/talons")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", Is.is(true)))
-                .andExpect(jsonPath("$.data[0].patientId", Is.is(patient.getId().intValue())));
-        //      .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data.length()", Is.is(0)));
 
+        // Запись пациента1 на 2 талона к 2 докторам
 
+        doc1talon3.setPatient(patient1);
+        doc1talon4.setPatient(patient1);
+        doc2talon3.setPatient(patient1);
+        doc2talon4.setPatient(patient1);
 
-        //Пациента с таким id нет
-        mockMvc.perform(get("/api/patient/talons/{patientId}", 100)
-                .header("Authorization", accessToken)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.success", Is.is(false)))
-                .andExpect(jsonPath("$.code", Is.is(402)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "Пациента с таким id нет!")));
+        mockMvc.perform(get("/api/patient/talons")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data.length()", Is.is(4)))
+
+                .andExpect(jsonPath("$.data[0].id", Is.is(doc1talon3.getId().intValue())))
+                .andExpect(jsonPath("$.data[0].doctorId", Is.is(doctor1.getId().intValue())))
+                .andExpect(jsonPath("$.data[0].patientId", Is.is(patient1.getId().intValue())))
+
+                .andExpect(jsonPath("$.data[1].id", Is.is(doc1talon4.getId().intValue())))
+                .andExpect(jsonPath("$.data[1].doctorId", Is.is(doctor1.getId().intValue())))
+                .andExpect(jsonPath("$.data[1].patientId", Is.is(patient1.getId().intValue())))
+
+                .andExpect(jsonPath("$.data[2].id", Is.is(doc2talon3.getId().intValue())))
+                .andExpect(jsonPath("$.data[2].doctorId", Is.is(doctor2.getId().intValue())))
+                .andExpect(jsonPath("$.data[2].patientId", Is.is(patient1.getId().intValue())))
+
+                .andExpect(jsonPath("$.data[3].id", Is.is(doc2talon4.getId().intValue())))
+                .andExpect(jsonPath("$.data[3].doctorId", Is.is(doctor2.getId().intValue())))
+                .andExpect(jsonPath("$.data[3].patientId", Is.is(patient1.getId().intValue())));
     }
 
     @Test
@@ -136,7 +162,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
         Patient patient = initPatient(role, "patient1test@email.com");
         Patient patient2 = initPatient(role, "patient2test@email.com");
         Doctor doctor = initDoctor(role1, null, null, "doctor1test@email.com");
-        talonService.persistTalonsForDoctor(doctor,14, 4);
+        talonService.persistTalonsForDoctor(doctor, 14, 4);
         Talon talon = initTalon(null, doctor, patient);
         Talon talon2 = initTalon(LocalDateTime.now(), doctor, patient2);
         talon = talonService.save(talon);
@@ -144,7 +170,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
 
         accessToken = tokenUtil.obtainNewAccessToken(patient.getEmail(), "1", mockMvc);
 
-        if (talon.getPatient()==null || talon2.getPatient()==null || talon.getId()==null || talon2.getId() ==null) {
+        if (talon.getPatient() == null || talon2.getPatient() == null || talon.getId() == null || talon2.getId() == null) {
             throw new Exception("Неправильно созданы талоны для теста");
         }
 
@@ -156,8 +182,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
                 .andExpect(status().is(400))
                 .andExpect(jsonPath("$.success", Is.is(false)))
                 .andExpect(jsonPath("$.code", Is.is(402)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "Талона с таким id нет!")));
+                .andExpect(jsonPath("$.text", Is.is("Талона с таким id нет!")));
 //              .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         //Пациент пытается удалить чужую запись
@@ -168,8 +193,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
                 .andExpect(status().is(400))
                 .andExpect(jsonPath("$.success", Is.is(false)))
                 .andExpect(jsonPath("$.code", Is.is(403)))
-                .andExpect(jsonPath("$.text", Is.is(
-                        "Пациент не записан по этому талону")));
+                .andExpect(jsonPath("$.text", Is.is("Пациент не записан по этому талону")));
 //               .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
         //эндпоинт отработал успешно
@@ -183,7 +207,7 @@ public class PatientTalonsRestControllerIT extends ContextIT {
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
 //        Запись на талон успешно удалена
-        if (talon.getPatient()!=null || talon2.getPatient()==null) {
+        if (talon.getPatient() != null || talon2.getPatient() == null) {
             throw new Exception("Запись по талону не удалена");
         }
     }
