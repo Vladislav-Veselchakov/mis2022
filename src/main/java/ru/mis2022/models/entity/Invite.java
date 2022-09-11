@@ -21,4 +21,10 @@ public class Invite {
     private String token;
     private LocalDateTime expirationDate;
     private Long userId;
+
+    public Invite(String token, LocalDateTime expirationDate, Long userId) {
+        this.token = token;
+        this.expirationDate = expirationDate;
+        this.userId = userId;
+    }
 }
