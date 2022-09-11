@@ -39,16 +39,6 @@ public class MailConfig {
         Properties properties = mailSender.getJavaMailProperties();
         properties.setProperty("mail.transport.protocol", protocol);
         properties.setProperty("mail.debug", debug);
-        properties.setProperty("mail.from.alias",
-        "VL_test@m.com"// + LocalDateTime.now().format(DATE_TIME_FORMATTER).replaceAll("[ ,:,.]", "_").toString() + ".com"
-                );
-
-//        properties.setProperty("mail.smtp.auth", "true");
-//        properties.setProperty("mail.smtp.starttls.enable", "true");
-//        properties.setProperty("mail.smtp.ssl.enable", "true");
-//        properties.setProperty("mail.smtp.quitwait", "false");
-//        properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
         return mailSender;
     }
 }

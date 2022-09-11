@@ -7,15 +7,20 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.config.security.jwt.JwtUtils;
-import ru.mis2022.models.entity.User;
-import ru.mis2022.config.security.jwt.LoginRequest;
 import ru.mis2022.config.security.jwt.JwtResponse;
+import ru.mis2022.config.security.jwt.JwtUtils;
+import ru.mis2022.config.security.jwt.LoginRequest;
+import ru.mis2022.models.entity.Invite;
+import ru.mis2022.models.entity.User;
+import ru.mis2022.service.entity.InviteService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +32,9 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     private final JwtUtils jwtUtils;
+
+    @Autowired
+    private InviteService inviteService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
@@ -53,4 +61,22 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles));
     }
+
+    @GetMapping("/confirm/emailpassword")
+    public ResponseEntity<?> confirmEmailPassword(@RequestParam("token") String token, @RequestParam String pwd) {
+//        Doctor signedInDoc = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(pwd.trim().isEmpty())
+            return ResponseEntity.ok("password is not specified");
+        if(pwd.length() < 10)
+            return ResponseEntity.ok("password is too small");
+
+        Invite invite = inviteService.findByToken(token);
+        if(invite.getExpirationDate().isBefore(LocalDateTime.now()))
+            return ResponseEntity.ok("link expired");
+
+
+        return ResponseEntity.ok("Under construction");
+    }
+
 }

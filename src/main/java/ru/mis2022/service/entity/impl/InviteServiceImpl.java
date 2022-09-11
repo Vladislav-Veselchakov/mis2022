@@ -16,7 +16,7 @@ public class InviteServiceImpl implements InviteService {
     }
 
     @Override
-    public Invite findByUserId(Long userId) {
-        return null;
+    public Invite findByToken(String token) {
+        return inviteRepository.findByToken(token);
     }
 }

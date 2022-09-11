@@ -1,1 +1,0 @@
-create table invite (id  bigserial not null, expiration_date timestamp, token varchar(255), user_id int8, primary key (id))

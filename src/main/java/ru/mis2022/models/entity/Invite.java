@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,8 +19,10 @@ public class Invite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+    @Column(unique = true)
     private String token;
     private LocalDateTime expirationDate;
+    @Column(unique = true)
     private Long userId;
 
     public Invite(String token, LocalDateTime expirationDate, Long userId) {
