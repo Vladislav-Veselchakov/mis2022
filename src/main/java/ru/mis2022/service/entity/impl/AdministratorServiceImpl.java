@@ -52,7 +52,7 @@ public class AdministratorServiceImpl implements AdministratorService {
         inviteService.save(invite);
 
 
-        mailService.send("mis2022tmp@gmail.com", "VL idea test"
+        mailService.send("mis2022tmp@mail.ru", "VL idea test"
                 + LocalDateTime.now().format(DATE_TIME_FORMATTER), "test sending");
 
 
