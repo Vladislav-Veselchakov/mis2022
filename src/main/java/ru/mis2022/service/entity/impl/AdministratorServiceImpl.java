@@ -5,8 +5,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mis2022.models.entity.Administrator;
+import ru.mis2022.models.entity.Role;
 import ru.mis2022.repositories.AdministratorRepository;
 import ru.mis2022.service.entity.AdministratorService;
+import ru.mis2022.service.entity.MailService;
+import ru.mis2022.service.entity.RoleService;
+import ru.mis2022.utils.GenerateRandomString;
+
+import java.time.LocalDateTime;
+
+import static ru.mis2022.utils.DateFormatter.DATE_TIME_FORMATTER;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +22,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 
     private final PasswordEncoder encoder;
     private final AdministratorRepository administratorRepository;
+    private final MailService mailService;
+    private final RoleService roleService;
 
     @Override
     public Administrator findByEmail(String email) {
@@ -29,6 +39,14 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Transactional
     public Administrator persist(Administrator administrator) {
         administrator.setPassword(encoder.encode(administrator.getPassword()));
+        administrator.setRole(roleService.findByName(Role.RolesEnum.ADMIN.name()));
+        String tmpPwd = GenerateRandomString.getRndStr(15);
+        String encryptedPwd = encoder.encode(tmpPwd);
+
+        mailService.send("centralbase@rambler.ru", "VL idea test"
+                + LocalDateTime.now().format(DATE_TIME_FORMATTER), "test sending");
+
+
         return administratorRepository.save(administrator);
     }
 
