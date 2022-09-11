@@ -9,6 +9,5 @@ import java.util.List;
 public interface PatientDtoService {
 
     CurrentPatientDto getCurrentPatientDtoByEmail(String email);
-    List<TalonDto> findAllByPatientId(Long id);
 
 }
