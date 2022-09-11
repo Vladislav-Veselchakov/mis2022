@@ -42,8 +42,9 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Override
     @Transactional
     public Administrator persist(Administrator administrator) {
-         administrator.setPassword(encoder.encode(administrator.getPassword()));
+        administrator.setPassword(encoder.encode(administrator.getPassword()));
         administrator.setRole(roleService.findByName(Role.RolesEnum.ADMIN.name()));
+        administrator = administratorRepository.save(administrator);
         String tmpPwd = GenerateRandomString.getRndStr(15);
         String encryptedPwd = encoder.encode(tmpPwd);
         int expPeriod = Integer.valueOf(env.getProperty("mis.property.Invite.expirationPeriod"));
@@ -51,11 +52,11 @@ public class AdministratorServiceImpl implements AdministratorService {
         inviteService.save(invite);
 
 
-        mailService.send("centralbase@rambler.ru", "VL idea test"
+        mailService.send("mis2022tmp@gmail.com", "VL idea test"
                 + LocalDateTime.now().format(DATE_TIME_FORMATTER), "test sending");
 
 
-        return administratorRepository.save(administrator);
+        return administrator;
     }
 
     @Override
