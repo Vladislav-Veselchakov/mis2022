@@ -1,5 +1,8 @@
 package ru.mis2022.controllers;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mis2022.config.security.jwt.JwtResponse;
 import ru.mis2022.config.security.jwt.JwtUtils;
 import ru.mis2022.config.security.jwt.LoginRequest;
+import ru.mis2022.models.entity.Administrator;
 import ru.mis2022.models.entity.Invite;
 import ru.mis2022.models.entity.User;
+import ru.mis2022.service.entity.AdministratorService;
 import ru.mis2022.service.entity.InviteService;
 import ru.mis2022.service.entity.UserService;
+import ru.mis2022.utils.validation.ApiValidationUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +49,8 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private PasswordEncoder encoder;
+    @Autowired
+    private AdministratorService adminService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
@@ -70,29 +78,41 @@ public class AuthController {
                 roles));
     }
 
-    @GetMapping("/confirm/emailpassword")
-    public ResponseEntity<?> confirmEmailPassword(@RequestParam("token") String token, @RequestParam String pwd) {
-//        Doctor signedInDoc = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @ApiOperation("Проверяем код активации и устанавливаем пароль пользователю")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Пароль установлен"),
+            @ApiResponse(code = 401, message = "Пароль не указан"),
+            @ApiResponse(code = 410, message = "Пароль менее 10 символов"),
+            @ApiResponse(code = 415, message = "Ссылка устарела"),
+            @ApiResponse(code = 420, message = "Пользователь не найден")
 
-        if(pwd.trim().isEmpty())
-            return ResponseEntity.ok("password is not specified");
-        if(pwd.length() < 10)
-            return ResponseEntity.ok("password is too small");
+    })
+    @GetMapping("/confirm/emailpassword")
+    public ResponseEntity<User> confirmEmailPassword(@RequestParam("token") String token, @RequestParam String pwd) {
+        ApiValidationUtils.expectedFalse(pwd.trim().isEmpty(), 401, "Пароль не указан");
+        ApiValidationUtils.expectedFalse(pwd.length() < 10, 410, "Пароль менее 10 символов");
 
         Invite invite = inviteService.findByToken(token);
-        if(invite == null || invite.getExpirationDate().isBefore(LocalDateTime.now()))
-            return ResponseEntity.ok("link expired");
 
-        User user = userService.findById(invite.getUserId()).orElse(null);
-        if(user == null)
-            return ResponseEntity.ok("User not found");
+        ApiValidationUtils.expectedFalse(invite == null || invite.getExpirationDate().isBefore(LocalDateTime.now()),
+                415, "Ссылка устарела");
 
-        user.setPassword(encoder.encode(pwd));
+//        User user = userService.findById(invite.getUserId()).orElse(null);
+        Administrator admin = adminService.findAdministratorById(invite.getUserId());
+
+//        ApiValidationUtils.expectedFalse(user == null, 420, "Пользователь не найден");
+        ApiValidationUtils.expectedFalse(admin == null, 420, "Пользователь не найден");
+
+//        user.setPassword(encoder.encode(pwd));
+        admin.setPassword(encoder.encode(pwd));
+//        userService.persist(user);
+        adminService.persist(admin);
         inviteService.delete(invite);
 
 
 
-        return ResponseEntity.ok("OK. Password've been set, invite've been deleted");
+//        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(admin);
     }
 
 }
