@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.mis2022.models.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
 
@@ -20,4 +21,5 @@ public interface UserService extends UserDetailsService {
     List<User> findPersonalByFullName(String fullName, String roleName);
 
     User persist(User user);
+    Optional<User> findById(Long id);
 }

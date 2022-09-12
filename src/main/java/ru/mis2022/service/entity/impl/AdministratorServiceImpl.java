@@ -54,7 +54,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
         mailService.send("mis2022tmp@mail.ru", "VL mis2222 confirm email n pwd"
             + LocalDateTime.now().format(DATE_TIME_FORMATTER),
-    String.format("confirm email and write new password here (in newPassword parameter in url) follow the link:\n" +
+    String.format("confirm email and write new password here (in newPassword parameter in url) follow the link:\n\n" +
             "http://%s:%s/api/auth/confirm/emailpassword?userid=%s&token=%s&pwd=",
             env.getProperty("server.address"), System.getenv().get("MAIN_PORT"), administrator.getId(), encryptedPwd));
 

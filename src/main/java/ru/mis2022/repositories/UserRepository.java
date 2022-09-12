@@ -7,6 +7,7 @@ import ru.mis2022.models.dto.user.UserDto;
 import ru.mis2022.models.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -69,4 +70,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
         ORDER BY u.id
         """)
     List<UserDto> findStaffByDepartment(Long depId);
+
+    Optional<User> findById(Long id);
 }

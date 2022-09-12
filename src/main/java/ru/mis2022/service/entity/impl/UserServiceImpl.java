@@ -9,6 +9,7 @@ import ru.mis2022.repositories.UserRepository;
 import ru.mis2022.service.entity.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +55,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User persist(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 }

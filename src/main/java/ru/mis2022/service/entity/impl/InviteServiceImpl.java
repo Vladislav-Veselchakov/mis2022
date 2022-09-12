@@ -19,4 +19,9 @@ public class InviteServiceImpl implements InviteService {
     public Invite findByToken(String token) {
         return inviteRepository.findByToken(token);
     }
+
+    @Override
+    public void delete(Invite invite) {
+        inviteRepository.delete(invite);
+    }
 }

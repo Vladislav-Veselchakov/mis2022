@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +20,12 @@ import ru.mis2022.config.security.jwt.LoginRequest;
 import ru.mis2022.models.entity.Invite;
 import ru.mis2022.models.entity.User;
 import ru.mis2022.service.entity.InviteService;
+import ru.mis2022.service.entity.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -35,6 +39,10 @@ public class AuthController {
 
     @Autowired
     private InviteService inviteService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
@@ -72,11 +80,19 @@ public class AuthController {
             return ResponseEntity.ok("password is too small");
 
         Invite invite = inviteService.findByToken(token);
-        if(invite.getExpirationDate().isBefore(LocalDateTime.now()))
+        if(invite == null || invite.getExpirationDate().isBefore(LocalDateTime.now()))
             return ResponseEntity.ok("link expired");
 
+        User user = userService.findById(invite.getUserId()).orElse(null);
+        if(user == null)
+            return ResponseEntity.ok("User not found");
 
-        return ResponseEntity.ok("Under construction");
+        user.setPassword(encoder.encode(pwd));
+        inviteService.delete(invite);
+
+
+
+        return ResponseEntity.ok("OK. Password've been set, invite've been deleted");
     }
 
 }
