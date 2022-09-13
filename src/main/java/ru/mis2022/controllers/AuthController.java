@@ -26,7 +26,6 @@ import ru.mis2022.models.dto.user.UserDto;
 import ru.mis2022.models.dto.user.converter.UserDtoConverter;
 import ru.mis2022.models.entity.Invite;
 import ru.mis2022.models.entity.User;
-import ru.mis2022.service.MutableHttpServletRequest;
 import ru.mis2022.service.entity.AdministratorService;
 import ru.mis2022.service.entity.InviteService;
 import ru.mis2022.service.entity.UserService;
@@ -121,9 +120,6 @@ public class AuthController {
         jwt = "Bearer " + jwt;
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Authorization", jwt);
-
-        MutableHttpServletRequest muteRequest = new MutableHttpServletRequest(request);
-
 
         return ResponseEntity.ok().headers(responseHeaders).body(userDtoConverter.toDto(user));
 //        return ResponseEntity.ok(userDtoConverter.toDto(user));

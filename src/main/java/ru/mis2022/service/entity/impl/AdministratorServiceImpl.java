@@ -56,12 +56,17 @@ public class AdministratorServiceImpl implements AdministratorService {
         Invite invite = new Invite(encryptedPwd, LocalDateTime.now().plusHours(expPeriod), administrator.getId());
         inviteService.save(invite);
 
-        String jwt = jwtUtils.generateJwtToken(SecurityContextHolder.getContext().getAuthentication());
+//        String jwt = jwtUtils.generateJwtToken(SecurityContextHolder.getContext().getAuthentication());
+//        mailService.send("mis2022tmp@mail.ru", "VL mis2222 confirm email n pwd"
+//                        + LocalDateTime.now().format(DATE_TIME_FORMATTER),
+//                String.format("confirm email and write new password here (in newPassword parameter in url) follow the link:\n\n" +
+//                                "https://%s:%s/api/auth/confirm/emailpassword?Authorization=%s&token=%s&pwd=1",
+//                        env.getProperty("server.address"), System.getenv().get("MAIN_PORT"), jwt, encryptedPwd));
         mailService.send("mis2022tmp@mail.ru", "VL mis2222 confirm email n pwd"
-            + LocalDateTime.now().format(DATE_TIME_FORMATTER),
-    String.format("confirm email and write new password here (in newPassword parameter in url) follow the link:\n\n" +
-            "https://%s:%s/api/auth/confirm/emailpassword?Authorization=%s&token=%s&pwd=1",
-            env.getProperty("server.address"), System.getenv().get("MAIN_PORT"), jwt, encryptedPwd));
+                        + LocalDateTime.now().format(DATE_TIME_FORMATTER),
+                String.format("confirm email and write new password here (in newPassword parameter in url) follow the link:\n\n" +
+                                "http://%s:%s/api/auth/confirm/emailpassword?&token=%s&pwd=1",
+                        env.getProperty("server.address"), System.getenv().get("MAIN_PORT"), encryptedPwd));
 
 
         return administrator;
