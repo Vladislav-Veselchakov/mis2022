@@ -165,9 +165,6 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     }
 
     @Test
-    //todo list4 на стыке месяцов тест не работет. Например, если сегодня 28.08 то далее к этой дате добавляется 4 дня и
-    // получается 02.09. Тест ожидает первый талон с датой 28.08, а получает 02.09, т.к. в классе
-    // TalonDtoConverter.groupByDay(..) идет сортировка по строке
     public void getAllTalonsByCurrentDoctorTest() throws Exception {
         Role role = initRole("DOCTOR");
         Role role1 = initRole("PATIENT");
@@ -231,6 +228,31 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.code", Is.is(200)))
                 .andExpect(jsonPath("$.data.length()", Is.is(0)));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
+        // ТЕСТ НА СТЫКЕ ДАТ
+        accessToken = tokenUtil.obtainNewAccessToken(doctor1.getEmail(), "1", mockMvc);
+
+        date = LocalDate.of(2022, LocalDate.now().getMonth(), 28);
+        LocalTime time = LocalTime.now();
+
+        Talon junction_talon1 = initTalon(new Talon(LocalDateTime.of(date, time), doctor1, null));
+        Talon junction_talon2 = initTalon(new Talon(LocalDateTime.of(date, time).plusDays(2), doctor1, null));
+        Talon junction_talon3 = initTalon(new Talon(LocalDateTime.of(date, time).plusDays(4), doctor1, null));
+
+        formatDate = date.format(DATE_FORMATTER);
+
+        mockMvc.perform(get("/api/doctor/talon/group")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.data[3].date", Is.is(formatDate)))
+                .andExpect(jsonPath("$.data[3].talonsDto[0].time", Is.is(junction_talon1.getTime().format(DATE_TIME_FORMATTER))))
+
+                .andExpect(jsonPath("$.data[4].talonsDto[0].time", Is.is(junction_talon2.getTime().format(DATE_TIME_FORMATTER))))
+
+                .andExpect(jsonPath("$.data[5].talonsDto[0].time", Is.is(junction_talon3.getTime().format(DATE_TIME_FORMATTER))));
 
     }
 

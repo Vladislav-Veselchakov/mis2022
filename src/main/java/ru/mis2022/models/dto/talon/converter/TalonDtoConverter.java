@@ -5,6 +5,7 @@ import ru.mis2022.models.dto.talon.TalonByDay;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class TalonDtoConverter {
         for (String date : map.keySet()) {
             result.add(new TalonByDay(date, map.get(date)));
         }
-        result.sort(Comparator.comparing(TalonByDay::date));
+        result.sort(Comparator.comparing(o -> LocalDate.parse(o.date(), DATE_FORMATTER)));
         return result;
     }
 
@@ -48,7 +49,7 @@ public class TalonDtoConverter {
         return setDto;
     }
 
-    public  TalonDto talonToTalonDto(Talon talon) {
+    public TalonDto talonToTalonDto(Talon talon) {
         TalonDto talonDto = new TalonDto();
         talonDto = TalonDto.builder()
                 .id(talon.getId())
