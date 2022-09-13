@@ -72,11 +72,4 @@ public class DepartmentDtoConverter {
     }
 
 
-        public DepartmentDto toDto(Department entityDepartment) {
-            DepartmentDto  departmentDto = new DepartmentDto();
-            departmentDto.setId(entityDepartment.getId());
-            departmentDto.setName(entityDepartment.getName());
-
-            return departmentDto;
-        }
-    }
+}

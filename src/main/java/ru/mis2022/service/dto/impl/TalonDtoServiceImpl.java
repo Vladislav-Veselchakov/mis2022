@@ -19,7 +19,7 @@ public class TalonDtoServiceImpl implements TalonDtoService {
 
     @Override
     public Optional<List<TalonDto>> findAllByDoctorId(long doctorId) {
-        return talonRepository.findAllDtosByDoctorId(doctorId);
+        return talonRepository.findAllDtoByDoctorId(doctorId);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ru.mis2022.controllers.doctor;
 
 import org.hamcrest.core.Is;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static org.aspectj.runtime.internal.Conversions.intValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -269,7 +267,7 @@ public class DoctorPatientRestControllerIT extends ContextIT {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.doctorId").value(doctor.getId()))
-                .andExpect(jsonPath("$.data.patientId").value(patient.getId()))
+                .andExpect(jsonPath("$.data.patient.id").value(patient.getId()))
                 .andExpect(jsonPath("$.data.time").value(DATE_TIME_FORMATTER.format(talonTime)));
 
         // Все норм (пациент в талоне отсутствует)
@@ -284,7 +282,7 @@ public class DoctorPatientRestControllerIT extends ContextIT {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.doctorId").value(doctor.getId()))
-                .andExpect(jsonPath("$.data.patientId").value(patient.getId()))
+                .andExpect(jsonPath("$.data.patient.id").value(patient.getId()))
                 .andExpect(jsonPath("$.data.time").value(DATE_TIME_FORMATTER.format(talonTime)));
 
         Talon qryTalon  = entityManager.createQuery("""

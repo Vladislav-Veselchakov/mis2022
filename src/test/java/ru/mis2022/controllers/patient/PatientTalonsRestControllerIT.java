@@ -4,7 +4,6 @@ import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Patient;
@@ -139,19 +138,19 @@ public class PatientTalonsRestControllerIT extends ContextIT {
 
                 .andExpect(jsonPath("$.data[0].id", Is.is(doc1talon3.getId().intValue())))
                 .andExpect(jsonPath("$.data[0].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[0].patientId", Is.is(patient1.getId().intValue())))
+                .andExpect(jsonPath("$.data[0].patient.id", Is.is(patient1.getId().intValue())))
 
                 .andExpect(jsonPath("$.data[1].id", Is.is(doc1talon4.getId().intValue())))
                 .andExpect(jsonPath("$.data[1].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[1].patientId", Is.is(patient1.getId().intValue())))
+                .andExpect(jsonPath("$.data[1].patient.id", Is.is(patient1.getId().intValue())))
 
                 .andExpect(jsonPath("$.data[2].id", Is.is(doc2talon3.getId().intValue())))
                 .andExpect(jsonPath("$.data[2].doctorId", Is.is(doctor2.getId().intValue())))
-                .andExpect(jsonPath("$.data[2].patientId", Is.is(patient1.getId().intValue())))
+                .andExpect(jsonPath("$.data[2].patient.id", Is.is(patient1.getId().intValue())))
 
                 .andExpect(jsonPath("$.data[3].id", Is.is(doc2talon4.getId().intValue())))
                 .andExpect(jsonPath("$.data[3].doctorId", Is.is(doctor2.getId().intValue())))
-                .andExpect(jsonPath("$.data[3].patientId", Is.is(patient1.getId().intValue())));
+                .andExpect(jsonPath("$.data[3].patient.id", Is.is(patient1.getId().intValue())));
     }
 
     @Test

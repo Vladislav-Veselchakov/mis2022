@@ -65,6 +65,10 @@ public class TalonServiceImpl implements TalonService {
         return talonRepository.findTalonById(id);
     }
     @Override
+    public Talon getTalonByIdWithDoctor(Long id) {
+        return talonRepository.getTalonByIdWithDoctor(id);
+    }
+    @Override
     public List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId) {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = LocalDateTime.now().plusDays(countDays).with(LocalTime.MAX);
