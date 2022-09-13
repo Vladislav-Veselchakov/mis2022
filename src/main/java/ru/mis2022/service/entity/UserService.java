@@ -22,4 +22,5 @@ public interface UserService extends UserDetailsService {
 
     User persist(User user);
     Optional<User> findById(Long id);
+    User save(User user);
 }

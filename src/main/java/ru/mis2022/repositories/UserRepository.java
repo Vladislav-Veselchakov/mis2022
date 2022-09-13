@@ -72,4 +72,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserDto> findStaffByDepartment(Long depId);
 
     Optional<User> findById(Long id);
+    User save(User user);
 }
