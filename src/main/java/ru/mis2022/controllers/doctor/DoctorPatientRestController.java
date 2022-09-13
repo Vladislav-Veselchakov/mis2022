@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.patient.PatientConverter;
 import ru.mis2022.models.dto.patient.PatientDto;
+import ru.mis2022.models.dto.patient.converter.PatientDtoConverter;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Doctor;
 import ru.mis2022.models.entity.Patient;
 import ru.mis2022.models.entity.Talon;
 import ru.mis2022.models.response.Response;
-import ru.mis2022.service.entity.DoctorService;
 import ru.mis2022.service.entity.PatientService;
 import ru.mis2022.service.entity.TalonService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
@@ -32,7 +31,7 @@ import java.util.List;
 
 public class DoctorPatientRestController {
     private final PatientService patientService;
-    private final PatientConverter patientConverter;
+    private final PatientDtoConverter patientDtoConverter;
     private final TalonService talonService;
 
     @ApiOperation("Доктор получает пациентов по паттерну")
@@ -43,7 +42,7 @@ public class DoctorPatientRestController {
     public Response<List<PatientDto>> findPatientByFullName(
             @RequestParam(required = false, defaultValue = "") String stringPattern) {
         String fullNames = stringPattern.replaceAll("\\s+", "%");
-        return Response.ok(patientConverter.toPatientDto(patientService.findPatientByFullName(fullNames)));
+        return Response.ok(patientDtoConverter.toPatientDto(patientService.findPatientByFullName(fullNames)));
     }
 
     @ApiOperation("Доктор записывает пациента на определенное время")
