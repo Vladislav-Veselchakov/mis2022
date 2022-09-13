@@ -5,4 +5,9 @@ import ru.mis2022.models.entity.MedicalService;
 public interface MedicalServiceService {
 
     MedicalService save(MedicalService medicalService);
+
+    boolean isExistByIdentifier(String identifier);
+
+    boolean isExistByName(String name);
+
 }

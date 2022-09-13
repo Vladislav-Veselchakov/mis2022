@@ -2,12 +2,9 @@ package ru.mis2022.service.entity.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.mis2022.models.dto.disease.DiseaseDto;
 import ru.mis2022.models.entity.Disease;
 import ru.mis2022.repositories.DiseaseRepository;
 import ru.mis2022.service.entity.DiseaseService;
-
-import java.util.List;
 
 
 @Service
@@ -16,10 +13,6 @@ public class DiseaseServiceImpl implements DiseaseService {
 
     private final DiseaseRepository diseaseRepository;
 
-    @Override
-    public List<DiseaseDto> findAllDiseaseDto() {
-        return diseaseRepository.findAllDiseaseDto();
-    }
 
     @Override
     public boolean isExistByIdentifier(String identifier) {
@@ -40,4 +33,5 @@ public class DiseaseServiceImpl implements DiseaseService {
     public Disease save(Disease disease) {
         return diseaseRepository.save(disease);
     }
+
 }

@@ -23,4 +23,14 @@ public class MedicalServiceServiceImpl implements MedicalServiceService {
     public MedicalService save(MedicalService medicalService) {
         return medicalServiceRepository.save(medicalService);
     }
+
+    @Override
+    public boolean isExistByIdentifier(String identifier) {
+        return medicalServiceRepository.existsByIdentifier(identifier);
+    }
+
+    @Override
+    public boolean isExistByName(String name) {
+        return medicalServiceRepository.existsByName(name);
+    }
 }

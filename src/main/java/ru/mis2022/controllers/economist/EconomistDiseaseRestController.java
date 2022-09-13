@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mis2022.models.dto.disease.converter.DiseaseConverter;
 import ru.mis2022.models.dto.disease.DiseaseDto;
+import ru.mis2022.models.dto.disease.converter.DiseaseConverter;
 import ru.mis2022.models.entity.Disease;
 import ru.mis2022.models.response.Response;
+import ru.mis2022.service.dto.DiseaseDtoService;
 import ru.mis2022.service.entity.DiseaseService;
 import ru.mis2022.utils.validation.ApiValidationUtils;
 import ru.mis2022.utils.validation.OnCreate;
@@ -29,6 +30,7 @@ import java.util.List;
 @PreAuthorize("hasRole('ECONOMIST')")
 @RequestMapping("/api/economist/disease")
 public class EconomistDiseaseRestController {
+    private final DiseaseDtoService diseaseDtoService;
     private final DiseaseService diseaseService;
     private final DiseaseConverter converter;
 
@@ -38,7 +40,7 @@ public class EconomistDiseaseRestController {
     })
     @GetMapping("/getAll")
     public Response<List<DiseaseDto>> getAllDisease() {
-        return Response.ok(diseaseService.findAllDiseaseDto());
+        return Response.ok(diseaseDtoService.findAllDiseaseDto());
     }
 
     @ApiOperation(value = "Экономист сохраняет новое заболевание")
