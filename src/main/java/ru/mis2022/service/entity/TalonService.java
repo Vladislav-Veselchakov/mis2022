@@ -19,6 +19,8 @@ public interface TalonService {
 
     Talon findTalonById(Long id);
 
+    Talon getTalonByIdWithDoctor(Long id);
+
     List<Doctor> findDoctorsWithTalonsSpecificTimeRange(int countDays, Long departmentId);
 
     Long findPatientIdByTalonId(Long talonId);

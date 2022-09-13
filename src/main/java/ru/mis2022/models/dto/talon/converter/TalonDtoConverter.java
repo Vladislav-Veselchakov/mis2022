@@ -1,6 +1,8 @@
 package ru.mis2022.models.dto.talon.converter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.mis2022.models.dto.patient.converter.PatientDtoConverter;
 import ru.mis2022.models.dto.talon.TalonByDay;
 import ru.mis2022.models.dto.talon.TalonDto;
 import ru.mis2022.models.entity.Talon;
@@ -15,7 +17,9 @@ import java.util.Map;
 import static ru.mis2022.utils.DateFormatter.DATE_FORMATTER;
 
 @Service
+@RequiredArgsConstructor
 public class TalonDtoConverter {
+    private final PatientDtoConverter patientDtoConverter;
 
     public List<TalonByDay> groupByDay(List<TalonDto> dtos) {
         Map<String, List<TalonDto>> map = new HashMap<>();
@@ -50,13 +54,11 @@ public class TalonDtoConverter {
     }
 
     public TalonDto talonToTalonDto(Talon talon) {
-        TalonDto talonDto = new TalonDto();
-        talonDto = TalonDto.builder()
+        return TalonDto.builder()
                 .id(talon.getId())
                 .time(talon.getTime())
                 .doctorId(talon.getDoctor().getId())
-                .patientId(talon.getPatient().getId())
+                .patient(patientDtoConverter.patientToPatientDto(talon.getPatient()))
                 .build();
-        return talonDto;
     }
 }

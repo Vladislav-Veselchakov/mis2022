@@ -5,7 +5,7 @@ import ru.mis2022.models.dto.disease.DiseaseDto;
 import ru.mis2022.models.entity.Disease;
 
 @Component
-public class DiseaseConverter {
+public class DiseaseDtoConverter {
 
     public DiseaseDto toDiseaseDto(Disease disease) {
         return DiseaseDto.builder()

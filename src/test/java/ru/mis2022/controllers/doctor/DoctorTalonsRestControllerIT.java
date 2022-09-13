@@ -2,10 +2,13 @@ package ru.mis2022.controllers.doctor;
 
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import ru.mis2022.models.dto.patient.PatientDto;
+import ru.mis2022.models.dto.patient.converter.PatientDtoConverter;
 import ru.mis2022.models.dto.talon.DoctorTalonsDto;
 import ru.mis2022.models.entity.Department;
 import ru.mis2022.models.entity.Doctor;
@@ -80,6 +83,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 department
         ));
     }
+
     Patient initPatient(Role role) {
         return patientService.persist(new Patient(
                 "patient1@email.com",
@@ -105,7 +109,7 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
     }
 
     String todayTimeTalon(int hour) {
-        return LocalDateTime.now().with(LocalTime.of(hour,0))
+        return LocalDateTime.now().with(LocalTime.of(hour, 0))
                 .format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
@@ -193,28 +197,28 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data[0].talonsDto[0].id", Is.is(talon1.getId().intValue())))
                 .andExpect(jsonPath("$.data[0].talonsDto[0].time", Is.is(talon1.getTime().format(DATE_TIME_FORMATTER))))
                 .andExpect(jsonPath("$.data[0].talonsDto[0].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[0].talonsDto[0].patientId", Is.is(Matchers.nullValue())))
+                .andExpect(jsonPath("$.data[0].talonsDto[0].patient", Is.is(Matchers.nullValue())))
                 //      .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
 
                 .andExpect(jsonPath("$.data[0].talonsDto[1].id", Is.is(talon2.getId().intValue())))
                 .andExpect(jsonPath("$.data[0].talonsDto[1].time", Is.is(talon2.getTime().format(DATE_TIME_FORMATTER))))
                 .andExpect(jsonPath("$.data[0].talonsDto[1].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[0].talonsDto[1].patientId", Is.is(patient.getId().intValue())))
+                .andExpect(jsonPath("$.data[0].talonsDto[1].patient.id", Is.is(patient.getId().intValue())))
 
                 .andExpect(jsonPath("$.data[0].talonsDto[2].id", Is.is(talon3.getId().intValue())))
                 .andExpect(jsonPath("$.data[0].talonsDto[2].time", Is.is(talon3.getTime().format(DATE_TIME_FORMATTER))))
                 .andExpect(jsonPath("$.data[0].talonsDto[2].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[0].talonsDto[2].patientId", Is.is(Matchers.nullValue())))
+                .andExpect(jsonPath("$.data[0].talonsDto[2].patient", Is.is(Matchers.nullValue())))
 
                 .andExpect(jsonPath("$.data[1].talonsDto[0].id", Is.is(talon4.getId().intValue())))
                 .andExpect(jsonPath("$.data[1].talonsDto[0].time", Is.is(talon4.getTime().format(DATE_TIME_FORMATTER))))
                 .andExpect(jsonPath("$.data[1].talonsDto[0].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[1].talonsDto[0].patientId", Is.is(patient.getId().intValue())))
+                .andExpect(jsonPath("$.data[1].talonsDto[0].patient.id", Is.is(patient.getId().intValue())))
 
                 .andExpect(jsonPath("$.data[2].talonsDto[0].id", Is.is(talon5.getId().intValue())))
                 .andExpect(jsonPath("$.data[2].talonsDto[0].time", Is.is(talon5.getTime().format(DATE_TIME_FORMATTER))))
                 .andExpect(jsonPath("$.data[2].talonsDto[0].doctorId", Is.is(doctor1.getId().intValue())))
-                .andExpect(jsonPath("$.data[2].talonsDto[0].patientId", Is.is(Matchers.nullValue())));
+                .andExpect(jsonPath("$.data[2].talonsDto[0].patient", Is.is(Matchers.nullValue())));
 
         // У ДОКТОРА НЕТ ТАЛОНОВ
         accessToken = tokenUtil.obtainNewAccessToken(doctor2.getEmail(), "1", mockMvc);
@@ -270,12 +274,12 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         List<DoctorTalonsDto> doc4Talons = talonDtoService.getTalonsByDoctorIdAndDay(
                 doctor.getId(),
                 LocalDateTime.of(LocalDate.now(),
-                LocalTime.MIN),
+                        LocalTime.MIN),
                 LocalDateTime.of(LocalDate.now().plusDays(numberOfDays), LocalTime.MAX));
 
         // Заполняем все свободные талоны пациентом:
         doc4Talons.stream()
-                .map(doctorTalonsDto-> {
+                .map(doctorTalonsDto -> {
                     Talon talon = talonService.findTalonById(doctorTalonsDto.id());
                     talon.setPatient(patient);
                     return talon;
@@ -285,9 +289,9 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
         accessToken = tokenUtil.obtainNewAccessToken(doctor.getEmail(), "1", mockMvc);
 
         mockMvc.perform(get("/api/doctor/talon/onToday")
-                .header("Authorization", accessToken)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", Is.is(true)))
                 .andExpect(jsonPath("$.data[0].id", Matchers.notNullValue()))
@@ -306,5 +310,84 @@ public class DoctorTalonsRestControllerIT extends ContextIT {
                 .andExpect(jsonPath("$.data[3].time", Is.is(todayTimeTalon(11))))
                 .andExpect(jsonPath("$.data[3].patientId", Is.is(patient.getId().intValue())));
 //                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+    }
+
+    @Test
+    public void getCurrentDoctorTalonByIdTest() throws Exception {
+        Role role1 = initRole("DOCTOR");
+        Role role2 = initRole("PATIENT");
+        Department department = initDepartment("Therapy");
+        Doctor doctor1 = initDoctor(role1, department, null, "doctor1@email.com");
+        Doctor doctor2 = initDoctor(role1, department, null, "doctor2@email.com");
+        Patient patient = initPatient(role2);
+        Talon talon1 = initTalon(new Talon(LocalDateTime.now(), doctor1, null));
+        Talon talon2 = initTalon(new Talon(LocalDateTime.now(), doctor2, null));
+        Talon talon3 = initTalon(new Talon(LocalDateTime.now(), doctor1, patient));
+
+        accessToken = tokenUtil.obtainNewAccessToken(doctor1.getEmail(), "1", mockMvc);
+
+        // Для теста правильности возвращенного дто пацента
+        PatientDtoConverter patientDtoConverter = new PatientDtoConverter();
+        PatientDto patientDto = patientDtoConverter.patientToPatientDto(patient);
+
+        // Проверяем поиск по талону и ждем ответ 200 с пациентом null
+        mockMvc.perform(get("/api/doctor/talon/{id}", talon1.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data.id", Is.is(talon1.getId().intValue())))
+                .andExpect(jsonPath("$.data.time", Is.is(talon1.getTime().format(DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data.doctorId", Is.is(talon1.getDoctor().getId().intValue())))
+                .andExpect(jsonPath("$.data.patient", Is.is(IsNull.nullValue())));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
+        // Проверяем поиск по талону и ждем ответ 200 с пациентом not null
+        mockMvc.perform(get("/api/doctor/talon/{id}", talon3.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)))
+                .andExpect(jsonPath("$.code", Is.is(200)))
+                .andExpect(jsonPath("$.data.id", Is.is(talon3.getId().intValue())))
+                .andExpect(jsonPath("$.data.time", Is.is(talon3.getTime().format(DATE_TIME_FORMATTER))))
+                .andExpect(jsonPath("$.data.doctorId", Is.is(talon3.getDoctor().getId().intValue())))
+                .andExpect(jsonPath("$.data.patient.id", Is.is(patientDto.id().intValue())))
+                .andExpect(jsonPath("$.data.patient.firstName", Is.is(patientDto.firstName())))
+                .andExpect(jsonPath("$.data.patient.lastName", Is.is(patientDto.lastName())))
+                .andExpect(jsonPath("$.data.patient.surName", Is.is(patientDto.surName())))
+                .andExpect(jsonPath("$.data.patient.birthday", Is.is(patientDto.birthday().format(DATE_FORMATTER))))
+                .andExpect(jsonPath("$.data.patient.passport", Is.is(patientDto.passport())))
+                .andExpect(jsonPath("$.data.patient.polis", Is.is(patientDto.polis())))
+                .andExpect(jsonPath("$.data.patient.snils", Is.is(patientDto.snils())));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
+        // Проверяем поиск по талону не принадлежащему доктору и ждем 403
+        mockMvc.perform(get("/api/doctor/talon/{id}", talon2.getId())
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.success", Is.is(false)))
+                .andExpect(jsonPath("$.code", Is.is(403)))
+                .andExpect(jsonPath("$.data", Is.is(IsNull.nullValue())))
+                .andExpect(jsonPath("$.text", Is.is("Талон принадлежит другому доктору")));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
+        // Проверяем поиск по несуществуещему талону и ждем 404
+        mockMvc.perform(get("/api/doctor/talon/{id}", 888888)
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.success", Is.is(false)))
+                .andExpect(jsonPath("$.code", Is.is(404)))
+                .andExpect(jsonPath("$.data", Is.is(IsNull.nullValue())))
+                .andExpect(jsonPath("$.text", Is.is("Талон не найден")));
+//                .andDo(mvcResult -> System.out.println(mvcResult.getResponse().getContentAsString()));
+
     }
 }
