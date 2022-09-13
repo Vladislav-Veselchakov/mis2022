@@ -114,15 +114,15 @@ public class AuthController {
 //        adminService.merge(admin);
 //        inviteService.delete(invite);
 
-        UsernamePasswordAuthenticationToken userAuth =
-            new UsernamePasswordAuthenticationToken(user, "USER", user.getAuthorities());
-        String jwt = jwtUtils.generateJwtToken(userAuth); // SecurityContextHolder.getContext().getAuthentication());
-        jwt = "Bearer " + jwt;
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Authorization", jwt);
+//        UsernamePasswordAuthenticationToken userAuth =
+//            new UsernamePasswordAuthenticationToken(user, "USER", user.getAuthorities());
+//        String jwt = jwtUtils.generateJwtToken(userAuth); // SecurityContextHolder.getContext().getAuthentication());
+//        jwt = "Bearer " + jwt;
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        responseHeaders.set("Authorization", jwt);
 
-        return ResponseEntity.ok().headers(responseHeaders).body(userDtoConverter.toDto(user));
-//        return ResponseEntity.ok(userDtoConverter.toDto(user));
+//        return ResponseEntity.ok().headers(responseHeaders).body(userDtoConverter.toDto(user));
+        return ResponseEntity.ok(userDtoConverter.toDto(user));
 //        return ResponseEntity.ok(admin);
     }
 
