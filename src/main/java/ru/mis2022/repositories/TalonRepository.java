@@ -19,28 +19,27 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
         t.id,
         t.time,
         t.doctor.id,
-        t.patient.id)
-        FROM Talon t
+        t.patient
+        )
+        FROM Talon t left outer join t.patient pt on (t.patient.id = pt.id or (t.patient.id is null and pt.id is null))
         WHERE t.doctor.id = :doctorId
         """)
-    Optional<List<TalonDto>> findAllDtosByDoctorId(long doctorId);
+    Optional<List<TalonDto>> findAllDtoByDoctorId(long doctorId);
 
     List<Talon> findAllByDoctorId(Long id);
-
-    List<Talon> findAllByPatientId(Long id);
 
     @Query("""
     SELECT new ru.mis2022.models.dto.talon.TalonDto(
         t.id,
         t.time,
         t.doctor.id,
-        t.patient.id
+        t.patient
     )
     FROM Talon t
-    WHERE 
-        t.patient.id = :id
+    WHERE
+        t.patient.id = :patientId
     """)
-    List<TalonDto> findAllDtoByPatientId(Long id);
+    List<TalonDto> findAllDtoByPatientId(Long patientId);
 
     @Query("""
                 select count(t) from Talon t
@@ -51,6 +50,14 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
 
     @Query("SELECT t FROM Talon t WHERE t.id = :id")
     Talon findTalonById(Long id);
+
+    @Query("""
+            SELECT t FROM Talon t
+                JOIN FETCH t.doctor
+            WHERE t.id = :id
+            """)
+    Talon getTalonByIdWithDoctor(Long id);
+
 
     @Query("""
             SELECT d FROM Doctor d
@@ -90,10 +97,10 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
         t.id,
         t.time,
         t.doctor.id,
-        t.patient.id)
-        FROM Talon t
+        t.patient
+        )
+        FROM Talon t left outer join t.patient
         WHERE t.doctor.id = :doctorId
-         AND t.patient.id is NULL
          AND t.time BETWEEN :timeNow AND :timeEnd
         """)
     List<TalonDto> findTalonsByDoctorIdAndTimeBetween(Long doctorId, LocalDateTime timeNow, LocalDateTime timeEnd);
@@ -109,7 +116,7 @@ public interface TalonRepository extends JpaRepository<Talon, Long> {
         t.id,
         t.time,
         p.id,
-        CONCAT(p.firstName, ' ', p.lastName) 
+        CONCAT(p.firstName, ' ', p.lastName)
         
     )
     FROM Department dp

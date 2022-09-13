@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -88,5 +89,21 @@ public class DoctorTalonsRestController {
         LocalDateTime startDayTime = LocalDateTime.now().with(LocalTime.MIN);
         LocalDateTime endDayTime = LocalDateTime.now().with(LocalTime.MAX);
         return Response.ok(talonDtoService.getTalonsByDoctorIdAndDay(doctor.getId(), startDayTime, endDayTime));
+    }
+
+    @ApiOperation("Доктор получает свой талон по id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Полученный талон"),
+            @ApiResponse(code = 404, message = "Талон не найден"),
+            @ApiResponse(code = 403, message = "Талон принадлежит другому доктору")
+    })
+    @GetMapping("/{id}")
+    public Response<TalonDto> getTalonById(@PathVariable("id") long id) {
+        long doctorId = ((Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        Talon talon = talonService.getTalonByIdWithDoctor(id);
+        ApiValidationUtils.expectedNotNull(talon, 404, "Талон не найден");
+        ApiValidationUtils.expectedTrue(talon.getDoctor().getId().equals(doctorId),
+                403, "Талон принадлежит другому доктору");
+        return Response.ok(converter.talonToTalonDto(talon));
     }
 }
